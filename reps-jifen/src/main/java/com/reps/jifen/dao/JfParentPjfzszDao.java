@@ -39,7 +39,7 @@ public class JfParentPjfzszDao {
 
 	public ListResult<JfParentPjfzsz> query(int start, int pagesize, JfParentPjfzsz jfParentPjfzsz) {
 		DetachedCriteria dc = DetachedCriteria.forClass(JfParentPjfzsz.class);
-		return dao.query(dc, start, pagesize, Order.asc("name"));
+		return dao.query(dc, start, pagesize, Order.asc("item"));
 	}
 
 }
