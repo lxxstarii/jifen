@@ -15,6 +15,7 @@ import com.reps.core.orm.wrapper.GenericDao;
 import com.reps.core.util.StringUtil;
 import com.reps.jifen.entity.JfReward;
 import com.reps.jifen.entity.JfRewardCategory;
+import static com.reps.jifen.util.SqlUtil.*;
 
 /**
  * 积分奖品dao
@@ -101,23 +102,6 @@ public class JfRewardDao {
 			return itemList.get(0);
 		}
 		return null;
-	}
-
-	private String formatSql(String ids) {
-		String idStr = "";
-		if (StringUtil.isNotBlank(ids)) {
-			String[] arr = ids.split(",");
-			if (ids.length() > 0) {
-				for (int i = 0; i < arr.length; i++) {
-					if ("".equals(idStr))
-						idStr = idStr + "'" + arr[i] + "'";
-					else {
-						idStr = idStr + ",'" + arr[i] + "'";
-					}
-				}
-			}
-		}
-		return idStr;
 	}
 
 	public void batchDelete(String ids) {

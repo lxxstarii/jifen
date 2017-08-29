@@ -1,4 +1,4 @@
-package com.reps.jifen.util;
+package com.reps.jifen.entity.enums;
 
 /**
  * 奖品状态

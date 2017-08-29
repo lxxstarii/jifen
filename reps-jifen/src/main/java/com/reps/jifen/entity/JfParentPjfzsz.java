@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.reps.core.orm.IdEntity;
 
@@ -50,6 +51,10 @@ public class JfParentPjfzsz extends IdEntity implements Serializable{
 	/** 是否启用 */
 	@Column(name = "is_enabled")
 	private Short isEnabled;
+	
+	/** 分值范围显示 */
+	@Transient
+	private String pointsScopeDisp;
 
 	public String getItem() {
 		return item;
@@ -97,6 +102,14 @@ public class JfParentPjfzsz extends IdEntity implements Serializable{
 
 	public void setIsEnabled(Short isEnabled) {
 		this.isEnabled = isEnabled;
+	}
+
+	public String getPointsScopeDisp() {
+		return pointsScopeDisp;
+	}
+
+	public void setPointsScopeDisp(String pointsScopeDisp) {
+		this.pointsScopeDisp = pointsScopeDisp;
 	}
 	
 }

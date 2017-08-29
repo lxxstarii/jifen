@@ -1,6 +1,6 @@
 package com.reps.jifen.action;
 
-import static com.reps.jifen.util.CategoryType.ACTIVITY;
+import static com.reps.jifen.entity.enums.CategoryType.ACTIVITY;
 
 import java.util.HashMap;
 import java.util.List;

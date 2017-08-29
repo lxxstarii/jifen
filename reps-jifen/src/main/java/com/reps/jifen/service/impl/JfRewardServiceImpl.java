@@ -1,5 +1,8 @@
 package com.reps.jifen.service.impl;
 
+import static com.reps.jifen.entity.enums.CategoryType.*;
+import static com.reps.jifen.entity.enums.RewardStatus.*;
+
 import java.util.Date;
 import java.util.List;
 
@@ -13,8 +16,6 @@ import com.reps.jifen.dao.JfRewardDao;
 import com.reps.jifen.entity.JfReward;
 import com.reps.jifen.entity.JfRewardCategory;
 import com.reps.jifen.service.IJfRewardService;
-import static com.reps.jifen.util.CategoryType.*;
-import static com.reps.jifen.util.RewardStatus.*;
 
 /**
  * 积分物品业务实现类

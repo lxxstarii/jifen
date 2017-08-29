@@ -43,5 +43,11 @@ public interface IJfParentPjfzszService {
 	 * @return
 	 */
 	public ListResult<JfParentPjfzsz> query(int start, int pagesize, JfParentPjfzsz jfParentPjfzsz);
+	
+	/**
+	 * 批量删除询家庭评分行为
+	 * @param ids
+	 */
+	public void batchDelete(String ids);
 
 }

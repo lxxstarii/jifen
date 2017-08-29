@@ -41,7 +41,24 @@ public class JfParentPjfzszServiceImpl implements IJfParentPjfzszService {
 
 	@Override
 	public ListResult<JfParentPjfzsz> query(int start, int pagesize, JfParentPjfzsz jfParentPjfzsz) {
+		ListResult<JfParentPjfzsz> parentPjfzszList = dao.query(start, pagesize, jfParentPjfzsz);
+		for (JfParentPjfzsz bean : parentPjfzszList.getList()) {
+			Short pointsScope = bean.getPointsScope();
+			StringBuilder sb = new StringBuilder();
+			while((short)pointsScope > 0) {
+				sb.insert(0, pointsScope--);
+				sb.insert(0, "+");
+				sb.insert(0, ", ");
+			}
+			sb.insert(0, "+0");
+			bean.setPointsScopeDisp(sb.toString());
+		}
 		return dao.query(start, pagesize, jfParentPjfzsz);
+	}
+
+	@Override
+	public void batchDelete(String ids) {
+		dao.batchDelete(ids);
 	}
 
 }

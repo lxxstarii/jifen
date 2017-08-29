@@ -1,5 +1,7 @@
 package com.reps.jifen.action;
 
+import static com.reps.jifen.entity.enums.CategoryType.*;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +26,6 @@ import com.reps.jifen.entity.JfReward;
 import com.reps.jifen.entity.JfRewardCategory;
 import com.reps.jifen.service.IJfRewardService;
 import com.reps.jifen.service.IJfRewardCategoryService;
-import static com.reps.jifen.util.CategoryType.*;
 
 /**
  * 积分物品管理相关操作
