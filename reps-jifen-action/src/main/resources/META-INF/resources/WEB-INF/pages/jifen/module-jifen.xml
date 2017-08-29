@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module name="jifen" title="积分" showOrder="80" icon="school-icon">
+	<description></description>
+	<menu>
+		<node code="jifen010000" name="空间管理" type="Catalog" showOrder="1" icon="basicdata" newpage="false">
+			<nodes>
+				<node code="jifen010100" name="分类管理" showOrder="1" newpage="false" type="Action" >
+					<action>/reps/jifen/rewardcategory/index.mvc</action>
+					<nodes>
+						<node code="jifen010102" name="创建学校空间" showOrder="1" newpage="false" type="Operate">
+							<action>/reps/rrt/space/school/add.mvc</action>
+						</node>
+						<node code="jifen010103" name="创建班级空间" showOrder="2" newpage="false" type="Operate">
+							<action>/reps/rrt/space/classes/add.mvc</action>
+						</node>
+					</nodes>
+				</node>
+			</nodes>
+		</node>
+	</menu>
+</module>
