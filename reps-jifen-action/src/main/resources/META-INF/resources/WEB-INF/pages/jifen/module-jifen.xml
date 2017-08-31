@@ -1,21 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module name="jifen" title="积分" showOrder="80" icon="school-icon">
+<module name="jifen" title="积分管理" showOrder="80" icon="school-icon">
 	<description></description>
 	<menu>
-		<node code="jifen010000" name="空间管理" type="Catalog" showOrder="1" icon="basicdata" newpage="false">
+		<node code="jifen010000" name="前台信息设置" type="Catalog" showOrder="1" icon="basicdata" newpage="false">
 			<nodes>
 				<node code="jifen010100" name="分类管理" showOrder="1" newpage="false" type="Action" >
-					<action>/reps/jifen/rewardcategory/index.mvc</action>
+					<action>/reps/jifen/rewardcategory/index.mvc;/reps/jifen/rewardcategory/list.mvc</action>
 					<nodes>
-						<node code="jifen010102" name="创建学校空间" showOrder="1" newpage="false" type="Operate">
-							<action>/reps/rrt/space/school/add.mvc</action>
+						<node code="jifen010101" name="新增分类" showOrder="1" newpage="false" type="Operate">
+							<action>/reps/jifen/rewardcategory/toadd.mvc;/reps/jifen/rewardcategory/add.mvc</action>
 						</node>
-						<node code="jifen010103" name="创建班级空间" showOrder="2" newpage="false" type="Operate">
-							<action>/reps/rrt/space/classes/add.mvc</action>
+						<node code="jifen010102" name="修改分类" showOrder="2" newpage="false" type="Operate">
+							<action>/reps/jifen/rewardcategory/toedit.mvc;/reps/jifen/rewardcategory/edit.mvc</action>
+						</node>
+						<node code="jifen010103" name="删除分类" showOrder="3" newpage="false" type="Operate">
+							<action>/reps/jifen/rewardcategory/delete.mvc</action>
+						</node>
+						<node code="jifen010104" name="分类详细" showOrder="4" newpage="false" type="Operate">
+							<action>/reps/jifen/rewardcategory/show.mvc</action>
+						</node>
+					</nodes>
+				</node>
+				<node code="jifen010200" name="活动管理" showOrder="2" newpage="false" type="Action" >
+					<action>/reps/jifen/activityreward/list.mvc</action>
+					<nodes>
+						<node code="jifen010201" name="新增活动" showOrder="1" newpage="false" type="Operate">
+							<action>/reps/jifen/activityreward/toadd.mvc;/reps/jifen/activityreward/add.mvc;/reps/jifen/activityreward/choose.mvc</action>
+						</node>
+						<node code="jifen010202" name="修改活动" showOrder="2" newpage="false" type="Operate">
+							<action>/reps/jifen/activityreward/toedit.mvc;/reps/jifen/activityreward/edit.mvc</action>
+						</node>
+						<node code="jifen010203" name="删除活动" showOrder="3" newpage="false" type="Operate">
+							<action>/reps/jifen/activityreward/delete.mvc;/reps/jifen/activityreward/batchdelete.mvc;/reps/jifen/activityreward/batchpublish.mvc</action>
+						</node>
+						<node code="jifen010204" name="活动详细" showOrder="4" newpage="false" type="Operate">
+							<action>/reps/jifen/activityreward/show.mvc</action>
+						</node>
+						<node code="jifen010205" name="活动发布" showOrder="5" newpage="false" type="Operate">
+							<action>/reps/jifen/activityreward/batchpublish.mvc</action>
+						</node>
+					</nodes>
+				</node>
+				<node code="jifen010300" name="物品管理" showOrder="3" newpage="false" type="Action" >
+					<action>/reps/jifen/reward/list.mvc</action>
+					<nodes>
+						<node code="jifen010301" name="新增物品" showOrder="1" newpage="false" type="Operate">
+							<action>/reps/jifen/reward/toadd.mvc;/reps/jifen/reward/add.mvc;/reps/jifen/reward/choose.mvc</action>
+						</node>
+						<node code="jifen010302" name="修改物品" showOrder="2" newpage="false" type="Operate">
+							<action>/reps/jifen/reward/toedit.mvc;/reps/jifen/reward/edit.mvc</action>
+						</node>
+						<node code="jifen010303" name="删除物品" showOrder="3" newpage="false" type="Operate">
+							<action>/reps/jifen/reward/delete.mvc;/reps/jifen/reward/batchdelete.mvc;/reps/jifen/reward/batchpublish.mvc</action>
+						</node>
+						<node code="jifen010304" name="物品详细" showOrder="4" newpage="false" type="Operate">
+							<action>/reps/jifen/reward/show.mvc</action>
+						</node>
+						<node code="jifen010305" name="物品发布" showOrder="5" newpage="false" type="Operate">
+							<action>/reps/jifen/reward/batchpublish.mvc</action>
+						</node>
+					</nodes>
+				</node>
+			</nodes>
+		</node>
+		<node code="jifen050000" name="家庭行为评分设置" type="Catalog" showOrder="5" icon="basicdata" newpage="false">
+			<nodes>
+				<node code="jifen050100" name="家庭行为评分设置" showOrder="1" newpage="false" type="Action" >
+					<action>/reps/jifen/parentpjfzsz/list.mvc</action>
+					<nodes>
+						<node code="jifen050101" name="新增" showOrder="1" newpage="false" type="Operate">
+							<action>/reps/jifen/parentpjfzsz/toadd.mvc;/reps/jifen/parentpjfzsz/add.mvc</action>
+						</node>
+						<node code="jifen050102" name="修改" showOrder="2" newpage="false" type="Operate">
+							<action>/reps/jifen/parentpjfzsz/toedit.mvc;/reps/jifen/parentpjfzsz/edit.mvc</action>
+						</node>
+						<node code="jifen050103" name="删除" showOrder="3" newpage="false" type="Operate">
+							<action>/reps/jifen/parentpjfzsz/delete.mvc;/reps/jifen/parentpjfzsz/batchdelete.mvc</action>
+						</node>
+						<node code="jifen050104" name="详细" showOrder="4" newpage="false" type="Operate">
+							<action>/reps/jifen/parentpjfzsz/show.mvc</action>
 						</node>
 					</nodes>
 				</node>
 			</nodes>
 		</node>
 	</menu>
+	<consts>
+		<citem name="activityImageUploadPath" value="D:/jifen/activity" />
+		<citem name="rewardImageUploadPath" value="D:/jifen/reward" />
+		<citem name="activityImageUploadHttpPath" value="http://localhost:8080/jifen/activity" />
+	</consts>
 </module>

@@ -1,7 +1,5 @@
 package com.reps.jifen.action;
 
-import static com.reps.jifen.util.ApplyGradeUtil.GRADE_INITIAL_MAP;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +32,12 @@ public class JfParentPjfzszAction extends BaseAction {
 	@Autowired
 	IJfParentPjfzszService jfParentPjfzszService;
 	
+	/**
+	 * 家庭行为评分设置列表 
+	 * @param pager
+	 * @param jfParentPjfzsz
+	 * @return ModelAndView
+	 */
 	@RequestMapping(value = "/list")
 	public ModelAndView list(Pagination pager, JfParentPjfzsz jfParentPjfzsz){
 		ModelAndView mav = getModelAndView("/jifen/parentpjfzsz/list");
@@ -42,17 +46,25 @@ public class JfParentPjfzszAction extends BaseAction {
 		mav.addObject("list", listResult.getList());
 		//分页参数
 		mav.addObject("pager", pager);
-		mav.addObject("gradeMap", GRADE_INITIAL_MAP);
 		return mav;
 	}
 	
+	/**
+	 * 家庭行为评分设置入口
+	 * @return ModelAndView
+	 */
 	@RequestMapping(value = "/toadd")
 	public ModelAndView toAdd() {
 		ModelAndView mav = getModelAndView("/jifen/parentpjfzsz/add");
-		mav.addObject("gradeMap", GRADE_INITIAL_MAP);
 		return mav;
 	}
 	
+	/**
+	 * 家庭行为评分设置新增
+	 * @param jfParentPjfzsz
+	 * @return Object
+	 * @throws RepsException
+	 */
 	@RequestMapping(value = "/add")
 	@ResponseBody
 	public Object add(JfParentPjfzsz jfParentPjfzsz) throws RepsException {
@@ -63,15 +75,25 @@ public class JfParentPjfzszAction extends BaseAction {
 		return ajax(AjaxStatus.OK, "添加成功");
 	}
 	
+	/**
+	 * 家庭行为评分设置修改入口
+	 * @param id
+	 * @return ModelAndView
+	 */
 	@RequestMapping(value = "/toedit")
 	public ModelAndView toEdit(String id) {
 		ModelAndView mav = getModelAndView("/jifen/parentpjfzsz/edit");
 		JfParentPjfzsz jfParentPjfzsz = jfParentPjfzszService.get(id);
-		mav.addObject("gradeMap", GRADE_INITIAL_MAP);
 		mav.addObject("parentPjfzsz", jfParentPjfzsz);
 		return mav;
 	}
 	
+	/**
+	 * 家庭行为评分设置修改
+	 * @param jfParentPjfzsz
+	 * @return Object
+	 * @throws RepsException
+	 */
 	@RequestMapping(value = "/edit")
 	@ResponseBody
 	public Object edit(JfParentPjfzsz jfParentPjfzsz) throws RepsException {
@@ -82,6 +104,11 @@ public class JfParentPjfzszAction extends BaseAction {
 		return ajax(AjaxStatus.OK, "修改成功");
 	}
 	
+	/**
+	 * 家庭行为评分设置删除
+	 * @param id
+	 * @return Object
+	 */
 	@RequestMapping(value = "/delete")
 	@ResponseBody
 	public Object delete(String id) {
@@ -97,6 +124,11 @@ public class JfParentPjfzszAction extends BaseAction {
 		}
 	}
 	
+	/**
+	 * 家庭行为评分设置批量删除
+	 * @param ids
+	 * @return Object
+	 */
 	@RequestMapping(value = "/batchdelete")
 	@ResponseBody
 	public Object batchDelete(String ids) {
@@ -112,11 +144,15 @@ public class JfParentPjfzszAction extends BaseAction {
 		}
 	}
 	
+	/**
+	 * 家庭行为评分设置详情
+	 * @param id
+	 * @return ModelAndView
+	 */
 	@RequestMapping({ "/show" })
 	public ModelAndView show(String id) {
 		ModelAndView mav = new ModelAndView("/jifen/parentpjfzsz/show");
 		JfParentPjfzsz jfParentPjfzsz = jfParentPjfzszService.get(id);
-		mav.addObject("gradeMap", GRADE_INITIAL_MAP);
 		mav.addObject("parentPjfzsz", jfParentPjfzsz);
 		return mav;
 	}

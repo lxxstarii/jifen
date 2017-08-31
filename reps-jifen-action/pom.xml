@@ -4,8 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.reps</groupId>
-		<artifactId>reps-jifen-parent</artifactId>
-		<version>2.0.1-SNAPSHOT</version>  
+		<artifactId>reps</artifactId>
+		<version>2.0-SNAPSHOT</version>  
 	</parent>  
 	<artifactId>reps-jifen-action</artifactId>
 	<name>reps-jifen-action</name>
@@ -22,13 +22,9 @@
 			  <scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.reps</groupId>
-			<artifactId>reps-jifen</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<scope>provided</scope>
+			  <groupId>com.reps</groupId>
+			  <artifactId>reps-jifen</artifactId>
+			  <version>2.0-SNAPSHOT</version>
 		</dependency>
     </dependencies>
 </project>

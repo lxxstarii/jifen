@@ -24,14 +24,6 @@ public class JfReward extends IdEntity implements Serializable {
 
 	private static final long serialVersionUID = 5942323150277253519L;
 
-	public JfReward() {
-
-	}
-
-	public JfReward(String id) {
-		super.setId(id);
-	}
-
 	/** 所属分类ID */
 	@Column(name = "category_id", nullable = false, length = 32, insertable=false, updatable=false)
 	private String categoryId;

@@ -20,14 +20,6 @@ public class JfParentPjfzsz extends IdEntity implements Serializable{
 
 	private static final long serialVersionUID = -3940790235989605260L;
 	
-	public JfParentPjfzsz() {
-		
-	}
-	
-	public JfParentPjfzsz(String id) {
-		super.setId(id);
-	}
-	
 	/** 评价项 */
 	@Column(name = "item", nullable = false, length = 30)
 	private String item;
