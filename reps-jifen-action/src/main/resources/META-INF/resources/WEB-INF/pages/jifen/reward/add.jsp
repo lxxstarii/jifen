@@ -32,31 +32,31 @@
 			</reps:formfield>
 			
 			<reps:formfield label="物品图片1" fullRow="true">
-				<reps:upload id="file1" callBack="getPathNameOne" value="上传图片"  flagAbsolute="true"  path="${imagePath}" cssClass="uploading-a" fileType="png,jpg" coverage="true" size="2"></reps:upload>
+				<reps:upload id="file1" callBack="getPathNameOne" value="上传图片"  flagAbsolute="true"  path="${imageUploadPath}/jifen/reward" cssClass="uploading-a" fileType="png,jpg" coverage="true" size="2"></reps:upload>
 				<input type="hidden" name="rewardUrlOne" id="rewardUrlOne"/>
 				<span id="rewardPicOne"><font color="red">只能上传(png、jpg)格式,2M以内</font></span>
            </reps:formfield>
            
            <reps:formfield label="物品图片2" fullRow="true">
-				<reps:upload id="file2" callBack="getPathNameTwo" value="上传图片"  flagAbsolute="true"  path="${imagePath}" cssClass="uploading-a" fileType="png,jpg" coverage="true" size="2"></reps:upload>
+				<reps:upload id="file2" callBack="getPathNameTwo" value="上传图片"  flagAbsolute="true"  path="${imageUploadPath}/jifen/reward" cssClass="uploading-a" fileType="png,jpg" coverage="true" size="2"></reps:upload>
 				<input type="hidden" name="rewardUrlTwo" id="rewardUrlTwo"/>
 				<span id="rewardPicTwo"><font color="red">只能上传(png、jpg)格式</font></span>
            </reps:formfield>
            
            <reps:formfield label="物品图片3" fullRow="true">
-				<reps:upload id="file3" callBack="getPathNameThree" value="上传图片"  flagAbsolute="true"  path="${imagePath}" cssClass="uploading-a" fileType="png,jpg" coverage="true" size="2"></reps:upload>
+				<reps:upload id="file3" callBack="getPathNameThree" value="上传图片"  flagAbsolute="true"  path="${imageUploadPath}/jifen/reward" cssClass="uploading-a" fileType="png,jpg" coverage="true" size="2"></reps:upload>
 				<input type="hidden" name="rewardUrlThree" id="rewardUrlThree"/>
 				<span id="rewardPicThree"><font color="red">只能上传(png、jpg)格式</font></span>
            </reps:formfield>
            
            <reps:formfield label="物品图片4" fullRow="true">
-				<reps:upload id="file4" callBack="getPathNameFour" value="上传图片"  flagAbsolute="true"  path="${imagePath}" cssClass="uploading-a" fileType="png,jpg" coverage="true" size="2"></reps:upload>
+				<reps:upload id="file4" callBack="getPathNameFour" value="上传图片"  flagAbsolute="true"  path="${imageUploadPath}/jifen/reward" cssClass="uploading-a" fileType="png,jpg" coverage="true" size="2"></reps:upload>
 				<input type="hidden" name="rewardUrlFour" id="rewardUrlFour"/>
 				<span id="rewardPicFour"><font color="red">只能上传(png、jpg)格式</font></span>
            </reps:formfield>
            
            <reps:formfield label="物品图片5" fullRow="true">
-				<reps:upload id="file5" callBack="getPathNameFive" value="上传图片"  flagAbsolute="true"  path="${imagePath}" cssClass="uploading-a" fileType="png,jpg" coverage="true" size="2"></reps:upload>
+				<reps:upload id="file5" callBack="getPathNameFive" value="上传图片"  flagAbsolute="true"  path="${imageUploadPath}/jifen/reward" cssClass="uploading-a" fileType="png,jpg" coverage="true" size="2"></reps:upload>
 				<input type="hidden" name="rewardUrlFive" id="rewardUrlFive"/>
 				<span id="rewardPicFive"><font color="red">只能上传(png、jpg)格式</font></span>
            </reps:formfield>
@@ -86,51 +86,38 @@
 	
 	var getPathNameOne = function(filename, fileType, fileSize, path) {
 		path = path.replaceAll("\\\\","/");
-		var picture = path.replace("${imagePath}", "");
-		picture = getDirPath("${imagePath}") + picture;
+		var picture = path.replace("${imageUploadPath}","");
 		$("#rewardUrlOne").val(picture);
 		$("#rewardPicOne").html(picture);
 	};
 	
 	var getPathNameTwo = function(filename, fileType, fileSize, path) {
 		path = path.replaceAll("\\\\","/");
-		var picture = path.replace("${imagePath}", "");
-		picture = getDirPath("${imagePath}") + picture;
+		var picture = path.replace("${imageUploadPath}","");
 		$("#rewardUrlTwo").val(picture);
 		$("#rewardPicTwo").html(picture);
 	};
 	
 	var getPathNameThree = function(filename, fileType, fileSize, path) {
 		path = path.replaceAll("\\\\","/");
-		var picture = path.replace("${imagePath}", "");
-		picture = getDirPath("${imagePath}") + picture;
+		var picture = path.replace("${imageUploadPath}","");
 		$("#rewardUrlThree").val(picture);
 		$("#rewardPicThree").html(picture);
 	};
 	
 	var getPathNameFour = function(filename, fileType, fileSize, path) {
 		path = path.replaceAll("\\\\","/");
-		var picture = path.replace("${imagePath}", "");
-		picture = getDirPath("${imagePath}") + picture;
+		var picture = path.replace("${imageUploadPath}","");
 		$("#rewardUrlFour").val(picture);
 		$("#rewardPicFour").html(picture);
 	};
 	
 	var getPathNameFive = function(filename, fileType, fileSize, path) {
 		path = path.replaceAll("\\\\","/");
-		var picture = path.replace("${imagePath}", "");
-		picture = getDirPath("${imagePath}") + picture;
+		var picture = path.replace("${imageUploadPath}","");
 		$("#rewardUrlFive").val(picture);
 		$("#rewardPicFive").html(picture);
 	};
 	
-	function getDirPath(path){
-		var index = path.indexOf(":")
-		if(index > -1){
-			return path.substring(index + 1);
-		}
-		return path;
-	}
-
 </script>
 </html>

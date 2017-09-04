@@ -3,7 +3,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<title>指标分类修改</title>
+	<title>奖品分类修改</title>
 	<reps:theme />
 </head>
 <body>
@@ -24,7 +24,7 @@
 				<reps:select name="type" dataSource="${categoryTypeMap}" required="true">${category.type }</reps:select>
 			</reps:formfield>
 			<reps:formfield label="分类描述" fullRow="true">
-				<reps:input name="description" maxLength="200" multiLine="true" style="width:516px;height:70px">${category.description }</reps:input>
+				<reps:input name="description" maxLength="90" multiLine="true" style="width:516px;height:70px">${category.description }</reps:input>
 			</reps:formfield>
 		</reps:formcontent>
 		<reps:formbar>

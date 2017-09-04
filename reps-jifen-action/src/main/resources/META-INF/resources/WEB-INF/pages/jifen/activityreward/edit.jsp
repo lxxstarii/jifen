@@ -38,9 +38,9 @@
 			</reps:formfield>
 			
 			 <reps:formfield label="图片" fullRow="true">
-				<img name="img" width="128px",height="128px" src="${imageUploadHttpPath}${picUrl }"/> <br>
+				<img name="img" width="128px",height="128px" src="${imagePath}${activity.picture}"/> <br>
 				<input type="hidden" name="picture" value="${activity.picture }"/>
-				<reps:upload id="pictureid" callBack="getPathName" value="上传图片"  flagAbsolute="true"  path="${imagePath}" cssClass="uploading-a" fileType="png,jpg" coverage="true" size="2"></reps:upload>
+				<reps:upload id="pictureid" callBack="getPathName" value="上传图片"  flagAbsolute="true"  path="${imageUploadPath}/jifen/activity" cssClass="uploading-a" fileType="png,jpg" coverage="true" size="2"></reps:upload>
            </reps:formfield>
 		</reps:formcontent>
 		<br/>

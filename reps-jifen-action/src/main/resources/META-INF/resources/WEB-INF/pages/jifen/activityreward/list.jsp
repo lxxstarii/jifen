@@ -22,7 +22,7 @@
 		<reps:footbar>
 			<reps:button cssClass="add-a" action="toadd.mvc?id=${activity.id }" messageCode="manage.action.add" value="新增"></reps:button>
 			<reps:ajax cssClass="batch-approval-a" confirm="确认批量发布吗?" beforeCall="checkPublishChecked" formId="queryForm" callBack="my" value="批量发布" />
-			<reps:ajax cssClass="delete-a" confirm="确认批量删除吗?" beforeCall="checkDeleteChecked" formId="queryForm" callBack="my" value="批量删除" />
+			<reps:ajax cssClass="delete-a" confirm="确认批量删除吗?" beforeCall="checkDeleteChecked" formId="queryForm" redirect="list.mvc" value="批量删除" />
 		</reps:footbar>
 	</reps:panel>
 	<reps:panel id="mybody" dock="center">
@@ -42,7 +42,7 @@
 					<reps:ajax cssClass="publish-table" value="发布" confirm="您确定要发布吗？" callBack="my" url="batchpublish.mvc?ids=${activity.id }"></reps:ajax>
 					<reps:button cssClass="modify-table" messageCode="manage.action.update" action="toedit.mvc?id=${activity.id}"></reps:button>
 					<reps:ajax cssClass="delete-table" messageCode="manage.action.delete" confirm="您确定要删除所选行吗？"
-						callBack="my" url="delete.mvc?id=${activity.id}">
+						redirect="list.mvc" url="delete.mvc?id=${activity.id}">
 					</reps:ajax>
 				</reps:gridfield>
 			</reps:gridrow>

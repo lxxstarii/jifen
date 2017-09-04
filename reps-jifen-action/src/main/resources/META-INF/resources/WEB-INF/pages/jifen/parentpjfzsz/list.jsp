@@ -12,7 +12,7 @@
 		<input type="hidden" name="ids" />
 		<reps:footbar>
 			<reps:button cssClass="add-a" action="toadd.mvc" messageCode="manage.action.add" value="新增"></reps:button>
-			<reps:ajax cssClass="delete-a" confirm="确认批量删除吗?" beforeCall="checkChecked" formId="queryForm" callBack="my" value="批量删除" />
+			<reps:ajax id="batchdelete" cssClass="delete-a" confirm="确认批量删除吗?" beforeCall="checkChecked" formId="queryForm" redirect="list.mvc" value="批量删除" />
 		</reps:footbar>
 	</reps:panel>
 	<reps:panel id="mybody" dock="center">
@@ -23,16 +23,14 @@
 				<reps:gridfield title="具体行为内容" width="40" align="center">${item.content}</reps:gridfield>
 				<reps:gridfield title="奖励积分" width="40" align="center" style="color: #196ed8;">${item.pointsScopeDisp}</reps:gridfield>
 				<reps:gridfield title="适用年级" width="40" align="center">
-					<c:forEach items="${gradeMap}" var="c">
-							<c:if test="${c.key == item.applyGrade}">${c.value}</c:if>
-					</c:forEach>
+					<sys:dictionary src="grade">${item.applyGrade}</sys:dictionary>
 				</reps:gridfield>
 				<reps:gridfield title="是否可用" width="15" align="center">${item.isEnabled eq 1 ? '是' : '否'}</reps:gridfield>
 				<reps:gridfield title="操作" width="40">
 					<reps:button cssClass="detail-table" action="show.mvc?id=${item.id }" value="详细"></reps:button>
 					<reps:button cssClass="modify-table" messageCode="manage.action.update" action="toedit.mvc?id=${item.id}"></reps:button>
 					<reps:ajax cssClass="delete-table" messageCode="manage.action.delete" confirm="您确定要删除所选行吗？"
-						callBack="my" url="delete.mvc?id=${item.id}">
+						redirect="list.mvc" url="delete.mvc?id=${item.id}">
 					</reps:ajax>
 				</reps:gridfield>
 			</reps:gridrow>

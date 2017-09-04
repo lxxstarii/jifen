@@ -38,8 +38,8 @@
 			</reps:formfield>
 			
 			<reps:formfield label="图片" labelStyle="width:15%" textStyle="width:30%;">
-				<reps:upload id="pictureid" callBack="getPathName" value="上传图片"  flagAbsolute="true"  path="${imagePath}" cssClass="uploading-a" fileType="png,jpg" coverage="true" size="2"></reps:upload>
-				<img name="img" width="128px",height="128px"/> 
+				<img name="img" width="128px",height="128px"/> <br>
+				<reps:upload id="pictureid" callBack="getPathName" value="上传图片"  flagAbsolute="true"  path="${imageUploadPath}/jifen/activity" cssClass="uploading-a" fileType="png,jpg" coverage="true" size="2" reName="true"></reps:upload>
 				<input type="hidden" name="picture"/>
            </reps:formfield>
 		</reps:formcontent>
@@ -63,19 +63,10 @@
 	
 	var getPathName = function(filename, fileType, fileSize, path) {
 		path = path.replaceAll("\\\\","/");
-		var picture = path.replace("${imagePath}","");
-		var picUrl = "${imageUploadHttpPath}" + picture;
-		$("input[name='picture']").val(getDirPath("${imagePath}") + picture);
-		$("img[name='img']").attr("src", picUrl);
+		var picture = path.replace("${imageUploadPath}","");
+		$("input[name='picture']").val(picture);
+		$("img[name='img']").attr("src", "${imagePath}" + picture);
 	};
 	
-	function getDirPath(path){
-		var index = path.indexOf(":")
-		if(index > -1){
-			return path.substring(index + 1);
-		}
-		return path;
-	}
-
 </script>
 </html>

@@ -11,10 +11,10 @@
 	<reps:panel title="" id="top" dock="top" method="post" action="list.mvc" formId="queryForm">
 		<reps:formcontent parentLayout="true" style="width:80%;">
 			<reps:formfield label="分类名称" labelStyle="width:20%;" textStyle="width:27%;">
-				<reps:input name="name"></reps:input>
+				<reps:input name="name">${category.name }</reps:input>
 			</reps:formfield>
 			<reps:formfield label="分类类别" labelStyle="width:23%;" textStyle="width:30%;">
-				<reps:select dataSource="${categoryTypeMap}" name="type"></reps:select>
+				<reps:select dataSource="${categoryTypeMap}" name="type">${category.type }</reps:select>
 			</reps:formfield>
 		</reps:formcontent>
 		<reps:querybuttons>
@@ -48,7 +48,7 @@
 </reps:container>
 <script type="text/javascript">
 	var my = function(data){
-		messager.message(data, function(){ window.parent.location.reload(); });
+		window.location.href= "list.mvc";
 	};
 </script>
 </body>

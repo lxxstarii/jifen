@@ -1,5 +1,8 @@
 package com.reps.jifen.entity.enums;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 分类类别
  * 
@@ -8,7 +11,7 @@ package com.reps.jifen.entity.enums;
  */
 public enum CategoryType {
 
-	REWARD("1", "物品类别"), ACTIVITY("2", "活动类别");
+	REWARD("1", "物品"), ACTIVITY("2", "活动");
 
 	private String index;
 	private String name;
@@ -24,6 +27,18 @@ public enum CategoryType {
 
 	public String getName() {
 		return name;
+	}
+	
+	/**
+	 * 获取分类类别map
+	 * @return Map<String, String>
+	 */
+	public static Map<String, String> getCategoryType(){
+		Map<String, String> map = new HashMap<>();
+		map.put("", "");
+		map.put(REWARD.getIndex(), REWARD.getName());
+		map.put(ACTIVITY.getIndex(), ACTIVITY.getName());
+		return map;
 	}
 
 }

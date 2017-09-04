@@ -1,6 +1,6 @@
 package com.reps.jifen.action;
 
-import static com.reps.jifen.entity.enums.CategoryType.*;
+import static com.reps.jifen.entity.enums.CategoryType.REWARD;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.reps.core.RepsConstant;
-import com.reps.core.RepsContext;
 import com.reps.core.commons.Pagination;
 import com.reps.core.exception.RepsException;
 import com.reps.core.orm.ListResult;
@@ -24,8 +23,9 @@ import com.reps.core.web.AjaxStatus;
 import com.reps.core.web.BaseAction;
 import com.reps.jifen.entity.JfReward;
 import com.reps.jifen.entity.JfRewardCategory;
-import com.reps.jifen.service.IJfRewardService;
 import com.reps.jifen.service.IJfRewardCategoryService;
+import com.reps.jifen.service.IJfRewardService;
+import com.reps.jifen.vo.ConfigurePath;
 
 /**
  * 积分物品管理相关操作
@@ -44,11 +44,6 @@ public class JfRewardAction extends BaseAction {
 
 	@Autowired
 	IJfRewardCategoryService jfRewardCategoryService;
-
-	/**
-	 * 图片上传路径
-	 */
-	public static final String IMAGE_PATH = RepsContext.getConst("jifen", "rewardImageUploadPath");
 
 	/**
 	 * 积分物品管理列表
@@ -94,7 +89,7 @@ public class JfRewardAction extends BaseAction {
 	@RequestMapping(value = "/toadd")
 	public ModelAndView toAdd() {
 		ModelAndView mav = getModelAndView("/jifen/reward/add");
-		mav.addObject("imagePath", IMAGE_PATH);
+		mav.addObject("imageUploadPath", ConfigurePath.IMG_UPLOAD_PATH);
 		return mav;
 	}
 
@@ -141,7 +136,7 @@ public class JfRewardAction extends BaseAction {
 	public ModelAndView toEdit(String id) {
 		ModelAndView mav = getModelAndView("/jifen/reward/edit");
 		JfReward jfReward = jfRewardService.get(id);
-		mav.addObject("imagePath", IMAGE_PATH);
+		mav.addObject("imageUploadPath", ConfigurePath.IMG_UPLOAD_PATH);
 		mav.addObject("reward", jfReward);
 		return mav;
 	}

@@ -15,11 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.reps.core.RepsConstant;
-import com.reps.core.RepsContext;
 import com.reps.core.commons.Pagination;
 import com.reps.core.exception.RepsException;
 import com.reps.core.orm.ListResult;
-import com.reps.core.util.FileUtil;
 import com.reps.core.util.StringUtil;
 import com.reps.core.web.AjaxStatus;
 import com.reps.core.web.BaseAction;
@@ -27,6 +25,7 @@ import com.reps.jifen.entity.JfReward;
 import com.reps.jifen.entity.JfRewardCategory;
 import com.reps.jifen.service.IJfActivityRewardService;
 import com.reps.jifen.service.IJfRewardCategoryService;
+import com.reps.jifen.vo.ConfigurePath;
 
 
 /**
@@ -45,16 +44,6 @@ public class JfActivityRewardAction extends BaseAction {
 	
 	@Autowired
 	IJfRewardCategoryService jfRewardCategoryService;
-	
-	/**
-	 * 图片上传路径
-	 */
-	public static final String IMAGE_PATH = RepsContext.getConst("jifen", "activityImageUploadPath");
-	
-	/**
-	 * 图片服务器地址
-	 */
-	public static final String IMAGE_UPLOAD_HTTPPATH = RepsContext.getConst("jifen", "activityImageUploadHttpPath");
 	
 	/**
 	 * 活动管理列表
@@ -97,8 +86,8 @@ public class JfActivityRewardAction extends BaseAction {
 	@RequestMapping(value = "/toadd")
 	public ModelAndView toAdd() {
 		ModelAndView mav = getModelAndView("/jifen/activityreward/add");
-		mav.addObject("imagePath", IMAGE_PATH); 
-		mav.addObject("imageUploadHttpPath", IMAGE_UPLOAD_HTTPPATH); 
+		mav.addObject("imageUploadPath", ConfigurePath.IMG_UPLOAD_PATH);
+		mav.addObject("imagePath", ConfigurePath.IMG_FILE_PATH);
 		return mav;
 	}
 	
@@ -142,10 +131,8 @@ public class JfActivityRewardAction extends BaseAction {
 	public ModelAndView toEdit(String id){
 		ModelAndView mav = getModelAndView("/jifen/activityreward/edit");
 		JfReward jfReward = jfActivityRewardService.get(id);
-		mav.addObject("imagePath", IMAGE_PATH); 
-		mav.addObject("imageUploadHttpPath", IMAGE_UPLOAD_HTTPPATH); 
-		//用于展示图片，获取图片名称
-		mav.addObject("picUrl", "/" + FileUtil.getFileName(jfReward.getPicture(), true));
+		mav.addObject("imageUploadPath", ConfigurePath.IMG_UPLOAD_PATH);
+		mav.addObject("imagePath", ConfigurePath.IMG_FILE_PATH);
 		mav.addObject("activity", jfReward);
 		return mav;
 	}
@@ -238,9 +225,7 @@ public class JfActivityRewardAction extends BaseAction {
 	public ModelAndView show(String id) {
 		ModelAndView mav = new ModelAndView("/jifen/activityreward/show");
 		JfReward jfReward = jfActivityRewardService.get(id);
-		//用于展示图片，获取图片名称
-		mav.addObject("picUrl", "/" + FileUtil.getFileName(jfReward.getPicture(), true));
-		mav.addObject("imageUploadHttpPath", IMAGE_UPLOAD_HTTPPATH); 
+		mav.addObject("imagePath", ConfigurePath.IMG_FILE_PATH);
 		mav.addObject("activity", jfReward);
 		return mav;
 	}

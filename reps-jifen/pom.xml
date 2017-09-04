@@ -22,6 +22,11 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.reps</groupId>
+			<artifactId>reps-school</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>net.sf.json-lib</groupId>
 			<artifactId>json-lib</artifactId>
 		</dependency>

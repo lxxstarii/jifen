@@ -32,7 +32,7 @@
 
 	function showChilds(obj, categoryId){
 		//显示右侧下级列表
-		$("#rightFrame").attr("src", "list.mvc?parentId=" + categoryId + "&run=" + Math.random());
+		$("#rightFrame").attr("src", "list.mvc?parentId=" + categoryId);
 	}
 	
 </script>

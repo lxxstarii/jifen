@@ -1,8 +1,8 @@
 package com.reps.jifen.action;
 
-import java.util.HashMap;
+import static com.reps.jifen.entity.enums.CategoryType.getCategoryType;
+
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,8 +59,7 @@ public class JfRewardCategoryAction extends BaseAction {
 	public ModelAndView list(Pagination pager, JfRewardCategory rewardCategory){
 		ModelAndView mav = getModelAndView("/jifen/rewardcategory/list");
 		ListResult<JfRewardCategory> listResult = jfRewardCategoryService.query(pager.getStartRow(), pager.getPageSize(), rewardCategory);
-		Map<String, String> categoryTypeMap = buildCategoryTypeMap();
-		mav.addObject("categoryTypeMap", categoryTypeMap);
+		mav.addObject("categoryTypeMap", getCategoryType());
 		mav.addObject("category", rewardCategory);
 		//分页数据
 		mav.addObject("list", listResult.getList());
@@ -81,24 +80,11 @@ public class JfRewardCategoryAction extends BaseAction {
 		//添加下级分类
 		String id = rewardCategory.getId();
 		rewardCategory = jfRewardCategoryService.get(id);
-		Map<String, String> categoryTypeMap = buildCategoryTypeMap();
-		mav.addObject("categoryTypeMap", categoryTypeMap);
+		mav.addObject("categoryTypeMap", getCategoryType());
 		mav.addObject("category", rewardCategory);
 		return mav;
 	}
 
-	/**
-	 * 分类类别下拉框设置
-	 * @return Map<String, String>
-	 */
-	private Map<String, String> buildCategoryTypeMap() {
-		Map<String, String> categoryTypeMap = new HashMap<String, String>();
-		categoryTypeMap.put("", "");
-		categoryTypeMap.put("1", "物品分类");
-		categoryTypeMap.put("2", "活动分类");
-		return categoryTypeMap;
-	}
-	
 	/**
 	 * 奖品分类添加
 	 * @param rewardCategory
@@ -125,8 +111,7 @@ public class JfRewardCategoryAction extends BaseAction {
 		ModelAndView mav = getModelAndView("/jifen/rewardcategory/edit");
 		JfRewardCategory category = jfRewardCategoryService.get(id);
 		setParentCategory(mav, category);
-		Map<String, String> buildCategoryTypeMap = buildCategoryTypeMap();
-		mav.addObject("categoryTypeMap", buildCategoryTypeMap);
+		mav.addObject("categoryTypeMap", getCategoryType());
 		mav.addObject("category", category);
 		return mav;
 	}
@@ -178,9 +163,8 @@ public class JfRewardCategoryAction extends BaseAction {
 		ModelAndView mav = new ModelAndView("/jifen/rewardcategory/show");
 		JfRewardCategory category = jfRewardCategoryService.get(id);
 		setParentCategory(mav, category);
-		Map<String, String> buildCategoryTypeMap = buildCategoryTypeMap();
 		mav.addObject("category", category);
-		mav.addObject("categoryTypeMap", buildCategoryTypeMap);
+		mav.addObject("categoryTypeMap", getCategoryType());
 		return mav;
 	}
 
