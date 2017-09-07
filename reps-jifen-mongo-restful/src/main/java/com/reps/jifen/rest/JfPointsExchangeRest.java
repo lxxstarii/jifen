@@ -15,7 +15,7 @@ import com.reps.jifen.entity.JfPointsExchange;
 import com.reps.jifen.service.IJfPointsExchangeService;
 
 @RestController
-@RequestMapping(value = "/oapi/pointsexchange")
+@RequestMapping(value = "/uapi/pointsexchange")
 public class JfPointsExchangeRest extends RestBaseController{
 	
 	private static Log logger = LogFactory.getLog(JfPointsExchangeRest.class);

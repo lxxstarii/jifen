@@ -15,7 +15,7 @@ import com.reps.jifen.entity.JfParentPointsAssign;
 import com.reps.jifen.service.IJfParentPointsAssignService;
 
 @RestController
-@RequestMapping(value = "/oapi/parentpointsassign")
+@RequestMapping(value = "/uapi/parentpointsassign")
 public class JfParentPointsAssignRest extends RestBaseController{
 	
 	private static Log logger = LogFactory.getLog(JfParentPointsAssignRest.class);

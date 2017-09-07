@@ -19,7 +19,7 @@ import com.reps.jifen.entity.JfTeacherPointsAssign;
 import com.reps.jifen.service.IJfTeacherPointsAssignService;
 
 @RestController
-@RequestMapping(value = "/oapi/teacherpointsassign")
+@RequestMapping(value = "/uapi/teacherpointsassign")
 public class JfTeacherPointsAssignRest extends RestBaseController{
 	
 	private static Log logger = LogFactory.getLog(JfTeacherPointsAssignRest.class);
