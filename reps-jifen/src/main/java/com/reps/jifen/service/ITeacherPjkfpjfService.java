@@ -16,7 +16,7 @@ public interface ITeacherPjkfpjfService {
 	
 	void update(TeacherPjkfpjf data);
 	
-	TeacherPjkfpjf findByTeacherId(String teacherId);
+	TeacherPjkfpjf findByTeacherId(String teacherId, String organizeId);
 	
 	List<TeacherPjkfpjf> find(TeacherPjkfpjf query);
 	

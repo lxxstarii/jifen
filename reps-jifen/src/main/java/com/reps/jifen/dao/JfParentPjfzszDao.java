@@ -6,8 +6,8 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.reps.core.orm.IGenericDao;
 import com.reps.core.orm.ListResult;
-import com.reps.core.orm.wrapper.GenericDao;
 import com.reps.jifen.entity.JfParentPjfzsz;
 
 /**
@@ -20,7 +20,7 @@ import com.reps.jifen.entity.JfParentPjfzsz;
 public class JfParentPjfzszDao {
 
 	@Autowired
-	GenericDao<JfParentPjfzsz> dao;
+	IGenericDao<JfParentPjfzsz> dao;
 
 	public void save(JfParentPjfzsz jfParentPjfzsz) {
 		dao.save(jfParentPjfzsz);

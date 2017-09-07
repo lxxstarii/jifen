@@ -157,13 +157,31 @@
 				</node>
 			</nodes>
 		</node>
+		<node code="jifen070000" name="积分规则设置" type="Catalog" showOrder="7" icon="basicdata" newpage="false">
+			<nodes>
+				<node code="jifen070100" name="积分规则设置" showOrder="1" newpage="false" type="Action" >
+					<action>/reps/jifen/appuse/list.mvc</action>
+					<nodes>
+						<node code="jifen070101" name="新增" showOrder="1" newpage="false" type="Operate">
+							<action>/reps/jifen/appuse/toadd.mvc;/reps/jifen/appuse/add.mvc</action>
+						</node>
+						<node code="jifen070102" name="修改" showOrder="2" newpage="false" type="Operate">
+							<action>/reps/jifen/appuse/toedit.mvc;/reps/jifen/appuse/edit.mvc</action>
+						</node>
+						<node code="jifen070103" name="删除" showOrder="3" newpage="false" type="Operate">
+							<action>/reps/jifen/appuse/delete.mvc</action>
+						</node>
+						<node code="jifen070104" name="详细" showOrder="4" newpage="false" type="Operate">
+							<action>/reps/jifen/appuse/show.mvc</action>
+						</node>
+					</nodes>
+				</node>
+			</nodes>
+		</node>
 	</menu>
 	<consts>
 		<!-- 学校商标路径、形象图路径  -->
 		<citem name="imageUploadPath" value="C:/apache-tomcat-7.0.69/webapps/wx-platform" />
 		<citem name="imagePath" value="http://localhost:8080/wx-platform" />
-		<citem name="activityImageUploadPath" value="D:/jifen/activity" />
-		<citem name="rewardImageUploadPath" value="D:/jifen/reward" />
-		<citem name="activityImageUploadHttpPath" value="http://localhost:8080/jifen/activity" />
 	</consts>
 </module>

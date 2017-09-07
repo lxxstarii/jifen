@@ -66,6 +66,8 @@ public class AssessPointsDao {
 			if (query.getMark() != null) {
 				dc.add(Restrictions.eq("mark", query.getMark()));
 			}
+			if (query.getIsEnable() != null) {
+				dc.add(Restrictions.eq("isEnable", query.getIsEnable()));			}
 		} 
 		return dao.findByCriteria(dc);
 	}

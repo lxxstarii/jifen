@@ -10,8 +10,8 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.reps.core.orm.IGenericDao;
 import com.reps.core.orm.ListResult;
-import com.reps.core.orm.wrapper.GenericDao;
 import com.reps.jifen.entity.JfRewardCategory;
 
 /**
@@ -23,7 +23,7 @@ import com.reps.jifen.entity.JfRewardCategory;
 public class JfRewardCategoryDao {
 
 	@Autowired
-	GenericDao<JfRewardCategory> dao;
+	IGenericDao<JfRewardCategory> dao;
 
 	public void save(JfRewardCategory jfRewardCategory) {
 		dao.save(jfRewardCategory);

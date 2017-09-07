@@ -1,5 +1,7 @@
 package com.reps.jifen.dao;
 
+import static com.reps.jifen.util.SqlUtil.formatSql;
+
 import java.util.Date;
 import java.util.List;
 
@@ -10,12 +12,11 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.reps.core.orm.IGenericDao;
 import com.reps.core.orm.ListResult;
-import com.reps.core.orm.wrapper.GenericDao;
 import com.reps.core.util.StringUtil;
 import com.reps.jifen.entity.JfReward;
 import com.reps.jifen.entity.JfRewardCategory;
-import static com.reps.jifen.util.SqlUtil.*;
 
 /**
  * 积分奖品dao
@@ -26,7 +27,7 @@ import static com.reps.jifen.util.SqlUtil.*;
 public class JfRewardDao {
 
 	@Autowired
-	GenericDao<JfReward> dao;
+	IGenericDao<JfReward> dao;
 
 	public void save(JfReward jfReward) {
 		dao.save(jfReward);

@@ -13,6 +13,14 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.reps</groupId>
+			<artifactId>reps-jifen</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.reps</groupId>
+			<artifactId>reps-school</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.reps</groupId>
 			<artifactId>reps-core-boot</artifactId>
 		</dependency>
 		<dependency>

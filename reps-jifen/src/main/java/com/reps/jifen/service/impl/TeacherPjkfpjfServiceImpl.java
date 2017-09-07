@@ -29,9 +29,10 @@ public class TeacherPjkfpjfServiceImpl implements ITeacherPjkfpjfService {
 	}
 
 	@Override
-	public TeacherPjkfpjf findByTeacherId(String teacherId) {
+	public TeacherPjkfpjf findByTeacherId(String teacherId, String organizeId) {
 		TeacherPjkfpjf query = new TeacherPjkfpjf();
 		query.setTeacherId(teacherId);
+		query.setOrganizeId(organizeId);
 		List<TeacherPjkfpjf> list = find(query);
 		return list == null || list.isEmpty() ? null : list.get(0);
 	}

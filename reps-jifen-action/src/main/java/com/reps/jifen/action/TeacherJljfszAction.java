@@ -135,7 +135,7 @@ public class TeacherJljfszAction extends BaseAction {
 			if (tsList != null && !tsList.isEmpty()) {
 				for (TeacherSchool ts : tsList) {
 					//先判断是否存在教师可分配积分
-					TeacherPjkfpjf tpf = kfpService.findByTeacherId(ts.getTeacherId());
+					TeacherPjkfpjf tpf = kfpService.findByTeacherId(ts.getTeacherId(), null);
 					List<TeacherClasses> tcList = teacherClassesService.getByTeacherSchoolId(ts.getId());
 					int totalStudents = 0;
 					if (tcList != null && !tcList.isEmpty()) {
@@ -254,7 +254,7 @@ public class TeacherJljfszAction extends BaseAction {
 			if (info.getJljf() == null) {
 				throw new RepsException("分配积分不能为空");
 			}
-			TeacherPjkfpjf kpf = kfpService.findByTeacherId(info.getTeacherId());
+			TeacherPjkfpjf kpf = kfpService.findByTeacherId(info.getTeacherId(), null);
 			if (kpf == null) {
 				throw new RepsException("该教师尚未初始化可分配积分, 请先设置教师奖励系数");
 			}
