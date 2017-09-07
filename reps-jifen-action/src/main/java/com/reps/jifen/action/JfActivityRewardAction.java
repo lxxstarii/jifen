@@ -202,16 +202,16 @@ public class JfActivityRewardAction extends BaseAction {
 	 */
 	@RequestMapping(value = "/batchpublish")
 	@ResponseBody
-	public Object batchPublish(String ids){
+	public Object batchPublish(String ids, Short status){
 		try{
 			if(StringUtil.isBlank(ids)) {
-				 return ajax(AjaxStatus.ERROR, "发布失败");
+				 return ajax(AjaxStatus.ERROR, "操作失败");
 			}
-			jfActivityRewardService.batchPublish(ids);
-			return ajax(AjaxStatus.OK, "发布成功");
+			jfActivityRewardService.batchPublish(ids, status);
+			return ajax(AjaxStatus.OK, "操作成功");
 		}
 		catch(Exception e){
-			logger.error("批量发布活动失败", e);
+			logger.error("发布失败", e);
 			return ajax(AjaxStatus.ERROR, "发布失败");
 		}
 	}

@@ -23,8 +23,8 @@
 		</reps:querybuttons>
 		<reps:footbar>
 			<reps:button cssClass="add-a" action="toadd.mvc?id=${reward.id }" messageCode="manage.action.add" value="新增"></reps:button>
-			<reps:ajax cssClass="batch-approval-a" confirm="确认批量发布吗?" beforeCall="checkPublishChecked" formId="queryForm" callBack="my" value="批量发布" />
-			<reps:ajax cssClass="delete-a" confirm="确认批量删除吗?" beforeCall="checkDeleteChecked" formId="queryForm" redirect="list.mvc" value="批量删除" />
+			<!-- <reps:ajax cssClass="batch-approval-a" confirm="确认批量发布吗?" beforeCall="checkPublishChecked" formId="queryForm" callBack="my" value="批量发布" />
+			<reps:ajax cssClass="delete-a" confirm="确认批量删除吗?" beforeCall="checkDeleteChecked" formId="queryForm" redirect="list.mvc" value="批量删除" /> -->
 		</reps:footbar>
 	</reps:panel>
 	<reps:panel id="mybody" dock="center">
@@ -40,7 +40,15 @@
 				<%-- <reps:gridfield title="已参与/已兑换" width="25" align="center"></reps:gridfield> --%>
 				<reps:gridfield title="操作" width="40">
 					<reps:button cssClass="detail-table" action="show.mvc?id=${reward.id }" value="详细"></reps:button>
-					<reps:ajax cssClass="publish-table" value="发布" confirm="您确定要发布吗？" callBack="my" url="batchpublish.mvc?ids=${reward.id }"></reps:ajax>
+					<c:if test="${reward.isShown == '1'}">
+						<reps:ajax cssClass="publish-table" value="取消发布" confirm="您确定要取消发布吗？" redirect="list.mvc" url="batchpublish.mvc?ids=${reward.id }&status=0"></reps:ajax>
+					</c:if>
+					<c:if test="${reward.isShown == '2'}">
+						<reps:ajax cssClass="publish-table" value="重新发布" confirm="您确定要重新发布吗？" redirect="list.mvc" url="batchpublish.mvc?ids=${reward.id }&status=1"></reps:ajax>
+					</c:if>
+					<c:if test="${reward.isShown == '0'}">
+						<reps:ajax cssClass="publish-table" value="发布" confirm="您确定要发布吗？" redirect="list.mvc" url="batchpublish.mvc?ids=${reward.id }&status=1"></reps:ajax>
+					</c:if>
 					<reps:button cssClass="modify-table" messageCode="manage.action.update" action="toedit.mvc?id=${reward.id}"></reps:button>
 					<reps:ajax cssClass="delete-table" messageCode="manage.action.delete" confirm="您确定要删除所选行吗？"
 						redirect="list.mvc" url="delete.mvc?id=${reward.id}">

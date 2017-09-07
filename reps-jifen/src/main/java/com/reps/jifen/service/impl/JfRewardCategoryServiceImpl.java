@@ -29,7 +29,6 @@ public class JfRewardCategoryServiceImpl implements IJfRewardCategoryService {
 	@Override
 	public void delete(JfRewardCategory jfRewardCategory) {
 		dao.delete(jfRewardCategory);
-
 	}
 
 	@Override

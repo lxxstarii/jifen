@@ -21,25 +21,38 @@
 		</reps:querybuttons>
 		<reps:footbar>
 			<reps:button cssClass="add-a" action="toadd.mvc?id=${activity.id }" messageCode="manage.action.add" value="新增"></reps:button>
-			<reps:ajax cssClass="batch-approval-a" confirm="确认批量发布吗?" beforeCall="checkPublishChecked" formId="queryForm" callBack="my" value="批量发布" />
-			<reps:ajax cssClass="delete-a" confirm="确认批量删除吗?" beforeCall="checkDeleteChecked" formId="queryForm" redirect="list.mvc" value="批量删除" />
+			<!-- <reps:ajax cssClass="batch-approval-a" confirm="确认批量发布吗?" beforeCall="checkPublishChecked" formId="queryForm" redirect="list.mvc" value="批量发布" /> -->
+			<!-- <reps:ajax cssClass="delete-a" confirm="确认批量删除吗?" beforeCall="checkDeleteChecked" formId="queryForm" redirect="list.mvc" value="批量删除" /> -->
 		</reps:footbar>
 	</reps:panel>
 	<reps:panel id="mybody" dock="center">
 		<reps:grid id="activityList" items="${list}" form="queryForm" var="activity" pagination="${pager}" flagSeq="false">
 			<reps:gridrow>
+				<input type="hidden" name="activityStatus" value="${activity.isShown }">
 				<reps:gridcheckboxfield checkboxName="id" align="center" title="" width="5">${activity.id}</reps:gridcheckboxfield>
 				<reps:gridfield title="活动分类" width="15" align="center">${activity.jfRewardCategory.name}</reps:gridfield>
 				<reps:gridfield title="活动名称" width="25" align="center">${activity.name }</reps:gridfield>
 				<reps:gridfield title="所需积分" width="15" align="center">${activity.points}</reps:gridfield>
-				<reps:gridfield title="兑换截至时间" width="25" align="center">${activity.finishTime }</reps:gridfield>
-				<reps:gridfield title="上线时间" width="25" align="center">${activity.showTime }</reps:gridfield>
+				<reps:gridfield title="兑换截至时间" width="25" align="center">
+					<fmt:formatDate value="${activity.finishTime }" pattern="yyyy-MM-dd"/>
+				</reps:gridfield>
+				<reps:gridfield title="上线时间" width="25" align="center">
+					<fmt:formatDate value="${activity.showTime }" pattern="yyyy-MM-dd"/>
+				</reps:gridfield>
 				<reps:gridfield title="活动详情" width="40" >${activity.description}</reps:gridfield>
 				<reps:gridfield title="活动状态" width="15" align="center"><c:if test="${activity.isShown == '1'}">已发布</c:if><c:if test="${activity.isShown == '0' }">未发布</c:if><c:if test="${activity.isShown == '2' }">已下架</c:if></reps:gridfield>
 				<%-- <reps:gridfield title="已参与/已兑换" width="25" align="center"></reps:gridfield> --%>
 				<reps:gridfield title="操作" width="40">
 					<reps:button cssClass="detail-table" action="show.mvc?id=${activity.id }" value="详细"></reps:button>
-					<reps:ajax cssClass="publish-table" value="发布" confirm="您确定要发布吗？" callBack="my" url="batchpublish.mvc?ids=${activity.id }"></reps:ajax>
+					<c:if test="${activity.isShown == '1'}">
+						<reps:ajax cssClass="publish-table" value="取消发布" confirm="您确定要取消发布吗？" redirect="list.mvc" url="batchpublish.mvc?ids=${activity.id }&status=0"></reps:ajax>
+					</c:if>
+					<c:if test="${activity.isShown == '2'}">
+						<reps:ajax cssClass="publish-table" value="重新发布" confirm="您确定要重新发布吗？" redirect="list.mvc" url="batchpublish.mvc?ids=${activity.id }&status=1"></reps:ajax>
+					</c:if>
+					<c:if test="${activity.isShown == '0'}">
+						<reps:ajax cssClass="publish-table" value="发布" confirm="您确定要发布吗？" redirect="list.mvc" url="batchpublish.mvc?ids=${activity.id }&status=1"></reps:ajax>
+					</c:if>
 					<reps:button cssClass="modify-table" messageCode="manage.action.update" action="toedit.mvc?id=${activity.id}"></reps:button>
 					<reps:ajax cssClass="delete-table" messageCode="manage.action.delete" confirm="您确定要删除所选行吗？"
 						redirect="list.mvc" url="delete.mvc?id=${activity.id}">
@@ -53,7 +66,7 @@
 	var my = function(data){
 		window.location.href= "list.mvc";
 	};
-	
+		
 	function buildIdParams(msg){
 		if ($("input[type=checkbox][name=id]:checked").length == 0) {
 			messager.info(msg);
@@ -81,7 +94,7 @@
 	};
 	
 	var checkPublishChecked = function(){
-		if(buildIdParams("请选择要批量发布的活动信息")){
+		if(buildIdParams("请选择要批量发布的活动信息") && checkActivityStatus()){
 			$("#queryForm").attr("action", "batchpublish.mvc");
 			return true;
 		}else{

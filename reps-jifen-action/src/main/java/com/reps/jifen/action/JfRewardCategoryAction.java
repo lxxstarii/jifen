@@ -1,6 +1,6 @@
 package com.reps.jifen.action;
 
-import static com.reps.jifen.entity.enums.CategoryType.getCategoryType;
+import static com.reps.jifen.entity.enums.CategoryType.*;
 
 import java.util.List;
 
@@ -19,8 +19,11 @@ import com.reps.core.orm.ListResult;
 import com.reps.core.util.StringUtil;
 import com.reps.core.web.AjaxStatus;
 import com.reps.core.web.BaseAction;
+import com.reps.jifen.entity.JfReward;
 import com.reps.jifen.entity.JfRewardCategory;
+import com.reps.jifen.service.IJfActivityRewardService;
 import com.reps.jifen.service.IJfRewardCategoryService;
+import com.reps.jifen.service.IJfRewardService;
 
 
 /**
@@ -34,6 +37,12 @@ public class JfRewardCategoryAction extends BaseAction {
 	
 	@Autowired
 	IJfRewardCategoryService jfRewardCategoryService;
+	
+	@Autowired
+	IJfActivityRewardService jfActivityRewardService;
+	
+	@Autowired
+	IJfRewardService jfRewardService;
 	
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -142,6 +151,22 @@ public class JfRewardCategoryAction extends BaseAction {
 	public Object delete(String id){
 		try{
 			JfRewardCategory category = jfRewardCategoryService.get(id);
+			List<JfRewardCategory> categoryList = jfRewardCategoryService.queryList(id);
+			if(null != categoryList && 0 != categoryList.size()) {
+				return ajax(AjaxStatus.ERROR, "该分类下有子类，请先删除子类！");
+			}
+			JfReward reward = new JfReward();
+			reward.setCategoryId(id);
+			reward.setJfRewardCategory(category);
+			String type = category.getType();
+			List<JfReward> activityRewardList = jfActivityRewardService.getActivityRewardOfCategory(id);
+			if(null != activityRewardList && 0 != activityRewardList.size() && ACTIVITY.getIndex().equals(type)) {
+				return ajax(AjaxStatus.ERROR, "该分类下有活动不能删除！");
+			}
+			List<JfReward> rewardList = jfRewardService.getRewardOfCategory(id);
+			if(null != rewardList && 0 != rewardList.size() && REWARD.getIndex().equals(type)) {
+				return ajax(AjaxStatus.ERROR, "该分类下有物品不能删除！");
+			}
 			if(category != null){
 				jfRewardCategoryService.delete(category);
 			}

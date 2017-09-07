@@ -22,8 +22,7 @@
 			<reps:ajaxgrid messageCode="manage.button.query" formId="queryForm"  gridId="mygrid" callBack="setDisabled" cssClass="search-form-a"></reps:ajaxgrid>
 		</reps:querybuttons>
 		<reps:footbar>
-			<reps:dialog cssClass="add-a" id="add" iframe="true" width="650"
-				 height="450" url="toadd.mvc?category=${query.category}" value="新增"></reps:dialog>
+			<reps:button cssClass="add-a" action="toadd.mvc?category=${query.category}" value="新增"></reps:button>
 			<reps:ajax id="delete" cssClass="delete-a" beforeCall="deleteChecked" formId="queryForm"  value="批量删除" confirm="你确定要删除吗？" redirect="xxlist.mvc"></reps:ajax>
 		</reps:footbar>
 	</reps:panel>
@@ -77,10 +76,7 @@
 					<c:if test="${data.isEnable=='1'}">是</c:if>
 				</reps:gridfield>
 				<reps:gridfield title="操作" width="18">
-					<!-- <reps:dialog cssClass="detail-table" id="detail" iframe="true" width="650"
-						 height="450" url="showdetail.mvc?id=${data.id}" value="详细"></reps:dialog> -->
-					<reps:dialog cssClass="modify-table" id="modify" iframe="true" width="650"
-						 height="450" url="toedit.mvc?id=${data.id}" value="修改"></reps:dialog>
+					<reps:button cssClass="modify-table" action="toedit.mvc?id=${data.id}" value="修改"></reps:button>
 					<reps:ajax id="delete"  url="delete.mvc?ids=${data.id}" value="删除"
 							cssClass="delete-table" confirm="你确定要删除吗？" redirect="xxlist.mvc"></reps:ajax>
 					<c:if test="${data.isEnable=='0'}">
@@ -106,6 +102,13 @@
 				ids.val(ids.val() + "," + $(obj).val());
 			}
 		});
+		if (ids.val() == '') {
+			messager.info('请先选择要删除的数据', {
+ 					okCall:function(){
+ 					}
+ 			});
+			return false;
+		}
 		$("#queryForm").attr("action", "${ctx}/reps/jifen/pjfzsz/delete.mvc");
 		return true;
 	}

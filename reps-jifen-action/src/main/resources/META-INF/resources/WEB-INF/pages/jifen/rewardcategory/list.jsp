@@ -48,8 +48,9 @@
 </reps:container>
 <script type="text/javascript">
 	var my = function(data){
-		window.location.href= "list.mvc";
+		messager.message(data, function(){ window.parent.location.reload(); });
 	};
+	
 </script>
 </body>
 </html>

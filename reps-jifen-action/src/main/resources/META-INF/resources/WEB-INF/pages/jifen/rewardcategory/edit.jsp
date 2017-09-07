@@ -37,9 +37,7 @@
 </reps:container>
 <script type="text/javascript">
 	var skip = function(data) {
-		messager.message(data, function() {
-			messager.message(data, function(){ back(); });
-		});
+		messager.message(data, function(){ back(); });
 	};
 	
 	function back() {

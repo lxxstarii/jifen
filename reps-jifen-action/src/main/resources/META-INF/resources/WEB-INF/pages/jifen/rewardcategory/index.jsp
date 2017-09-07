@@ -10,7 +10,7 @@
 	<reps:container layout="true">
 		<reps:panel id="myleft" dock="left"  border="true" style="width:200px;overflow-y:scroll;overflow-x:auto;">
 			<reps:toolbar>
-              <div style="height:20px;text-align: center;padding:2px;width:100%"><a href="list.mvc?parentId=-1" target="rightFrame">根目录</a></div>
+              <div style="height:20px;text-align: center;padding:2px;width:100%"><a href="list.mvc?parentId=" id="root" target="rightFrame">根目录</a></div>
            	 </reps:toolbar>
 			<reps:tree id="mytree" items="${treelist}" var="li" cssClass="treeFolder" checkbox="false" expand="true">
 				<reps:treenode parentKey="${li.parentId}" key="${li.id}">
@@ -27,12 +27,12 @@
 <script>
 	function load() {
 	    var $iframe = $("#rightFrame");
-	    $iframe.attr("src","list.mvc?parentId=-1");
+	    $iframe.attr("src","list.mvc?parentId=-1&run=" + Math.random());
 	}
 
 	function showChilds(obj, categoryId){
 		//显示右侧下级列表
-		$("#rightFrame").attr("src", "list.mvc?parentId=" + categoryId);
+		$("#rightFrame").attr("src", "list.mvc?parentId=" + categoryId + "&run=" + Math.random());
 	}
 	
 </script>

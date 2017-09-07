@@ -1,0 +1,19 @@
+<configuration>
+    <property name="charset" value="UTF-8"/>
+    <property name="pattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>${charset}</charset>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+    <logger name="org.hibernate.SQL" level="INFO"/>
+    <logger name="org.hibernate.type" level="ERROR"/>
+    <logger name="org.springframework.web" level="ERROR"/>
+    <logger name="org.springframework.data.rest" level="ERROR"/>
+    <logger name="org.springframework.security" level="INFO"/>
+    <logger name="reps" level="DEBUG"/>
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

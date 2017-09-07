@@ -39,7 +39,7 @@ public class AssessPointsAction extends BaseAction {
 
 		ModelAndView mav = getModelAndView("/jifen/pjfzsz/xxlist");
 		// 学习评价指标设置
-		query.setCategory(AccessCategory.XXHD.getValue());
+		query.setCategory(AccessCategory.XXHD.getCode());
 		ListResult<StudyAssessPoints> result = assessPointsService.query(
 				pager.getStartRow(), pager.getPageSize(), query);
 
@@ -55,7 +55,7 @@ public class AssessPointsAction extends BaseAction {
 
 		ModelAndView mav = getModelAndView("/jifen/pjfzsz/xylist");
 		// 校园评价指标设置
-		query.setCategory(AccessCategory.XYXW.getValue());
+		query.setCategory(AccessCategory.XYXW.getCode());
 		ListResult<StudyAssessPoints> result = assessPointsService.query(
 				pager.getStartRow(), pager.getPageSize(), query);
 

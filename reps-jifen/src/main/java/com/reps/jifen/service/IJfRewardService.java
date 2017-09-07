@@ -84,8 +84,9 @@ public interface IJfRewardService {
 	/**
 	 * 批量发布物品
 	 * @param ids
+	 * @param status
 	 */
-	public void batchPublish(String ids);
+	public void batchPublish(String ids, Short status);
 	
 	/**
 	 * 根据分类类别查询物品

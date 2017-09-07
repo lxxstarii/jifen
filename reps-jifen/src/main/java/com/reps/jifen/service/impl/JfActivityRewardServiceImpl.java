@@ -84,7 +84,7 @@ public class JfActivityRewardServiceImpl implements IJfActivityRewardService {
 	}
 	
 	@Override
-	public List<JfReward> getRewardOfCategory(String cid) {
+	public List<JfReward> getActivityRewardOfCategory(String cid) {
 		return dao.getRewardOfCategory(cid);
 	}
 
@@ -104,8 +104,8 @@ public class JfActivityRewardServiceImpl implements IJfActivityRewardService {
 	}
 	
 	@Override
-	public void batchPublish(String ids) {
-		dao.batchUpdate(ids, PUBLISHED.getIndex());
+	public void batchPublish(String ids, Short status) {
+		dao.batchUpdate(ids, status);
 	}
 	
 	@Scheduled(cron = "0 0 2 * * ?")

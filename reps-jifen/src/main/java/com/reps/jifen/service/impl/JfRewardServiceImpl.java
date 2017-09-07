@@ -101,8 +101,8 @@ public class JfRewardServiceImpl implements IJfRewardService {
 	}
 	
 	@Override
-	public void batchPublish(String ids) {
-		dao.batchUpdate(ids, PUBLISHED.getIndex());
+	public void batchPublish(String ids, Short status) {
+		dao.batchUpdate(ids, status);
 	}
 
 	@Override

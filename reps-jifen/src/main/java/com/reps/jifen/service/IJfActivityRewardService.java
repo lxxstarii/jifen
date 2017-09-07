@@ -58,7 +58,7 @@ public interface IJfActivityRewardService {
 	 * @param cid 分类id
 	 * @return JfReward
 	 */
-	public List<JfReward> getRewardOfCategory(String cid);
+	public List<JfReward> getActivityRewardOfCategory(String cid);
 
 	/**
 	 * 根据活动名称，得到活动
@@ -84,8 +84,9 @@ public interface IJfActivityRewardService {
 	/**
 	 * 批量发布活动
 	 * @param ids
+	 * @param status
 	 */
-	public void batchPublish(String ids);
+	public void batchPublish(String ids, Short status);
 	
 	/**
 	 * 根据分类类别查询活动
