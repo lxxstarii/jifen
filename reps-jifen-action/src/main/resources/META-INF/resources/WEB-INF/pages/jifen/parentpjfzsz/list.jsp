@@ -12,13 +12,13 @@
 		<input type="hidden" name="ids" />
 		<reps:footbar>
 			<reps:button cssClass="add-a" action="toadd.mvc" messageCode="manage.action.add" value="新增"></reps:button>
-			<reps:ajax id="batchdelete" cssClass="delete-a" confirm="确认批量删除吗?" beforeCall="checkChecked" formId="queryForm" redirect="list.mvc" value="批量删除" />
+			<!-- <reps:ajax id="batchdelete" cssClass="delete-a" confirm="确认批量删除吗?" beforeCall="checkChecked" formId="queryForm" redirect="list.mvc" value="批量删除" /> -->
 		</reps:footbar>
 	</reps:panel>
 	<reps:panel id="mybody" dock="center">
-		<reps:grid id="itemList" items="${list}" form="queryForm" var="item" pagination="${pager}" flagSeq="false">
+		<reps:grid id="itemList" items="${list}" form="queryForm" var="item" pagination="${pager}" flagSeq="true">
 			<reps:gridrow>
-				<reps:gridcheckboxfield checkboxName="id" align="center" title="" width="5">${item.id}</reps:gridcheckboxfield>
+			<%-- 	<reps:gridcheckboxfield checkboxName="id" align="center" title="" width="5">${item.id}</reps:gridcheckboxfield> --%>
 				<reps:gridfield title="评分项" width="15" align="center">${item.item}</reps:gridfield>
 				<reps:gridfield title="具体行为内容" width="40" align="center">${item.content}</reps:gridfield>
 				<reps:gridfield title="奖励积分" width="40" align="center" style="color: #196ed8;">${item.pointsScopeDisp}</reps:gridfield>

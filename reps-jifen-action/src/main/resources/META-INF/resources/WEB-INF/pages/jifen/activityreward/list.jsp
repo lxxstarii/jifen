@@ -26,10 +26,10 @@
 		</reps:footbar>
 	</reps:panel>
 	<reps:panel id="mybody" dock="center">
-		<reps:grid id="activityList" items="${list}" form="queryForm" var="activity" pagination="${pager}" flagSeq="false">
+		<reps:grid id="activityList" items="${list}" form="queryForm" var="activity" pagination="${pager}" flagSeq="true">
 			<reps:gridrow>
 				<input type="hidden" name="activityStatus" value="${activity.isShown }">
-				<reps:gridcheckboxfield checkboxName="id" align="center" title="" width="5">${activity.id}</reps:gridcheckboxfield>
+				<%-- <reps:gridcheckboxfield checkboxName="id" align="center" title="" width="5">${activity.id}</reps:gridcheckboxfield> --%>
 				<reps:gridfield title="活动分类" width="15" align="center">${activity.jfRewardCategory.name}</reps:gridfield>
 				<reps:gridfield title="活动名称" width="25" align="center">${activity.name }</reps:gridfield>
 				<reps:gridfield title="所需积分" width="15" align="center">${activity.points}</reps:gridfield>
@@ -39,10 +39,10 @@
 				<reps:gridfield title="上线时间" width="25" align="center">
 					<fmt:formatDate value="${activity.showTime }" pattern="yyyy-MM-dd"/>
 				</reps:gridfield>
-				<reps:gridfield title="活动详情" width="40" >${activity.description}</reps:gridfield>
+				<reps:gridfield title="活动详情" width="30" >${activity.description}</reps:gridfield>
 				<reps:gridfield title="活动状态" width="15" align="center"><c:if test="${activity.isShown == '1'}">已发布</c:if><c:if test="${activity.isShown == '0' }">未发布</c:if><c:if test="${activity.isShown == '2' }">已下架</c:if></reps:gridfield>
 				<%-- <reps:gridfield title="已参与/已兑换" width="25" align="center"></reps:gridfield> --%>
-				<reps:gridfield title="操作" width="40">
+				<reps:gridfield title="操作" width="50">
 					<reps:button cssClass="detail-table" action="show.mvc?id=${activity.id }" value="详细"></reps:button>
 					<c:if test="${activity.isShown == '1'}">
 						<reps:ajax cssClass="publish-table" value="取消发布" confirm="您确定要取消发布吗？" redirect="list.mvc" url="batchpublish.mvc?ids=${activity.id }&status=0"></reps:ajax>

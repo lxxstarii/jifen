@@ -28,9 +28,9 @@
 		</reps:footbar>
 	</reps:panel>
 	<reps:panel id="mybody" dock="center">
-		<reps:grid id="rewardList" items="${list}" form="queryForm" var="reward" pagination="${pager}" flagSeq="false">
+		<reps:grid id="rewardList" items="${list}" form="queryForm" var="reward" pagination="${pager}" flagSeq="true">
 			<reps:gridrow>
-				<reps:gridcheckboxfield checkboxName="id" align="center" title="" width="5">${reward.id}</reps:gridcheckboxfield>
+				<%-- <reps:gridcheckboxfield checkboxName="id" align="center" title="" width="5">${reward.id}</reps:gridcheckboxfield> --%>
 				<reps:gridfield title="物品分类" width="15" align="center">${reward.jfRewardCategory.name}</reps:gridfield>
 				<reps:gridfield title="物品名称" width="25" align="center">${reward.name }</reps:gridfield>
 				<reps:gridfield title="所需积分" width="15" align="center">${reward.points}</reps:gridfield>

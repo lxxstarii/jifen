@@ -178,6 +178,27 @@
 				</node>
 			</nodes>
 		</node>
+		<node code="jifen080000" name="积分评价" type="Catalog" showOrder="7" icon="basicdata" newpage="false">
+			<nodes>
+				<node code="jifen080100" name="积分评价设置" showOrder="1" newpage="false" type="Action" >
+					<action>/reps/jifen/level/list.mvc</action>
+					<nodes>
+						<node code="jifen080101" name="新增" showOrder="1" newpage="false" type="Operate">
+							<action>/reps/jifen/level/toadd.mvc;/reps/jifen/level/add.mvc</action>
+						</node>
+						<node code="jifen080102" name="修改" showOrder="2" newpage="false" type="Operate">
+							<action>/reps/jifen/level/toedit.mvc;/reps/jifen/level/edit.mvc</action>
+						</node>
+						<node code="jifen080103" name="删除" showOrder="3" newpage="false" type="Operate">
+							<action>/reps/jifen/level/delete.mvc</action>
+						</node>
+						<node code="jifen080104" name="详细" showOrder="4" newpage="false" type="Operate">
+							<action>/reps/jifen/level/show.mvc</action>
+						</node>
+					</nodes>
+				</node>
+			</nodes>
+		</node>
 	</menu>
 	<consts>
 		<!-- 学校商标路径、形象图路径  -->

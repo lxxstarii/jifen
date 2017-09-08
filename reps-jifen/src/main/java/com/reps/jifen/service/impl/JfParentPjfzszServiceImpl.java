@@ -50,8 +50,7 @@ public class JfParentPjfzszServiceImpl implements IJfParentPjfzszService {
 				sb.insert(0, "+");
 				sb.insert(0, ", ");
 			}
-			sb.insert(0, "+0");
-			bean.setPointsScopeDisp(sb.toString());
+			bean.setPointsScopeDisp(sb.deleteCharAt(sb.toString().indexOf(",")).toString());
 		}
 		return dao.query(start, pagesize, jfParentPjfzsz);
 	}
