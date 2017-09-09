@@ -11,7 +11,12 @@ import java.io.Serializable;
 @Table(name = "reps_jf_application_used_fzsz")
 public class JfSystemConfig extends IdEntity implements Serializable {
 
-    /**应用名称*/
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**应用名称*/
     @Column(name = "application_name", length = 15, nullable=false)
     private String applicationName;
 

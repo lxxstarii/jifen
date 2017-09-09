@@ -1,5 +1,8 @@
 package com.reps.jifen.service;
 
+import java.util.List;
+
+import com.reps.core.exception.RepsException;
 import com.reps.core.orm.ListResult;
 import com.reps.jifen.entity.JfPointLevel;
 
@@ -38,5 +41,13 @@ public interface IJfPointLevelService {
 	 * @return ListResult<JfPointLevel>
 	 */
 	public ListResult<JfPointLevel> query(int start, int pagesize, JfPointLevel jfPointLevel);
+	
+	/**
+	 *  查询所有积分等级列表
+	 * @param jfPointLevel
+	 * @return List<JfPointLevel>
+	 * @throws RepsException
+	 */
+	public List<JfPointLevel> queryAll(JfPointLevel jfPointLevel) throws RepsException;
 	
 }

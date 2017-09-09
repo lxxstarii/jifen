@@ -1,5 +1,7 @@
 package com.reps.jifen.dao;
 
+import java.util.List;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,11 @@ public class JfPointLevelDao {
 			}
 		}
 		return dao.query(dc, start, pagesize);
+	}
+	
+	public List<JfPointLevel> queryAll(JfPointLevel jfPointLevel) {
+		DetachedCriteria dc = DetachedCriteria.forClass(JfPointLevel.class);
+		return dao.findByCriteria(dc);
 	}
 
 }

@@ -2,36 +2,37 @@ package com.reps.jifen.rest;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.reps.core.restful.RestBaseController;
 import com.reps.core.restful.RestResponse;
 import com.reps.core.restful.RestResponseStatus;
-import com.reps.jifen.entity.JfSystemConfig;
-import com.reps.jifen.service.IJfSystemConfigService;
+import com.reps.jifen.entity.JfPointLevel;
+import com.reps.jifen.service.IJfPointLevelService;
 
 /**
- * 获取积分规则
+ * 积分等级
  * @author qianguobing
- * @date 2017年9月9日 上午11:03:09
+ * @date 2017年9月9日 下午2:59:37
  */
 @RestController
-@RequestMapping(value = "/uapi/appuse")
-public class SystemConfigRest extends RestBaseController{
+@RequestMapping(value = "/uapi/pointlevel")
+public class JfPointLevelRest  extends RestBaseController{
 	
-	private final Log logger = LogFactory.getLog(SystemConfigRest.class);
+	protected final Logger logger = LoggerFactory.getLogger(JfPointLevelRest.class);
 	
 	@Autowired
-	private IJfSystemConfigService jfSystemConfigService;
+	private IJfPointLevelService jfPointLevelService;
 	
-	@RequestMapping(value = "/list")
-	public RestResponse<List<JfSystemConfig>> list() {
+	@RequestMapping(value = "/list", method = { RequestMethod.GET })
+	public RestResponse<List<JfPointLevel>> list() {
 		try {
-			List<JfSystemConfig> result = jfSystemConfigService.queryAll(null);
+			List<JfPointLevel> result = jfPointLevelService.queryAll(null);
 			return wrap(RestResponseStatus.OK, "查询成功", result);
 		} catch (Exception e) {
 			logger.error("查询异常", e);

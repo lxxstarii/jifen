@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.reps.core.orm.ListResult;
 import com.reps.jifen.dao.JfRewardCategoryDao;
@@ -16,6 +17,7 @@ import com.reps.jifen.service.IJfRewardCategoryService;
  * @date 2017年8月15日 下午3:29:35
  */
 @Service
+@Transactional
 public class JfRewardCategoryServiceImpl implements IJfRewardCategoryService {
 	
 	@Autowired

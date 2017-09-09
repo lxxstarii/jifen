@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.reps.core.orm.ListResult;
 import com.reps.core.util.StringUtil;
@@ -23,6 +24,7 @@ import com.reps.jifen.service.IJfRewardService;
  * @date 2017年8月18日 上午10:48:17
  */
 @Service
+@Transactional
 public class JfRewardServiceImpl implements IJfRewardService {
 
 	@Autowired

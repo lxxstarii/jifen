@@ -69,9 +69,13 @@ public class JfSystemConfigDao {
 	}
 	public List<JfSystemConfig> find(JfSystemConfig config) {
 		DetachedCriteria dc = DetachedCriteria.forClass(JfSystemConfig.class);
-		Integer isEnabled = config.getIsEnabled();
-		if (null != isEnabled) {
-			dc.add(Restrictions.eq("isEnabled", isEnabled));
+		if(config!=null){
+			Integer isEnabled = config.getIsEnabled();
+			if (null != isEnabled) {
+				dc.add(Restrictions.eq("isEnabled", isEnabled));
+			}else {
+				dc.add(Restrictions.eq("isEnabled", 1));
+			}
 		}
 		return dao.findByCriteria(dc);
 	}
