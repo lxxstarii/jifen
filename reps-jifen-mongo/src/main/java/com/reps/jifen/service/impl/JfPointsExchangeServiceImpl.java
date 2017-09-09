@@ -25,7 +25,7 @@ public class JfPointsExchangeServiceImpl implements IJfPointsExchangeService{
 	@Override
 	public ListResult<JfPointsExchange> findByPersonId(String personId, Integer pageIndex, Integer pageSize) throws RepsException{
 		if(StringUtil.isBlank(personId)){
-			throw new RepsException("查询失败:人员ID不能为空");
+			throw new RepsException("人员ID不能为空");
 		}
 		//设置分页参数
 		pageIndex = null == pageIndex ? 1 : pageIndex;

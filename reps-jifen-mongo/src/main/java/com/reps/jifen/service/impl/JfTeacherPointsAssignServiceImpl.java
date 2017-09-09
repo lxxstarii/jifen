@@ -25,7 +25,7 @@ public class JfTeacherPointsAssignServiceImpl implements IJfTeacherPointsAssignS
 	@Override
 	public ListResult<JfTeacherPointsAssign> findByTeacherId(String teacherId, Integer pageIndex, Integer pageSize) throws RepsException{
 		if(StringUtil.isBlank(teacherId)){
-			throw new RepsException("查询失败:教师ID不能为空");
+			throw new RepsException("教师ID不能为空");
 		}
 		//设置分页参数
 		pageIndex = null == pageIndex ? 1 : pageIndex;

@@ -21,15 +21,15 @@ public class JfParentPointsAssignServiceImpl implements IJfParentPointsAssignSer
 	@Override
 	public ListResult<JfParentPointsAssign> query(JfParentPointsAssign jfParentPointsAssign, Integer pageIndex, Integer pageSize) throws RepsException {
 		if(null == jfParentPointsAssign) {
-			throw new RepsException("查询失败：参数错误");
+			throw new RepsException("参数错误");
 		}
 		String parentId = jfParentPointsAssign.getParentId();
 		if(StringUtil.isBlank(parentId)){
-			throw new RepsException("查询失败:家长ID不能为空");
+			throw new RepsException("家长ID不能为空");
 		}
 		String studentId = jfParentPointsAssign.getStudentId();
 		if(StringUtil.isBlank(studentId)){
-			throw new RepsException("查询失败:孩子ID不能为空");
+			throw new RepsException("孩子ID不能为空");
 		}
 		//设置分页参数
 		pageIndex = null == pageIndex ? 1 : pageIndex;
