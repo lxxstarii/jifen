@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.reps.core.restful.RestBaseController;
@@ -29,7 +28,7 @@ public class JfPointLevelRest  extends RestBaseController{
 	@Autowired
 	private IJfPointLevelService jfPointLevelService;
 	
-	@RequestMapping(value = "/list", method = { RequestMethod.GET })
+	@RequestMapping(value = "/list")
 	public RestResponse<List<JfPointLevel>> list() {
 		try {
 			List<JfPointLevel> result = jfPointLevelService.queryAll(null);

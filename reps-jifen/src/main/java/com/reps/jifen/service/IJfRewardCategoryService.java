@@ -2,6 +2,7 @@ package com.reps.jifen.service;
 
 import java.util.List;
 
+import com.reps.core.exception.RepsException;
 import com.reps.core.orm.ListResult;
 import com.reps.jifen.entity.JfRewardCategory;
 
@@ -54,22 +55,10 @@ public interface IJfRewardCategoryService {
 	public List<JfRewardCategory> queryList(String pId);
 	
 	/**
-	 * 查询所有类型
-	 * @return
-	 */
-	public List<JfRewardCategory> getAllCategory();
-	
-	/**
-	 * 查询所有非上级类型
-	 * @return List<JfRewardCategory>
-	 */
-	public List<JfRewardCategory> getAllNotCategory();
-	
-	/**
 	 * 查询奖品分类信息
 	 * @param jfRewardCategory
 	 * @return List<JfRewardCategory>
 	 */
-	public List<JfRewardCategory> getRewardCategory(JfRewardCategory jfRewardCategory);
+	public List<JfRewardCategory> getRewardCategory(JfRewardCategory jfRewardCategory) throws RepsException;
 	
 }

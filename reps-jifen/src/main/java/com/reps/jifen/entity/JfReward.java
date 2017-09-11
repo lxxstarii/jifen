@@ -76,6 +76,18 @@ public class JfReward extends IdEntity implements Serializable {
 	@Transient
 	private String showTimeDisp;
 	
+	/** 积分范围 */
+	@Transient
+	private String pointsRange;
+	
+	/** 积分开始 */
+	@Transient
+	private String pointsBegin;
+	
+	/** 积分结束 */
+	@Transient
+	private String pointsEnd;
+	
 	/** 物品图片地址 */
 	@Transient
 	private String rewardUrlOne;
@@ -234,6 +246,30 @@ public class JfReward extends IdEntity implements Serializable {
 
 	public void setRewardUrlFive(String rewardUrlFive) {
 		this.rewardUrlFive = rewardUrlFive;
+	}
+
+	public String getPointsRange() {
+		return pointsRange;
+	}
+
+	public void setPointsRange(String pointsRange) {
+		this.pointsRange = pointsRange;
+	}
+
+	public String getPointsBegin() {
+		return pointsBegin;
+	}
+
+	public void setPointsBegin(String pointsBegin) {
+		this.pointsBegin = pointsBegin;
+	}
+
+	public String getPointsEnd() {
+		return pointsEnd;
+	}
+
+	public void setPointsEnd(String pointsEnd) {
+		this.pointsEnd = pointsEnd;
 	}
 	
 }

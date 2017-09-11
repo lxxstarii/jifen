@@ -48,7 +48,6 @@ public class JfRewardDao {
 	public ListResult<JfReward> query(int start, int pagesize, JfReward jfReward) {
 		DetachedCriteria dc = DetachedCriteria.forClass(JfReward.class);
 		dc.createAlias("jfRewardCategory", "t");
-
 		if (jfReward != null) {
 			String name = jfReward.getName();
 			if (StringUtil.isNotBlank(name)) {
@@ -72,6 +71,10 @@ public class JfRewardDao {
 			if (null != numbers) {
 				dc.add(Restrictions.eq("numbers", numbers));
 			}
+			Short isShown = jfReward.getIsShown();
+			if(null != isShown) {
+				dc.add(Restrictions.eq("isShown", isShown));
+			}
 		}
 		return dao.query(dc, start, pagesize, Order.asc("createTime"));
 	}
@@ -84,25 +87,6 @@ public class JfRewardDao {
 		dc.addOrder(Order.asc("createTime"));
 
 		return dao.findByCriteria(dc);
-	}
-
-	public List<JfReward> getAllReward() {
-		DetachedCriteria dc = DetachedCriteria.forClass(JfReward.class);
-		dc.addOrder(Order.asc("createTime"));
-
-		return dao.findByCriteria(dc);
-	}
-
-	public JfReward getRewardByName(String name) {
-		DetachedCriteria dc = DetachedCriteria.forClass(JfReward.class);
-		if (StringUtil.isNotBlank(name)) {
-			dc.add(Restrictions.eq("name", name));
-		}
-		List<JfReward> itemList = dao.findByCriteria(dc);
-		if (itemList != null && itemList.size() > 0) {
-			return itemList.get(0);
-		}
-		return null;
 	}
 
 	public void batchDelete(String ids) {
@@ -121,11 +105,16 @@ public class JfRewardDao {
 	public List<JfReward> getRewardByCategoryType(JfReward jfReward) {
 		DetachedCriteria dc = DetachedCriteria.forClass(JfReward.class);
 		dc.createAlias("jfRewardCategory", "t");
-		JfRewardCategory jfRewardCategory = jfReward.getJfRewardCategory();
-		if(null != jfRewardCategory) {
-			dc.add(Restrictions.eq("t.type", jfRewardCategory.getType()));
+		if(null != jfReward) {
+			JfRewardCategory jfRewardCategory = jfReward.getJfRewardCategory();
+			if(null != jfRewardCategory) {
+				dc.add(Restrictions.eq("t.type", jfRewardCategory.getType()));
+			}
+			Short isShown = jfReward.getIsShown();
+			if(null != isShown) {
+				dc.add(Restrictions.eq("isShown", isShown));
+			}
 		}
-		dc.add(Restrictions.eq("isShown", jfReward.getIsShown()));
 		return dao.findByCriteria(dc);
 	}
 

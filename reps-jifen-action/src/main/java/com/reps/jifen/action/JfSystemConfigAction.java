@@ -55,8 +55,12 @@ public class JfSystemConfigAction extends BaseAction {
     @RequestMapping(value = "/add")
     @ResponseBody
     public Object add(JfSystemConfig config) {
-        systemConfigService.save(config);
-        return ajax(AjaxStatus.OK, "保存成功");
+        boolean f = systemConfigService.save(config);
+        if (f) {
+            return ajax(AjaxStatus.OK, "修改成功");
+        } else {
+            return ajax(AjaxStatus.FAIL, "标识码重复");
+        }
     }
 
     @RequestMapping(value = "/toedit")
@@ -70,8 +74,12 @@ public class JfSystemConfigAction extends BaseAction {
     @RequestMapping(value = "/edit")
     @ResponseBody
     public Object update(JfSystemConfig config) {
-        systemConfigService.update(config);
-        return ajax(AjaxStatus.OK, "修改成功");
+        boolean f = systemConfigService.update(config);
+        if (f) {
+            return ajax(AjaxStatus.OK, "修改成功");
+        } else {
+            return ajax(AjaxStatus.FAIL, "标识码重复");
+        }
     }
 
     @RequestMapping(value = "/show")

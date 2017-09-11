@@ -25,7 +25,7 @@ public class JfPointsAggregateRest extends RestBaseController{
 	@RequestMapping(value = "/level", method = { RequestMethod.GET })
 	public RestResponse<JfPointsAggregate> level(String personId) {
 		try {
-			JfPointsAggregate point = jfPointsAggregateService.findByPersonId(personId);
+			JfPointsAggregate point = jfPointsAggregateService.getByPersonId(personId);
 			return wrap(RestResponseStatus.OK, "查询成功", point);
 		} catch (Exception e) {
 			logger.error("查询异常", e);

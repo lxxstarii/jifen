@@ -12,9 +12,9 @@ public interface IJfSystemConfigService {
 
     void delete(String id);
 
-    void save(JfSystemConfig config);
+    boolean save(JfSystemConfig config);
 
-    void update(JfSystemConfig config);
+    boolean update(JfSystemConfig config);
 
     JfSystemConfig get(String id);
 

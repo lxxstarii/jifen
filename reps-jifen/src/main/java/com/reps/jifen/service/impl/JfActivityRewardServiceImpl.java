@@ -89,16 +89,6 @@ public class JfActivityRewardServiceImpl implements IJfActivityRewardService {
 	}
 
 	@Override
-	public JfReward getRewardByName(String name) {
-		return dao.getRewardByName(name);
-	}
-
-	@Override
-	public List<JfReward> getAllReward() {
-		return dao.getAllReward();
-	}
-
-	@Override
 	public void batchDelete(String ids) {
 		dao.batchDelete(ids);
 	}

@@ -3,6 +3,8 @@ package com.reps.jifen.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Transient;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -33,6 +35,7 @@ public class JfTeacherPointsAssign implements Serializable{
 	/** 学校名称 */
 	private String schoolName;
 	
+	
 	/** 规则名称 */
 	private String ruleName;
 	
@@ -44,7 +47,11 @@ public class JfTeacherPointsAssign implements Serializable{
 	
 	/** 分配时间 */
 	private Date createTime;
-
+	
+	/**规则id*/
+	@Transient
+	private String ruleId;
+	
 	public String getTeacherId() {
 		return teacherId;
 	}
@@ -125,6 +132,14 @@ public class JfTeacherPointsAssign implements Serializable{
 		this.createTime = createTime;
 	}
 
+	public String getRuleId() {
+		return ruleId;
+	}
+
+	public void setRuleId(String ruleId) {
+		this.ruleId = ruleId;
+	}
+	
 	@Override
 	public String toString() {
 		return "JfTeacherPointsAssign [teacherId=" + teacherId + ", studentId=" + studentId + ", schoolId=" + schoolId + ", teacherName=" + teacherName + ", studentName=" + studentName

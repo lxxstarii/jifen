@@ -61,21 +61,6 @@ public interface IJfActivityRewardService {
 	public List<JfReward> getActivityRewardOfCategory(String cid);
 
 	/**
-	 * 根据活动名称，得到活动
-	 * 
-	 * @param name
-	 * @return JfReward
-	 */
-	public JfReward getRewardByName(String name);
-
-	/**
-	 * 查询所有活动
-	 * 
-	 * @return List<JfReward>
-	 */
-	public List<JfReward> getAllReward();
-	
-	/**
 	 * 批量删除活动
 	 * @param ids
 	 */

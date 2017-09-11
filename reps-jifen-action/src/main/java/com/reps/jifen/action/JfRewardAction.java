@@ -50,10 +50,10 @@ public class JfRewardAction extends BaseAction {
 	 * 
 	 * @param pager
 	 * @param jfReward
-	 * @return ModelAndView
+	 * @return Object
 	 */
 	@RequestMapping(value = "/list")
-	public ModelAndView list(Pagination pager, JfReward jfReward) {
+	public Object list(Pagination pager, JfReward jfReward) {
 		ModelAndView mav = getModelAndView("/jifen/reward/list");
 
 		JfRewardCategory jfRewardCategory = jfReward.getJfRewardCategory();
@@ -66,19 +66,26 @@ public class JfRewardAction extends BaseAction {
 
 		ListResult<JfReward> listResult = jfRewardService.query(pager.getStartRow(), pager.getPageSize(), jfReward);
 		// 查询物品类型
-		List<JfRewardCategory> categoryList = jfRewardCategoryService.getRewardCategory(jfRewardCategory);
-		Map<String, String> activityTypeMap = new HashMap<>();
-		activityTypeMap.put("", "全部物品");
-		for (JfRewardCategory category : categoryList) {
-			activityTypeMap.put(category.getId(), category.getName());
+		List<JfRewardCategory> categoryList;
+		try {
+			categoryList = jfRewardCategoryService.getRewardCategory(jfRewardCategory);
+			Map<String, String> activityTypeMap = new HashMap<>();
+			activityTypeMap.put("", "全部物品");
+			for (JfRewardCategory category : categoryList) {
+				activityTypeMap.put(category.getId(), category.getName());
+			}
+			mav.addObject("rewardTypeMap", activityTypeMap);
+			mav.addObject("jfReward", jfReward);
+			// 分页数据
+			mav.addObject("list", listResult.getList());
+			// 分页参数
+			mav.addObject("pager", pager);
+			return mav;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("查询参数失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
 		}
-		mav.addObject("rewardTypeMap", activityTypeMap);
-		mav.addObject("jfReward", jfReward);
-		// 分页数据
-		mav.addObject("list", listResult.getList());
-		// 分页参数
-		mav.addObject("pager", pager);
-		return mav;
 	}
 
 	/**
@@ -98,47 +105,66 @@ public class JfRewardAction extends BaseAction {
 	 * 
 	 * @param jfReward
 	 * @return Object
-	 * @throws RepsException
 	 */
 	@RequestMapping(value = "/add")
 	@ResponseBody
-	public Object add(JfReward jfReward) throws RepsException {
-		if (jfReward == null) {
-			throw new RepsException("数据不完整");
+	public Object add(JfReward jfReward){
+		try {
+			if (jfReward == null) {
+				throw new RepsException("数据不完整");
+			}
+			jfRewardService.save(jfReward);
+			return ajax(AjaxStatus.OK, "添加成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("添加失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
 		}
-		jfRewardService.save(jfReward);
-		return ajax(AjaxStatus.OK, "添加成功");
 	}
 
 	/**
 	 * 物品管理添加页面选择物品分类，展示树形结构
 	 * 
-	 * @return ModelAndView
+	 * @return Object
 	 */
 	@RequestMapping(value = "/choose")
-	public ModelAndView choose() {
+	public Object choose() {
 		ModelAndView mav = new ModelAndView("/jifen/reward/choose");
 		JfRewardCategory jfRewardCategory = new JfRewardCategory();
 		// 设置物品类别
 		jfRewardCategory.setType(REWARD.getIndex());
-		List<JfRewardCategory> rewardCategoryList = jfRewardCategoryService.getRewardCategory(jfRewardCategory);
-		mav.addObject("treelist", rewardCategoryList);
-		return mav;
+		List<JfRewardCategory> rewardCategoryList;
+		try {
+			rewardCategoryList = jfRewardCategoryService.getRewardCategory(jfRewardCategory);
+			mav.addObject("treelist", rewardCategoryList);
+			return mav;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("查询参数失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
+		}
 	}
 
 	/**
 	 * 修改物品页面入口
 	 * 
 	 * @param id
-	 * @return ModelAndView
+	 * @return Object
 	 */
 	@RequestMapping(value = "/toedit")
-	public ModelAndView toEdit(String id) {
+	public Object toEdit(String id) {
 		ModelAndView mav = getModelAndView("/jifen/reward/edit");
-		JfReward jfReward = jfRewardService.get(id);
-		mav.addObject("imageUploadPath", ConfigurePath.IMG_UPLOAD_PATH);
-		mav.addObject("reward", jfReward);
-		return mav;
+		JfReward jfReward;
+		try {
+			jfReward = jfRewardService.get(id);
+			mav.addObject("imageUploadPath", ConfigurePath.IMG_UPLOAD_PATH);
+			mav.addObject("reward", jfReward);
+			return mav;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("查询失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
+		}
 	}
 
 	/**
@@ -146,16 +172,21 @@ public class JfRewardAction extends BaseAction {
 	 * 
 	 * @param jfReward
 	 * @return Object
-	 * @throws RepsException
 	 */
 	@RequestMapping(value = "/edit")
 	@ResponseBody
-	public Object edit(JfReward jfReward) throws RepsException {
-		if (jfReward == null) {
-			throw new RepsException("数据不完整");
+	public Object edit(JfReward jfReward){
+		try {
+			if (jfReward == null) {
+				throw new RepsException("数据不完整");
+			}
+			jfRewardService.update(jfReward);
+			return ajax(AjaxStatus.OK, "修改成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("修改失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
 		}
-		jfRewardService.update(jfReward);
-		return ajax(AjaxStatus.OK, "修改成功");
 	}
 
 	/**
@@ -174,6 +205,7 @@ public class JfRewardAction extends BaseAction {
 			}
 			return ajax(AjaxStatus.OK, "删除成功");
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("删除活动失败", e);
 			return ajax(AjaxStatus.ERROR, "删除失败");
 		}
@@ -196,6 +228,7 @@ public class JfRewardAction extends BaseAction {
 			jfRewardService.batchDelete(ids);
 			return ajax(AjaxStatus.OK, "删除成功");
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("批量删除活动失败", e);
 			return ajax(AjaxStatus.ERROR, "删除失败");
 		}
@@ -217,8 +250,9 @@ public class JfRewardAction extends BaseAction {
 			jfRewardService.batchPublish(ids, status);
 			return ajax(AjaxStatus.OK, "操作成功");
 		} catch (Exception e) {
-			logger.error("批量发布活动失败", e);
-			return ajax(AjaxStatus.ERROR, "发布失败");
+			e.printStackTrace();
+			logger.error("操作失败", e);
+			return ajax(AjaxStatus.ERROR, "操作失败");
 		}
 	}
 
@@ -226,14 +260,21 @@ public class JfRewardAction extends BaseAction {
 	 * 物品详情展示页面
 	 * 
 	 * @param id
-	 * @return ModelAndView
+	 * @return Object
 	 */
 	@RequestMapping({ "/show" })
-	public ModelAndView show(String id) {
+	public Object show(String id) {
 		ModelAndView mav = new ModelAndView("/jifen/reward/show");
-		JfReward jfReward = jfRewardService.get(id);
-		mav.addObject("reward", jfReward);
-		return mav;
+		JfReward jfReward;
+		try {
+			jfReward = jfRewardService.get(id);
+			mav.addObject("reward", jfReward);
+			return mav;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("查询失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
+		}
 	}
 
 }

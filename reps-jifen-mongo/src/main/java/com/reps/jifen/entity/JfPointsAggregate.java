@@ -2,6 +2,8 @@ package com.reps.jifen.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Id;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -14,6 +16,9 @@ public class JfPointsAggregate implements Serializable{
 	
 	private static final long serialVersionUID = 879865376296672774L;
 
+	@Id
+	private String id;
+	
 	/** 人员ID */
 	private String personId;
 	
@@ -56,6 +61,14 @@ public class JfPointsAggregate implements Serializable{
 
 	public void setLevel(Short level) {
 		this.level = level;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	@Override

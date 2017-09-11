@@ -45,12 +45,18 @@ public class JfPointLevelAction extends BaseAction {
 
 	@RequestMapping(value = "/add")
 	@ResponseBody
-	public Object add(JfPointLevel jfPointLevel) throws RepsException {
-		if (jfPointLevel == null) {
-			throw new RepsException("数据不完整");
+	public Object add(JfPointLevel jfPointLevel){
+		try {
+			if (jfPointLevel == null) {
+				throw new RepsException("数据不完整");
+			}
+			jfPointLevelService.save(jfPointLevel);
+			return ajax(AjaxStatus.OK, "添加成功");
+		} catch (RepsException e) {
+			e.printStackTrace();
+			logger.error("添加失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
 		}
-		jfPointLevelService.save(jfPointLevel);
-		return ajax(AjaxStatus.OK, "添加成功");
 	}
 
 	@RequestMapping(value = "/toedit")
@@ -63,12 +69,18 @@ public class JfPointLevelAction extends BaseAction {
 
 	@RequestMapping(value = "/edit")
 	@ResponseBody
-	public Object edit(JfPointLevel jfPointLevel) throws RepsException {
-		if (jfPointLevel == null) {
-			throw new RepsException("数据不完整");
+	public Object edit(JfPointLevel jfPointLevel){
+		try {
+			if (jfPointLevel == null) {
+				throw new RepsException("数据不完整");
+			}
+			jfPointLevelService.update(jfPointLevel);
+			return ajax(AjaxStatus.OK, "修改成功");
+		} catch (RepsException e) {
+			e.printStackTrace();
+			logger.error("修改失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
 		}
-		jfPointLevelService.update(jfPointLevel);
-		return ajax(AjaxStatus.OK, "修改成功");
 	}
 
 	/**
@@ -87,6 +99,7 @@ public class JfPointLevelAction extends BaseAction {
 			}
 			return ajax(AjaxStatus.OK, "删除成功");
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("删除活动失败", e);
 			return ajax(AjaxStatus.ERROR, "删除失败");
 		}

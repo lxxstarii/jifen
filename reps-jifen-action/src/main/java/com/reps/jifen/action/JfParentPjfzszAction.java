@@ -63,16 +63,21 @@ public class JfParentPjfzszAction extends BaseAction {
 	 * 家庭行为评分设置新增
 	 * @param jfParentPjfzsz
 	 * @return Object
-	 * @throws RepsException
 	 */
 	@RequestMapping(value = "/add")
 	@ResponseBody
-	public Object add(JfParentPjfzsz jfParentPjfzsz) throws RepsException {
-		if (jfParentPjfzsz == null) {
-			throw new RepsException("数据不完整");
+	public Object add(JfParentPjfzsz jfParentPjfzsz){
+		try {
+			if (jfParentPjfzsz == null) {
+				throw new RepsException("数据不完整");
+			}
+			jfParentPjfzszService.save(jfParentPjfzsz);
+			return ajax(AjaxStatus.OK, "添加成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("添加失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
 		}
-		jfParentPjfzszService.save(jfParentPjfzsz);
-		return ajax(AjaxStatus.OK, "添加成功");
 	}
 	
 	/**
@@ -92,16 +97,21 @@ public class JfParentPjfzszAction extends BaseAction {
 	 * 家庭行为评分设置修改
 	 * @param jfParentPjfzsz
 	 * @return Object
-	 * @throws RepsException
 	 */
 	@RequestMapping(value = "/edit")
 	@ResponseBody
-	public Object edit(JfParentPjfzsz jfParentPjfzsz) throws RepsException {
-		if (jfParentPjfzsz == null) {
-			throw new RepsException("数据不完整");
+	public Object edit(JfParentPjfzsz jfParentPjfzsz) {
+		try {
+			if (jfParentPjfzsz == null) {
+				throw new RepsException("数据不完整");
+			}
+			jfParentPjfzszService.update(jfParentPjfzsz);
+			return ajax(AjaxStatus.OK, "修改成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("修改失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
 		}
-		jfParentPjfzszService.update(jfParentPjfzsz);
-		return ajax(AjaxStatus.OK, "修改成功");
 	}
 	
 	/**

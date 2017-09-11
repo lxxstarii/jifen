@@ -1,10 +1,16 @@
 package com.reps.jifen.service;
 
-import com.reps.core.exception.RepsException;
+import java.util.List;
+
 import com.reps.jifen.entity.JfPointsAggregate;
 
 public interface IJfPointsAggregateService {
+
+	List<JfPointsAggregate> findByPersonId(String personId);
 	
-	public JfPointsAggregate findByPersonId(String personId) throws RepsException;
+	JfPointsAggregate getByPersonId(String personId);
 	
+	void save(JfPointsAggregate data);
+	
+	void update(JfPointsAggregate data);
 }

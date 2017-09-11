@@ -45,7 +45,7 @@ public class JfSystemConfigDao {
 
 	private DetachedCriteria buildCriteria(DetachedCriteria dc, JfSystemConfig query) {
 		if (StringUtil.isNotBlank(query.getCode())) {
-			dc.add(Restrictions.like("code", query.getCode(), MatchMode.ANYWHERE));
+			dc.add(Restrictions.eq("code", query.getCode()));
 		}
 		if (StringUtil.isNotBlank(query.getItem())) {
 			dc.add(Restrictions.like("item", query.getItem(), MatchMode.ANYWHERE));
@@ -67,20 +67,16 @@ public class JfSystemConfigDao {
 		}
 		return dc;
 	}
-	public List<JfSystemConfig> find(JfSystemConfig config) {
+	public List<JfSystemConfig> find(JfSystemConfig query) {
 		DetachedCriteria dc = DetachedCriteria.forClass(JfSystemConfig.class);
-		if(config!=null){
-			Integer isEnabled = config.getIsEnabled();
-			if (null != isEnabled) {
-				dc.add(Restrictions.eq("isEnabled", isEnabled));
-			}else {
-				dc.add(Restrictions.eq("isEnabled", 1));
-			}
+		if (query != null) {
+			dc = buildCriteria(dc, query);
 		}
 		return dao.findByCriteria(dc);
 	}
 
 	public void update(JfSystemConfig config) {
+		dao.getSession().clear();
 		dao.update(config);
 	}
 

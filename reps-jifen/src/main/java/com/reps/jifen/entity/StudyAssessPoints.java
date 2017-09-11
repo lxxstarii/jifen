@@ -25,7 +25,7 @@ public class StudyAssessPoints extends IdEntity {
 	@Column(name = "item")
 	private String item;
 	
-	/**奖励/扣除  0:扣除  1:奖励*/
+	/**扣除/奖励  0:扣除  1:奖励*/
 	@Column(name =  "mark")
 	private Integer mark;
 	

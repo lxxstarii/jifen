@@ -2,6 +2,7 @@ package com.reps.jifen.service;
 
 import java.util.List;
 
+import com.reps.core.exception.RepsException;
 import com.reps.core.orm.ListResult;
 import com.reps.jifen.entity.JfReward;
 
@@ -40,7 +41,7 @@ public interface IJfRewardService {
 	 * @param id
 	 * @return JfReward
 	 */
-	public JfReward get(String id);
+	public JfReward get(String id) throws RepsException;
 
 	/**
 	 * 分页查询
@@ -60,21 +61,6 @@ public interface IJfRewardService {
 	 */
 	public List<JfReward> getRewardOfCategory(String cid);
 
-	/**
-	 * 根据物品名称，得到物品
-	 * 
-	 * @param name
-	 * @return JfReward
-	 */
-	public JfReward getRewardByName(String name);
-
-	/**
-	 * 查询所有物品
-	 * 
-	 * @return List<JfReward>
-	 */
-	public List<JfReward> getAllReward();
-	
 	/**
 	 * 批量删除物品
 	 * @param ids

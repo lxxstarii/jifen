@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.reps.core.exception.RepsException;
 import com.reps.core.orm.ListResult;
+import com.reps.core.util.StringUtil;
 import com.reps.jifen.dao.JfRewardCategoryDao;
 import com.reps.jifen.entity.JfRewardCategory;
 import com.reps.jifen.service.IJfRewardCategoryService;
@@ -56,17 +58,14 @@ public class JfRewardCategoryServiceImpl implements IJfRewardCategoryService {
 	}
 
 	@Override
-	public List<JfRewardCategory> getAllCategory() {
-		return dao.getAllCategory();
-	}
-
-	@Override
-	public List<JfRewardCategory> getAllNotCategory() {
-		return dao.getAllNotCategory();
-	}
-
-	@Override
-	public List<JfRewardCategory> getRewardCategory(JfRewardCategory jfRewardCategory) {
+	public List<JfRewardCategory> getRewardCategory(JfRewardCategory jfRewardCategory) throws RepsException{
+		if(null == jfRewardCategory) {
+			throw new RepsException("查询异常:查询参数错误");
+		}
+		String type = jfRewardCategory.getType();
+		if(StringUtil.isBlank(type)) {
+			throw new RepsException("查询异常:分类类别不能为空");
+		}
 		return dao.getRewardCategory(jfRewardCategory);
 	}
 

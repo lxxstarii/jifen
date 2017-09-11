@@ -1,5 +1,8 @@
 package com.reps.jifen.service;
 
+import java.util.Date;
+import java.util.List;
+
 import com.reps.core.exception.RepsException;
 import com.reps.core.orm.ListResult;
 import com.reps.jifen.entity.JfParentPointsAssign;
@@ -16,4 +19,9 @@ public interface IJfParentPointsAssignService {
 	 */
 	public ListResult<JfParentPointsAssign> query(JfParentPointsAssign jfParentPointsAssign, Integer pageIndex, Integer pageSize) throws RepsException;
 	
+	void save(JfParentPointsAssign data);
+	
+	List<JfParentPointsAssign> find(JfParentPointsAssign query);
+	
+	List<JfParentPointsAssign> findByTime(Date monday, Date weekend, String parentId, String studentId);
 }

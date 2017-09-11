@@ -73,8 +73,7 @@ public class TeachJfRest extends RestBaseController {
 				result.setStatus(RestResponseStatus.INTERNAL_SERVER_ERROR.code());
 				return result;
 			}
-			//TODO 加上organizeId查询条件
-			TeacherPjkfpjf kfp = kfpService.findByTeacherId(teacherId, null);
+			TeacherPjkfpjf kfp = kfpService.findByTeacherId(teacherId, getCurrentLoginInfo().getOrgId());
 			if (kfp == null) {
 				result.setMessage("该教师尚未初始化可分配积分");
 				result.setStatus(RestResponseStatus.INTERNAL_SERVER_ERROR.code());
@@ -90,7 +89,6 @@ public class TeachJfRest extends RestBaseController {
 				kfp.setPointsLeft(kfp.getPointsLeft() - points);
 				kfpService.update(kfp);
 			} 
-			//TODO 是否发起url,请求日志记录添加接口
 		} catch (Exception e) {
 			logger.error("操作失败" + e);
 			result.setStatus(RestResponseStatus.INTERNAL_SERVER_ERROR.code());
@@ -107,7 +105,7 @@ public class TeachJfRest extends RestBaseController {
 		try {
 			Map<String, Object> map = new HashMap<>();
 			//TODO 用token中的教师id
-			TeacherPjkfpjf kfp = kfpService.findByTeacherId(query.getTeacherId(), null);
+			TeacherPjkfpjf kfp = kfpService.findByTeacherId(getCurrentLoginInfo().getPersonId(), null);
 			if (kfp != null) {
 				map.put("pointsLeft", kfp.getPointsLeft());
 				map.put("totalPoints", kfp.getTotalPointsAuthorized());
@@ -122,15 +120,14 @@ public class TeachJfRest extends RestBaseController {
 		return result;
 	}
 	
-	
-	
 	private void fillStudyRewardList(List<StudyAssessPoints> list, List<Map<String, Object>> listMap) {
 		if (list != null && !list.isEmpty()) {
 			for (StudyAssessPoints data : list) {
 				Map<String, Object> map = new HashMap<>();
 				map.put("id", data.getId());
+				map.put("item", data.getItem());
 				map.put("category", data.getCategory());
-				map.put("mark", data.getCategory());
+				map.put("mark", data.getMark());
 				map.put("pointsScope", data.getPointsScope());
 				map.put("icon", this.getFileHttpPath() + data.getIcon());
 				listMap.add(map);

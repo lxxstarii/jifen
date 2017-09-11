@@ -1,5 +1,7 @@
 package com.reps.jifen.service;
 
+import java.util.List;
+
 import com.reps.core.orm.ListResult;
 import com.reps.jifen.entity.JfParentPjfzsz;
 
@@ -43,6 +45,9 @@ public interface IJfParentPjfzszService {
 	 * @return
 	 */
 	public ListResult<JfParentPjfzsz> query(int start, int pagesize, JfParentPjfzsz jfParentPjfzsz);
+	
+	
+	List<JfParentPjfzsz> find(JfParentPjfzsz query);
 	
 	/**
 	 * 批量删除询家庭评分行为

@@ -1,5 +1,9 @@
 package com.reps.jifen.service.impl;
 
+import java.util.List;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +17,8 @@ import com.reps.jifen.service.IJfParentPjfzszService;
  * @author qianguobing
  * @date 2017年8月28日 下午5:17:49
  */
-@Service
+@Service("com.reps.jifen.service.impl.JfParentPjfzszServiceImpl")
+@Transactional
 public class JfParentPjfzszServiceImpl implements IJfParentPjfzszService {
 	
 	@Autowired
@@ -58,6 +63,11 @@ public class JfParentPjfzszServiceImpl implements IJfParentPjfzszService {
 	@Override
 	public void batchDelete(String ids) {
 		dao.batchDelete(ids);
+	}
+
+	@Override
+	public List<JfParentPjfzsz> find(JfParentPjfzsz query) {
+		return dao.find(query);
 	}
 
 }

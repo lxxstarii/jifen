@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.reps.core.orm.IGenericDao;
 import com.reps.core.orm.ListResult;
+import com.reps.core.util.StringUtil;
 import com.reps.jifen.entity.JfRewardCategory;
 
 /**
@@ -62,26 +63,22 @@ public class JfRewardCategoryDao {
 		if (StringUtils.isNotBlank(pId)) {
 			dc.add(Restrictions.eq("parentId", pId));
 		}
-		//dc.addOrder(Order.asc("name"));
 		return dao.findByCriteria(dc);
 	}
 
-	public List<JfRewardCategory> getAllCategory() {
-		DetachedCriteria dc = DetachedCriteria.forClass(JfRewardCategory.class);
-		return dao.findByCriteria(dc);
-	}
-	
 	public List<JfRewardCategory> getRewardCategory(JfRewardCategory info) {
 		DetachedCriteria dc = DetachedCriteria.forClass(JfRewardCategory.class);
-		dc.add(Restrictions.eq("type", info.getType()));
-		//dc.addOrder(Order.asc("name"));
+		if(null != info) {
+			String parentId = info.getParentId();
+			if(StringUtil.isNotBlank(parentId)) {
+				dc.add(Restrictions.eq("parentId", parentId));
+			}
+			String type = info.getType();
+			if(StringUtil.isNotBlank(type)) {
+				dc.add(Restrictions.eq("type", type));
+			}
+		}
 		return dao.findByCriteria(dc);
 	}
 	
-	public List<JfRewardCategory> getAllNotCategory() {
-		DetachedCriteria dc = DetachedCriteria.forClass(JfRewardCategory.class);
-		dc.add(Restrictions.ne("parentId", "-1"));
-		return dao.findByCriteria(dc);
-	}
-
 }

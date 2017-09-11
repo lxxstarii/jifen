@@ -98,16 +98,21 @@ public class JfRewardCategoryAction extends BaseAction {
 	 * 奖品分类添加
 	 * @param rewardCategory
 	 * @return Object
-	 * @throws RepsException
 	 */
 	@RequestMapping(value = "/add")
 	@ResponseBody
-	public Object add(JfRewardCategory rewardCategory) throws RepsException{
-		if(rewardCategory == null){
-			throw new RepsException("数据不完整");
+	public Object add(JfRewardCategory rewardCategory){
+		try {
+			if(rewardCategory == null){
+				throw new RepsException("数据不完整");
+			}
+			jfRewardCategoryService.save(rewardCategory);
+			return ajax(AjaxStatus.OK, "添加成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("添加失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
 		}
-		jfRewardCategoryService.save(rewardCategory);
-		return ajax(AjaxStatus.OK, "添加成功");
 	}
 	
 	/**
@@ -129,16 +134,21 @@ public class JfRewardCategoryAction extends BaseAction {
 	 * 奖品分类修改
 	 * @param rewardCategory
 	 * @return Object
-	 * @throws RepsException
 	 */
 	@RequestMapping(value = "/edit")
 	@ResponseBody
-	public Object edit(JfRewardCategory rewardCategory) throws RepsException {
-		if(rewardCategory == null){
-			throw new RepsException("数据不完整");
+	public Object edit(JfRewardCategory rewardCategory){
+		try {
+			if(rewardCategory == null){
+				throw new RepsException("数据不完整");
+			}
+			jfRewardCategoryService.update(rewardCategory);
+			return ajax(AjaxStatus.OK, "修改成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("修改失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
 		}
-		jfRewardCategoryService.update(rewardCategory);
-		return ajax(AjaxStatus.OK, "修改成功");
 	}
 	
 	/**
@@ -173,6 +183,7 @@ public class JfRewardCategoryAction extends BaseAction {
 			return ajax(AjaxStatus.OK, "删除成功");
 		}
 		catch(Exception e){
+			e.printStackTrace();
 			logger.error("删除奖品分类失败", e);
 			return ajax(AjaxStatus.ERROR, "删除失败");
 		}

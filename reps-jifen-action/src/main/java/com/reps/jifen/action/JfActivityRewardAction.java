@@ -49,10 +49,10 @@ public class JfActivityRewardAction extends BaseAction {
 	 * 活动管理列表
 	 * @param pager
 	 * @param jfReward 活动信息
-	 * @return
+	 * @return Object
 	 */
 	@RequestMapping(value = "/list")
-	public ModelAndView list(Pagination pager, JfReward jfReward){
+	public Object list(Pagination pager, JfReward jfReward){
 		ModelAndView mav = getModelAndView("/jifen/activityreward/list");
 		
 		JfRewardCategory jfRewardCategory = jfReward.getJfRewardCategory();
@@ -64,19 +64,26 @@ public class JfActivityRewardAction extends BaseAction {
 		jfRewardCategory.setType(ACTIVITY.getIndex());
 		ListResult<JfReward> listResult = jfActivityRewardService.query(pager.getStartRow(), pager.getPageSize(), jfReward);
 		//查询活动类型
-		List<JfRewardCategory> categoryList = jfRewardCategoryService.getRewardCategory(jfRewardCategory );
-		Map<String, String> activityTypeMap = new HashMap<>();
-		activityTypeMap.put("", "全部活动");
-		for (JfRewardCategory category : categoryList) {
-			activityTypeMap.put(category.getId(), category.getName());
+		List<JfRewardCategory> categoryList;
+		try {
+			categoryList = jfRewardCategoryService.getRewardCategory(jfRewardCategory );
+			Map<String, String> activityTypeMap = new HashMap<>();
+			activityTypeMap.put("", "全部活动");
+			for (JfRewardCategory category : categoryList) {
+				activityTypeMap.put(category.getId(), category.getName());
+			}
+			mav.addObject("activityTypeMap", activityTypeMap);
+			mav.addObject("jfReward", jfReward);
+			//分页数据
+			mav.addObject("list", listResult.getList());
+			//分页参数
+			mav.addObject("pager", pager);
+			return mav;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("查询参数失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
 		}
-		mav.addObject("activityTypeMap", activityTypeMap);
-		mav.addObject("jfReward", jfReward);
-		//分页数据
-		mav.addObject("list", listResult.getList());
-		//分页参数
-		mav.addObject("pager", pager);
-		return mav;
 	}
 	
 	/**
@@ -95,31 +102,43 @@ public class JfActivityRewardAction extends BaseAction {
 	 * 活动管理添加
 	 * @param jfReward
 	 * @return Object
-	 * @throws RepsException
 	 */
 	@RequestMapping(value = "/add")
 	@ResponseBody
-	public Object add(JfReward jfReward) throws RepsException{
-		if(jfReward == null){
-			throw new RepsException("数据不完整");
+	public Object add(JfReward jfReward){
+		try {
+			if(jfReward == null){
+				throw new RepsException("数据不完整");
+			}
+			jfActivityRewardService.save(jfReward);
+			return ajax(AjaxStatus.OK, "添加成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("添加失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
 		}
-		jfActivityRewardService.save(jfReward);
-		return ajax(AjaxStatus.OK, "添加成功");
 	}
 	
 	/**
 	 * 活动管理添加页面选择活动分类，展示树形结构
-	 * @return ModelAndView
+	 * @return Object
 	 */
 	@RequestMapping(value = "/choose")
-	public ModelAndView choose() {
+	public Object choose() {
 		ModelAndView mav = new ModelAndView("/jifen/activityreward/choose");
 		JfRewardCategory jfRewardCategory = new JfRewardCategory();
 		//设置活动类别
 		jfRewardCategory.setType(ACTIVITY.getIndex());
-		List<JfRewardCategory> rewardCategoryList = jfRewardCategoryService.getRewardCategory(jfRewardCategory);
-		mav.addObject("treelist", rewardCategoryList);
-		return mav;
+		List<JfRewardCategory> rewardCategoryList;
+		try {
+			rewardCategoryList = jfRewardCategoryService.getRewardCategory(jfRewardCategory);
+			mav.addObject("treelist", rewardCategoryList);
+			return mav;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("查询参数失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
+		}
 	}
 	
 	/**
@@ -141,16 +160,21 @@ public class JfActivityRewardAction extends BaseAction {
 	 * 修改活动信息
 	 * @param jfReward
 	 * @return Object
-	 * @throws RepsException
 	 */
 	@RequestMapping(value = "/edit")
 	@ResponseBody
-	public Object edit(JfReward jfReward) throws RepsException {
-		if(jfReward == null){
-			throw new RepsException("数据不完整");
+	public Object edit(JfReward jfReward){
+		try {
+			if(jfReward == null){
+				throw new RepsException("数据不完整");
+			}
+			jfActivityRewardService.update(jfReward);
+			return ajax(AjaxStatus.OK, "修改成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("修改失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
 		}
-		jfActivityRewardService.update(jfReward);
-		return ajax(AjaxStatus.OK, "修改成功");
 	}
 	
 	/**
@@ -169,6 +193,7 @@ public class JfActivityRewardAction extends BaseAction {
 			return ajax(AjaxStatus.OK, "删除成功");
 		}
 		catch(Exception e){
+			e.printStackTrace();
 			logger.error("删除活动失败", e);
 			return ajax(AjaxStatus.ERROR, "删除失败");
 		}
@@ -190,6 +215,7 @@ public class JfActivityRewardAction extends BaseAction {
 			return ajax(AjaxStatus.OK, "删除成功");
 		}
 		catch(Exception e){
+			e.printStackTrace();
 			logger.error("批量删除活动失败", e);
 			return ajax(AjaxStatus.ERROR, "删除失败");
 		}
@@ -211,8 +237,9 @@ public class JfActivityRewardAction extends BaseAction {
 			return ajax(AjaxStatus.OK, "操作成功");
 		}
 		catch(Exception e){
+			e.printStackTrace();
 			logger.error("发布失败", e);
-			return ajax(AjaxStatus.ERROR, "发布失败");
+			return ajax(AjaxStatus.ERROR, "操作失败");
 		}
 	}
 	

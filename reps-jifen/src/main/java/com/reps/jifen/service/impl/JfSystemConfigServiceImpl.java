@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * Created on 2017/9/8.
@@ -36,13 +37,32 @@ public class JfSystemConfigServiceImpl implements IJfSystemConfigService {
     }
 
     @Override
-    public void save(JfSystemConfig config) {
+    public boolean save(JfSystemConfig config) {
+        JfSystemConfig c = new JfSystemConfig();
+        c.setCode(config.getCode());
+        List<JfSystemConfig> configList = configDao.find(c);
+        if (configList != null && configList.size() > 0) {
+            return false;
+        }
         configDao.save(config);
+        return true;
     }
 
     @Override
-    public void update(JfSystemConfig config) {
+    public boolean update(JfSystemConfig config) {
+        JfSystemConfig c = new JfSystemConfig();
+        c.setCode(config.getCode());
+        List<JfSystemConfig> configList = configDao.find(c);
+        if (configList != null) {
+            if (configList.size() > 1) {
+                return false;
+            }
+            if (configList.size() == 1 && !configList.get(0).getId().equals(config.getId())) {
+                return false;
+            }
+        }
         configDao.update(config);
+        return true;
     }
 
     @Override

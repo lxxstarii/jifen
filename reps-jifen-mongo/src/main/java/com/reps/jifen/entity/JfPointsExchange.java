@@ -32,6 +32,12 @@ public class JfPointsExchange implements Serializable{
 	
 	/** 兑换状态 */
 	private Short status;
+	
+	/** 兑换人姓名 */
+	private String name;
+	
+	/** 学校名字 */
+	private String schoolName;
 
 	public String getPersonId() {
 		return personId;
@@ -80,11 +86,27 @@ public class JfPointsExchange implements Serializable{
 	public void setStatus(Short status) {
 		this.status = status;
 	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getSchoolName() {
+		return schoolName;
+	}
+
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
+	}
 
 	@Override
 	public String toString() {
 		return "JfPointsExchange [personId=" + personId + ", rewardId=" + rewardId + ", rewardName=" + rewardName + ", points=" + points + ", exchangeTime=" + exchangeTime + ", status=" + status
-				+ "]";
+				+ ", name=" + name + ", schoolName=" + schoolName + "]";
 	}
-	
+
 }

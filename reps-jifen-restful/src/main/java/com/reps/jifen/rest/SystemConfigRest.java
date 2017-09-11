@@ -24,7 +24,7 @@ import com.reps.jifen.service.IJfSystemConfigService;
 public class SystemConfigRest extends RestBaseController{
 	
 	private final Log logger = LogFactory.getLog(SystemConfigRest.class);
-	
+
 	@Autowired
 	private IJfSystemConfigService jfSystemConfigService;
 	

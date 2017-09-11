@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.reps.core.exception.RepsException;
 import com.reps.core.orm.ListResult;
 import com.reps.core.util.StringUtil;
 import com.reps.jifen.dao.JfRewardDao;
@@ -20,6 +21,7 @@ import com.reps.jifen.service.IJfRewardService;
 
 /**
  * 积分物品业务实现类
+ * 
  * @author qianguobing
  * @date 2017年8月18日 上午10:48:17
  */
@@ -29,17 +31,17 @@ public class JfRewardServiceImpl implements IJfRewardService {
 
 	@Autowired
 	JfRewardDao dao;
-	
+
 	@Override
 	public void save(JfReward jfReward) {
 		jfReward.setCreateTime(new Date());
-		//设置是否发布，默认未发布
+		// 设置是否发布，默认未发布
 		jfReward.setIsShown(UN_PUBLISH.getIndex());
-		//设置图片信息
+		// 设置图片信息
 		setPictureUrl(jfReward);
 		dao.save(jfReward);
 	}
-	
+
 	private void setPictureUrl(JfReward jfReward) {
 		String rewardUrlOne = jfReward.getRewardUrlOne();
 		String rewardUrlTwo = jfReward.getRewardUrlTwo();
@@ -62,11 +64,14 @@ public class JfRewardServiceImpl implements IJfRewardService {
 	}
 
 	@Override
-	public JfReward get(String id) {
+	public JfReward get(String id) throws RepsException{
+		if(StringUtil.isBlank(id)) {
+			throw new RepsException("查询异常:物品ID不能为空");
+		}
 		JfReward jfReward = dao.get(id);
 		String picture = jfReward.getPicture();
-		//设置前台页面图片展示
-		if(StringUtil.isNotBlank(picture)) {
+		// 设置前台页面图片展示
+		if (StringUtil.isNotBlank(picture)) {
 			String[] picUrls = picture.split(",", -1);
 			jfReward.setRewardUrlOne(picUrls[0]);
 			jfReward.setRewardUrlTwo(picUrls[1]);
@@ -88,20 +93,10 @@ public class JfRewardServiceImpl implements IJfRewardService {
 	}
 
 	@Override
-	public JfReward getRewardByName(String name) {
-		return dao.getRewardByName(name);
-	}
-
-	@Override
-	public List<JfReward> getAllReward() {
-		return dao.getAllReward();
-	}
-
-	@Override
 	public void batchDelete(String ids) {
 		dao.batchDelete(ids);
 	}
-	
+
 	@Override
 	public void batchPublish(String ids, Short status) {
 		dao.batchUpdate(ids, status);
@@ -111,10 +106,10 @@ public class JfRewardServiceImpl implements IJfRewardService {
 	public List<JfReward> getRewardByCategoryType(JfReward jfReward) {
 		return dao.getRewardByCategoryType(jfReward);
 	}
-	
+
 	@Override
 	@Scheduled(cron = "0 0 2 * * ?")
-//	@Scheduled(cron = "*/20 * * * * ?")
+	// @Scheduled(cron = "*/20 * * * * ?")
 	public void rewardSoldOut() {
 		JfReward reward = new JfReward();
 		JfRewardCategory category = new JfRewardCategory();
@@ -123,7 +118,7 @@ public class JfRewardServiceImpl implements IJfRewardService {
 		reward.setJfRewardCategory(category);
 		List<JfReward> rewardList = getRewardByCategoryType(reward);
 		for (JfReward jfReward : rewardList) {
-			if(0 == jfReward.getNumbers().intValue()) {
+			if (0 == jfReward.getNumbers().intValue()) {
 				dao.batchUpdate(jfReward.getId(), SOLD_OUT.getIndex());
 			}
 		}
