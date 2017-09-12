@@ -54,21 +54,18 @@ public class JfRewardAction extends BaseAction {
 	 */
 	@RequestMapping(value = "/list")
 	public Object list(Pagination pager, JfReward jfReward) {
-		ModelAndView mav = getModelAndView("/jifen/reward/list");
-
-		JfRewardCategory jfRewardCategory = jfReward.getJfRewardCategory();
-		if (null == jfRewardCategory) {
-			jfRewardCategory = new JfRewardCategory();
-			jfReward.setJfRewardCategory(jfRewardCategory);
-		}
-		// 设置物品类别
-		jfRewardCategory.setType(REWARD.getIndex());
-
-		ListResult<JfReward> listResult = jfRewardService.query(pager.getStartRow(), pager.getPageSize(), jfReward);
-		// 查询物品类型
-		List<JfRewardCategory> categoryList;
 		try {
-			categoryList = jfRewardCategoryService.getRewardCategory(jfRewardCategory);
+			ModelAndView mav = getModelAndView("/jifen/reward/list");
+			JfRewardCategory jfRewardCategory = jfReward.getJfRewardCategory();
+			if (null == jfRewardCategory) {
+				jfRewardCategory = new JfRewardCategory();
+				jfReward.setJfRewardCategory(jfRewardCategory);
+			}
+			// 设置物品类别
+			jfRewardCategory.setType(REWARD.getIndex());
+			ListResult<JfReward> listResult = jfRewardService.query(pager.getStartRow(), pager.getPageSize(), jfReward);
+			// 查询物品类型
+			List<JfRewardCategory> categoryList = jfRewardCategoryService.getRewardCategory(jfRewardCategory);
 			Map<String, String> activityTypeMap = new HashMap<>();
 			activityTypeMap.put("", "全部物品");
 			for (JfRewardCategory category : categoryList) {

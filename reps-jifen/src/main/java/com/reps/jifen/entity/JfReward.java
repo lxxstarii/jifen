@@ -70,39 +70,58 @@ public class JfReward extends IdEntity implements Serializable {
 	@Column(name="finish_time")
 	private Date finishTime;
 	
+	/** 兑换物品数量 */
+	@Column(name="exchanged_count")
+	private Integer exchangedCount;
+	
 	@Transient
+	@JsonIgnore
 	private String finishTimeDisp;
 	
 	@Transient
+	@JsonIgnore
 	private String showTimeDisp;
-	
-	/** 积分范围 */
-	@Transient
-	private String pointsRange;
 	
 	/** 积分开始 */
 	@Transient
-	private String pointsBegin;
+	@JsonIgnore
+	private Integer pointBegin;
 	
 	/** 积分结束 */
 	@Transient
-	private String pointsEnd;
+	@JsonIgnore
+	private Integer pointEnd;
 	
 	/** 物品图片地址 */
 	@Transient
+	@JsonIgnore
 	private String rewardUrlOne;
 	
 	@Transient
+	@JsonIgnore
 	private String rewardUrlTwo;
 	
 	@Transient
+	@JsonIgnore
 	private String rewardUrlThree;
 	
 	@Transient
+	@JsonIgnore
 	private String rewardUrlFour;
 	
 	@Transient
+	@JsonIgnore
 	private String rewardUrlFive;
+	
+	/** 排序字段 exchanged_count（兑换记录），points（积分值），createTime（新品）*/
+	@Transient
+	@JsonIgnore
+	private String sortField;
+	
+	/** 排序顺序 asc（升序）、desc（降序）*/
+	@Transient
+	@JsonIgnore
+	private String sortOrder;
 
 	public String getCategoryId() {
 		return categoryId;
@@ -248,28 +267,44 @@ public class JfReward extends IdEntity implements Serializable {
 		this.rewardUrlFive = rewardUrlFive;
 	}
 
-	public String getPointsRange() {
-		return pointsRange;
+	public Integer getPointBegin() {
+		return pointBegin;
 	}
 
-	public void setPointsRange(String pointsRange) {
-		this.pointsRange = pointsRange;
+	public void setPointBegin(Integer pointBegin) {
+		this.pointBegin = pointBegin;
 	}
 
-	public String getPointsBegin() {
-		return pointsBegin;
+	public Integer getPointEnd() {
+		return pointEnd;
 	}
 
-	public void setPointsBegin(String pointsBegin) {
-		this.pointsBegin = pointsBegin;
+	public void setPointEnd(Integer pointEnd) {
+		this.pointEnd = pointEnd;
 	}
 
-	public String getPointsEnd() {
-		return pointsEnd;
+	public String getSortField() {
+		return sortField;
 	}
 
-	public void setPointsEnd(String pointsEnd) {
-		this.pointsEnd = pointsEnd;
+	public void setSortField(String sortField) {
+		this.sortField = sortField;
+	}
+
+	public String getSortOrder() {
+		return sortOrder;
+	}
+
+	public void setSortOrder(String sortOrder) {
+		this.sortOrder = sortOrder;
+	}
+
+	public Integer getExchangedCount() {
+		return exchangedCount;
+	}
+
+	public void setExchangedCount(Integer exchangedCount) {
+		this.exchangedCount = exchangedCount;
 	}
 	
 }

@@ -51,7 +51,7 @@ public interface IJfRewardService {
 	 * @param jfReward
 	 * @return ListResult<JfReward>
 	 */
-	ListResult<JfReward> query(int start, int pagesize, JfReward jfReward);
+	ListResult<JfReward> query(int start, int pagesize, JfReward jfReward) throws RepsException;
 
 	/**
 	 * 根据奖品分类id，得到该分类下的所有物品

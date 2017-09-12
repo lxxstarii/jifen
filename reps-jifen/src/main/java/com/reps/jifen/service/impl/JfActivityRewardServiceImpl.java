@@ -6,10 +6,13 @@ import static com.reps.jifen.entity.enums.RewardStatus.*;
 import java.util.Date;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.reps.core.exception.RepsException;
 import com.reps.core.orm.ListResult;
 import com.reps.core.util.DateUtil;
 import com.reps.core.util.StringUtil;
@@ -24,6 +27,7 @@ import com.reps.jifen.service.IJfActivityRewardService;
  * @date 2017年8月18日 上午10:48:17
  */
 @Service
+@Transactional
 public class JfActivityRewardServiceImpl implements IJfActivityRewardService {
 
 	@Autowired
@@ -56,7 +60,10 @@ public class JfActivityRewardServiceImpl implements IJfActivityRewardService {
 	}
 
 	@Override
-	public JfReward get(String id) {
+	public JfReward get(String id) throws RepsException{
+		if(StringUtil.isBlank(id)) {
+			throw new RepsException("查询异常:活动ID不能为空");
+		}
 		return dao.get(id);
 	}
 

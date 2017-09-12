@@ -83,7 +83,7 @@ public class JfRewardServiceImpl implements IJfRewardService {
 	}
 
 	@Override
-	public ListResult<JfReward> query(int start, int pagesize, JfReward jfReward) {
+	public ListResult<JfReward> query(int start, int pagesize, JfReward jfReward) throws RepsException{
 		return dao.query(start, pagesize, jfReward);
 	}
 

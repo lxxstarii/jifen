@@ -48,6 +48,7 @@ public class JfRewardDao {
 	public ListResult<JfReward> query(int start, int pagesize, JfReward jfReward) {
 		DetachedCriteria dc = DetachedCriteria.forClass(JfReward.class);
 		dc.createAlias("jfRewardCategory", "t");
+		Order order = Order.desc("createTime");
 		if (jfReward != null) {
 			String name = jfReward.getName();
 			if (StringUtil.isNotBlank(name)) {
@@ -72,11 +73,22 @@ public class JfRewardDao {
 				dc.add(Restrictions.eq("numbers", numbers));
 			}
 			Short isShown = jfReward.getIsShown();
-			if(null != isShown) {
+			if (null != isShown) {
 				dc.add(Restrictions.eq("isShown", isShown));
 			}
+			Integer pointsBegin = jfReward.getPointBegin();
+			if (null != pointsBegin) {
+				dc.add(Restrictions.ge("points", pointsBegin));
+			}
+			Integer pointsEnd = jfReward.getPointEnd();
+			if (null != pointsEnd) {
+				dc.add(Restrictions.le("points", pointsEnd));
+			}
+			String sortField = jfReward.getSortField();
+			sortField = StringUtil.isBlank(sortField) ? "createTime" : sortField;
+			order = "asc".equalsIgnoreCase(jfReward.getSortOrder()) ? Order.asc(sortField) : Order.desc(sortField);
 		}
-		return dao.query(dc, start, pagesize, Order.asc("createTime"));
+		return dao.query(dc, start, pagesize, order);
 	}
 
 	public List<JfReward> getRewardOfCategory(String cid) {

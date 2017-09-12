@@ -31,7 +31,9 @@ public class SystemConfigRest extends RestBaseController{
 	@RequestMapping(value = "/list")
 	public RestResponse<List<JfSystemConfig>> list() {
 		try {
-			List<JfSystemConfig> result = jfSystemConfigService.queryAll(null);
+			JfSystemConfig config = new JfSystemConfig();
+			config.setIsEnabled(1);
+			List<JfSystemConfig> result = jfSystemConfigService.queryAll(config);
 			return wrap(RestResponseStatus.OK, "查询成功", result);
 		} catch (Exception e) {
 			logger.error("查询异常", e);

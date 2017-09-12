@@ -1,6 +1,6 @@
 package com.reps.jifen.rest;
 
-import static com.reps.jifen.entity.enums.CategoryType.REWARD;
+import static com.reps.jifen.entity.enums.CategoryType.ACTIVITY;
 import static com.reps.jifen.util.PageUtil.cps;
 import static com.reps.jifen.util.PageUtil.getStartIndex;
 import static com.reps.jifen.util.RewardUtil.setReward;
@@ -16,19 +16,19 @@ import com.reps.core.restful.RestBaseController;
 import com.reps.core.restful.RestResponse;
 import com.reps.core.restful.RestResponseStatus;
 import com.reps.jifen.entity.JfReward;
-import com.reps.jifen.service.IJfRewardService;
+import com.reps.jifen.service.IJfActivityRewardService;
 
 @RestController
-@RequestMapping(value = "/uapi/reward")
-public class JfRewardRest extends RestBaseController {
+@RequestMapping(value = "/uapi/activity")
+public class JfActivityRewardRest extends RestBaseController {
 
-	private final Log logger = LogFactory.getLog(JfRewardRest.class);
+	private final Log logger = LogFactory.getLog(JfActivityRewardRest.class);
 
 	@Autowired
-	private IJfRewardService jfRewardService;
+	private IJfActivityRewardService jfActivityRewardService;
 	
 	/**
-	 * 查询已经发布的物品列表
+	 * 查询已经发布的活动列表
 	 * 
 	 * @param jfReward
 	 * @param pageIndex
@@ -38,9 +38,9 @@ public class JfRewardRest extends RestBaseController {
 	@RequestMapping(value = "/list")
 	public RestResponse<ListResult<JfReward>> list(JfReward jfReward, Integer pageIndex, Integer pageSize) {
 		try {
-			setReward(jfReward, REWARD.getIndex());
+			setReward(jfReward, ACTIVITY.getIndex());
 			pageSize = cps(pageSize);
-			ListResult<JfReward> result = jfRewardService.query(getStartIndex(pageIndex, pageSize), pageSize, jfReward);
+			ListResult<JfReward> result = jfActivityRewardService.query(getStartIndex(pageIndex, pageSize), pageSize, jfReward);
 			//设置页大小
 			result.setPageSize(pageSize);
 			return wrap(RestResponseStatus.OK, "查询成功", result);
@@ -52,14 +52,14 @@ public class JfRewardRest extends RestBaseController {
 	}
 	
 	/**
-	 * 物品详情
-	 * @param id 物品ID
+	 * 活动详情
+	 * @param id 活动ID
 	 * @return RestResponse<JfReward>
 	 */
 	@RequestMapping(value = "/detail")
 	public RestResponse<JfReward> detail(String id) {
 		try {
-			JfReward jfReward = jfRewardService.get(id);
+			JfReward jfReward = jfActivityRewardService.get(id);
 			return wrap(RestResponseStatus.OK, "查询成功", jfReward);
 		} catch (Exception e) {
 			e.printStackTrace();

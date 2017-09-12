@@ -23,7 +23,7 @@
 		</reps:querybuttons>
 		<reps:footbar>
 			<reps:button cssClass="add-a" action="toadd.mvc?category=${query.category}" value="新增"></reps:button>
-			<reps:ajax id="delete" cssClass="delete-a" beforeCall="deleteChecked" formId="queryForm"  value="批量删除" confirm="你确定要删除吗？" redirect="xylist.mvc"></reps:ajax>
+			<!-- <reps:ajax id="delete" cssClass="delete-a" beforeCall="deleteChecked" formId="queryForm"  value="批量删除" confirm="你确定要删除吗？" redirect="xylist.mvc"></reps:ajax>  -->  
 		</reps:footbar>
 	</reps:panel>
 	<reps:panel id="mybody" dock="center">
@@ -32,42 +32,42 @@
 				<reps:gridcheckboxfield checkboxName="id" align="center" title="" width="5">${data.id}</reps:gridcheckboxfield>
 				<reps:gridfield title="指标项" width="15" align="center">${data.item}</reps:gridfield>
 				<reps:gridfield title="指标类型" width="15" align="center">
-					<c:if test="${data.mark=='0'}">惩罚</c:if>
+					<c:if test="${data.mark=='0'}">扣除</c:if>
 					<c:if test="${data.mark=='1'}">奖励</c:if>
 				</reps:gridfield>
 				<reps:gridfield title="奖励/扣除积分" width="15" align="center">
 					<c:if test="${data.mark=='1'}">
 						<c:if test = "${data.pointsScope=='5'}">
-							+0,+1,+2,+3,+4,+5
+							+1,+2,+3,+4,+5
 						</c:if>
 						<c:if test = "${data.pointsScope=='4'}">
-							+0,+1,+2,+3,+4
+							+1,+2,+3,+4
 						</c:if>
 						<c:if test = "${data.pointsScope=='3'}">
-							+0,+1,+2,+3
+							+1,+2,+3
 						</c:if>
 						<c:if test = "${data.pointsScope=='2'}">
-							+0,+1,+2
+							+1,+2
 						</c:if>
 						<c:if test = "${data.pointsScope=='1'}">
-							+0,+1
+							+1
 						</c:if>
 					</c:if>
 					<c:if test="${data.mark=='0'}">
 						<c:if test = "${data.pointsScope=='5'}">
-							-0,-1,-2,-3,-4,-5
+							-1,-2,-3,-4,-5
 						</c:if>
 						<c:if test = "${data.pointsScope=='4'}">
-							-0,-1,-2,-3,-4
+							-1,-2,-3,-4
 						</c:if>
 						<c:if test = "${data.pointsScope=='3'}">
-							-0,-1,-2,-3
+							-1,-2,-3
 						</c:if>
 						<c:if test = "${data.pointsScope=='2'}">
-							-0,-1,-2
+							-1,-2
 						</c:if>
 						<c:if test = "${data.pointsScope=='1'}">
-							-0,-1
+							-1
 						</c:if>
 					</c:if>
 				</reps:gridfield>

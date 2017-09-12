@@ -2,6 +2,7 @@ package com.reps.jifen.service;
 
 import java.util.List;
 
+import com.reps.core.exception.RepsException;
 import com.reps.core.orm.ListResult;
 import com.reps.jifen.entity.JfReward;
 
@@ -40,7 +41,7 @@ public interface IJfActivityRewardService {
 	 * @param id
 	 * @return JfReward
 	 */
-	public JfReward get(String id);
+	public JfReward get(String id) throws RepsException;
 
 	/**
 	 * 分页查询
