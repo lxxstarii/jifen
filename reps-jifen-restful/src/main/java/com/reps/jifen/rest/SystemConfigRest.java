@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.reps.core.restful.RestBaseController;
 import com.reps.core.restful.RestResponse;
 import com.reps.core.restful.RestResponseStatus;
-import com.reps.jifen.entity.JfSystemConfig;
-import com.reps.jifen.service.IJfSystemConfigService;
+import com.reps.jifen.entity.SystemConfig;
+import com.reps.jifen.service.ISystemConfigService;
 
 /**
  * 获取积分规则
@@ -26,14 +26,14 @@ public class SystemConfigRest extends RestBaseController{
 	private final Log logger = LogFactory.getLog(SystemConfigRest.class);
 
 	@Autowired
-	private IJfSystemConfigService jfSystemConfigService;
+	private ISystemConfigService jfSystemConfigService;
 	
 	@RequestMapping(value = "/list")
-	public RestResponse<List<JfSystemConfig>> list() {
+	public RestResponse<List<SystemConfig>> list() {
 		try {
-			JfSystemConfig config = new JfSystemConfig();
+			SystemConfig config = new SystemConfig();
 			config.setIsEnabled(1);
-			List<JfSystemConfig> result = jfSystemConfigService.queryAll(config);
+			List<SystemConfig> result = jfSystemConfigService.queryAll(config);
 			return wrap(RestResponseStatus.OK, "查询成功", result);
 		} catch (Exception e) {
 			logger.error("查询异常", e);

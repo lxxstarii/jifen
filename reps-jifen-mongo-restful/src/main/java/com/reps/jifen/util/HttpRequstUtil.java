@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
 
+import net.sf.json.JSONObject;
+
 public class HttpRequstUtil {
 	
 	/**
@@ -14,7 +16,7 @@ public class HttpRequstUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String getGetUrlResponse(String path) throws Exception {
+	public static JSONObject getGetUrlResponse(String path) throws Exception {
 		String result = ""; 
 		BufferedReader in = null;
 		URL realUrl = new URL(path);
@@ -30,7 +32,8 @@ public class HttpRequstUtil {
             result += line;
         }
         in.close();
-        return result;
+        JSONObject jsonObject = (JSONObject) JSONObject.fromObject(result);
+        return jsonObject;
 	}
 	
 	/**
@@ -39,7 +42,7 @@ public class HttpRequstUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String getPostUrlResponse(String path) throws Exception {
+	public static JSONObject getPostUrlResponse(String path) throws Exception {
 		String result = ""; 
 		PrintWriter out = null;
 	    BufferedReader in = null;
@@ -62,11 +65,12 @@ public class HttpRequstUtil {
         }
         out.close();
         in.close();
-        return result;
+        JSONObject jsonObject = (JSONObject) JSONObject.fromObject(result);
+        return jsonObject;
 	}
 	
 	public static void main(String[] args) throws Exception {
-		System.out.println(getPostUrlResponse("http://localhost:8888/oapi/teacherpointsassign/save"));
+		System.out.println(getPostUrlResponse("http://localhost:8888/uapi/teacherpointsassign/save?access_token=6630a75cd299cbf071ad84db783ed3fe"));
 	}
 
 }

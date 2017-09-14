@@ -21,7 +21,7 @@ import com.reps.core.web.AjaxStatus;
 import com.reps.core.web.BaseAction;
 import com.reps.jifen.entity.TeacherPjfzxssz;
 import com.reps.jifen.entity.TeacherPjkfpjf;
-import com.reps.jifen.entity.enums.JfComeFrom;
+import com.reps.jifen.entity.enums.ComeFrom;
 import com.reps.jifen.service.ITeacherPjfzxsszService;
 import com.reps.jifen.service.ITeacherPjkfpjfService;
 import com.reps.school.entity.School;
@@ -151,11 +151,11 @@ public class TeacherJljfszAction extends BaseAction {
 						tpf.setOrganizeId(ts.getOrganizeId());
 						tpf.setPointsLeft(info.getRatio() * totalStudents);
 						tpf.setTotalPointsAuthorized(info.getRatio() * totalStudents);
-						tpf.setAuthorizedFrom(JfComeFrom.JFJLSX.getCode());
+						tpf.setAuthorizedFrom(ComeFrom.JFJLSX.getCode());
 						kfpService.save(tpf);
 					} else {
 						//跳过已被单独分配积分的老师
-						if (tpf.getAuthorizedFrom() == JfComeFrom.JFFP.getCode()) {
+						if (tpf.getAuthorizedFrom() == ComeFrom.JFFP.getCode()) {
 							continue;
 						}
 						//计算是否要重新初始化系数
@@ -258,7 +258,7 @@ public class TeacherJljfszAction extends BaseAction {
 			if (kpf == null) {
 				throw new RepsException("该教师尚未初始化可分配积分, 请先设置教师奖励系数");
 			}
-			kpf.setAuthorizedFrom(JfComeFrom.JFFP.getCode());
+			kpf.setAuthorizedFrom(ComeFrom.JFFP.getCode());
 			kpf.setTotalPointsAuthorized(kpf.getTotalPointsAuthorized() + info.getJljf());
 			kpf.setPointsLeft(kpf.getPointsLeft() + info.getJljf());
 			kfpService.update(kpf);

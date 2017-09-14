@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.reps.core.util.StringUtil;
-import com.reps.jifen.entity.JfReward;
-import com.reps.jifen.entity.JfRewardCategory;
+import com.reps.jifen.entity.PointReward;
+import com.reps.jifen.entity.RewardCategory;
 
 /**
  * 物品和活动工具类
@@ -38,11 +38,8 @@ public class RewardUtil {
 	 * @param jfReward
 	 * @param type
 	 */
-	public static void setReward(JfReward jfReward, String type) {
-		JfRewardCategory jfRewardCategory = new JfRewardCategory();
-		jfRewardCategory.setType(type);
-		jfReward.setJfRewardCategory(jfRewardCategory);
-		jfReward.setIsShown(PUBLISHED.getIndex());
+	public static void setReward(PointReward jfReward, String type) {
+		setRewardType(jfReward, type);
 		String sortField = jfReward.getSortField();
 		// 获取排序字段，默认按发布时间进行排序
 		if (StringUtil.isBlank(sortField) || !SORT_FIELD_MAP.containsKey(sortField)) {
@@ -54,6 +51,13 @@ public class RewardUtil {
 		if (!ASC.name().equalsIgnoreCase(sortOrder) && !DESC.name().equalsIgnoreCase(sortOrder)) {
 			jfReward.setSortOrder(DESC.name());
 		}
+	}
+
+	public static void setRewardType(PointReward jfReward, String type) {
+		RewardCategory jfRewardCategory = new RewardCategory();
+		jfRewardCategory.setType(type);
+		jfReward.setJfRewardCategory(jfRewardCategory);
+		jfReward.setIsShown(PUBLISHED.getIndex());
 	}
 
 }

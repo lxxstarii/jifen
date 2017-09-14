@@ -22,7 +22,7 @@
            </reps:formfield>
 			
 			<reps:formfield label="兑换截至时间" labelStyle="width:20%;" textStyle="width:20%;">
-				<reps:datepicker name="finishTimeDisp" format="yyyy-MM-dd" required="true">${activity.finishTime }</reps:datepicker>
+				<reps:datepicker id="finishTime" name="finishTimeDisp" format="yyyy-MM-dd" required="true" min="${minDate }">${activity.finishTime }</reps:datepicker>
 		    </reps:formfield>
 		    
 		    <reps:formfield label="所需积分" labelStyle="width:15%" textStyle="width:30%;">
@@ -30,7 +30,7 @@
 			</reps:formfield>
 			
 			<reps:formfield label="上线时间" labelStyle="width:20%;" textStyle="width:20%;" fullRow="true">
-				<reps:datepicker name="showTimeDisp" format="yyyy-MM-dd" required="true">${activity.showTime }</reps:datepicker>
+				<reps:datepicker id="showTime" name="showTimeDisp" format="yyyy-MM-dd" required="true" min="${minDate }">${activity.showTime }</reps:datepicker>
 		    </reps:formfield>
 		    
 			<reps:formfield label="活动详情" fullRow="true">
@@ -45,7 +45,7 @@
 		</reps:formcontent>
 		<br/>
 		<reps:formbar>
-			<reps:ajax  messageCode="add.button.save" formId="form" callBack="my" type="button" cssClass="btn_save"></reps:ajax>
+			<reps:ajax  messageCode="add.button.save" formId="form" callBack="my" type="button" cssClass="btn_save" beforeCall="checkDate"></reps:ajax>
 			<reps:button cssClass="btn_cancel_a" messageCode="add.button.cancel" onClick="back()"></reps:button>
 		</reps:formbar>
        </div>
@@ -63,18 +63,19 @@
 	
 	var getPathName = function(filename, fileType, fileSize, path) {
 		path = path.replaceAll("\\\\","/");
-		var picture = path.replace("${imagePath}","");
-		var picUrl = "${imageUploadHttpPath}" + picture;
-		$("input[name='picture']").val(getDirPath("${imagePath}") + picture);
-		$("img[name='img']").attr("src", picUrl);
+		var picture = path.replace("${imageUploadPath}","");
+		$("input[name='picture']").val(picture);
+		$("img[name='img']").attr("src", "${imagePath}" + picture);
 	};
 	
-	function getDirPath(path){
-		var index = path.indexOf(":")
-		if(index > -1){
-			return path.substring(index + 1);
+	function checkDate(){
+		var showTime = $("#showTime").val();
+		var finishTime = $("#finishTime").val();
+		if(showTime > finishTime){
+			messager.info("上线日期应该小于等于截止日期");
+			return false;
 		}
-		return path;
+		return true;
 	}
 
 </script>

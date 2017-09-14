@@ -16,8 +16,8 @@ import com.reps.core.restful.RestBaseController;
 import com.reps.core.restful.RestResponse;
 import com.reps.core.restful.RestResponseStatus;
 import com.reps.core.standard.StandardDataContext;
-import com.reps.jifen.entity.JfParentPjfzsz;
-import com.reps.jifen.service.IJfParentPjfzszService;
+import com.reps.jifen.entity.ParentPjfzsz;
+import com.reps.jifen.service.IParentPjfzszService;
 
 @RestController
 @RequestMapping(value = "/uapi/parentjc")
@@ -26,16 +26,16 @@ public class ParentJfRest extends RestBaseController {
 private final Log logger = LogFactory.getLog(TeachJfRest.class);
 	
 	@Autowired
-	IJfParentPjfzszService service;
+	IParentPjfzszService service;
 
 	@RequestMapping(value = "/list")
-	public RestResponse<Map<String, Object>> list(JfParentPjfzsz query) {
+	public RestResponse<Map<String, Object>> list(ParentPjfzsz query) {
 		RestResponse<Map<String, Object>> result = new RestResponse<>();
 		try {
 			Map<String, Object> map = new HashMap<>();
 			query.setIsEnabled((short) 1);
 			List<Map<String, Object>> listMap = new ArrayList<>();
-			List<JfParentPjfzsz> list = service.find(query);
+			List<ParentPjfzsz> list = service.find(query);
 			fillStudyRewardList(list, listMap);
 			map.put("data", listMap);
 			result.setResult(map);
@@ -50,9 +50,9 @@ private final Log logger = LogFactory.getLog(TeachJfRest.class);
 		return result;
 	}
 	
-	private void fillStudyRewardList(List<JfParentPjfzsz> list, List<Map<String, Object>> listMap) {
+	private void fillStudyRewardList(List<ParentPjfzsz> list, List<Map<String, Object>> listMap) {
 		if (list != null && !list.isEmpty()) {
-			for (JfParentPjfzsz data : list) {
+			for (ParentPjfzsz data : list) {
 				Map<String, Object> map = new HashMap<>();
 				map.put("id", data.getId());
 				map.put("item", data.getItem());
