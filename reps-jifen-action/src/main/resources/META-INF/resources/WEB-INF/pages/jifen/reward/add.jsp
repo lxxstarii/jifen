@@ -31,7 +31,7 @@
 				<reps:input name="numbers" dataType="integernum" required="true"></reps:input>
 			</reps:formfield>
 			
-			<reps:formfield label="物品图片1" fullRow="true">
+			<reps:formfield label="首页物品图片" fullRow="true">
 				<reps:upload id="file1" callBack="getPathNameOne" value="上传图片"  flagAbsolute="true"  path="${imageUploadPath}/jifen/reward" cssClass="uploading-a" fileType="png,jpg" coverage="true" size="2"></reps:upload>
 				<input type="hidden" name="rewardUrlOne" id="rewardUrlOne"/>
 				<span id="rewardPicOne"><font color="red">只能上传(png、jpg)格式,2M以内</font></span>
@@ -62,13 +62,13 @@
            </reps:formfield>
 			
 			<reps:formfield label="物品详情" fullRow="true">
-				<textarea class="fl"  name="description" id="contentId" style="width: 515px;height: 300px;"></textarea>
+				<reps:input name="description" maxLength="200" multiLine="true" style="width:515px;height:70px" required="true"></reps:input>
 			</reps:formfield>
 			
 		</reps:formcontent>
 		<br/>
 		<reps:formbar>
-			<reps:ajax  messageCode="add.button.save" formId="form" callBack="my" type="button" cssClass="btn_save"></reps:ajax>
+			<reps:ajax  messageCode="add.button.save" formId="form" callBack="my" type="button" cssClass="btn_save" beforeCall="checkIndexPicture"></reps:ajax>
 			<reps:button cssClass="btn_cancel_a" messageCode="add.button.cancel" onClick="back()"></reps:button>
 		</reps:formbar>
        </div>
@@ -118,6 +118,16 @@
 		$("#rewardUrlFive").val(picture);
 		$("#rewardPicFive").html(picture);
 	};
+	
+	var checkIndexPicture = function(){
+  		var picture = $("#rewardUrlOne").val();
+  		if(!picture){
+  			messager.info("请上传首页物品图片！");
+  			return false;
+  		}else{
+  			return true;
+  		}
+  	}
 	
 </script>
 </html>

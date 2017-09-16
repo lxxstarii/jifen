@@ -5,8 +5,10 @@ import static com.reps.core.commons.OrderCondition.OrderDirection.DESC;
 import static com.reps.jifen.entity.enums.RewardStatus.PUBLISHED;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.reps.core.exception.RepsException;
 import com.reps.core.util.StringUtil;
 import com.reps.jifen.entity.PointReward;
 import com.reps.jifen.entity.RewardCategory;
@@ -59,5 +61,25 @@ public class RewardUtil {
 		jfReward.setJfRewardCategory(jfRewardCategory);
 		jfReward.setIsShown(PUBLISHED.getIndex());
 	}
-
+	
+	/**
+	 * 设置图片地址
+	 * @param list
+	 * @param imageServerPath
+	 * @throws RepsException
+	 */
+	public static void setPictureUrls(List<PointReward> list, String imageServerPath) throws RepsException{
+		for (PointReward jfReward : list) {
+			String picture = jfReward.getPicture();
+			if(StringUtil.isNotBlank(picture)) {
+				String uri = picture.split(",", -1)[0];
+				if(StringUtil.isNotBlank(uri)) {
+					jfReward.setPicture(imageServerPath + uri);
+				}else {
+					jfReward.setPicture(uri);
+				}
+			}
+		}
+	}
+	
 }

@@ -52,7 +52,7 @@ public class PointLevelDao {
 	
 	public List<PointLevel> queryAll(PointLevel jfPointLevel) {
 		DetachedCriteria dc = DetachedCriteria.forClass(PointLevel.class);
-		dc.addOrder(Order.asc("points"));
+		dc.addOrder(Order.asc("point"));
 		return dao.findByCriteria(dc);
 	}
 

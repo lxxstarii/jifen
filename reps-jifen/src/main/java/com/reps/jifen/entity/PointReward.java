@@ -71,7 +71,7 @@ public class PointReward extends IdEntity implements Serializable {
 	private Date finishTime;
 	
 	/** 兑换物品数量 */
-	@Column(name="exchanged_count")
+	@Column(name="exchanged_count", updatable=false)
 	private Integer exchangedCount;
 	
 	@Transient

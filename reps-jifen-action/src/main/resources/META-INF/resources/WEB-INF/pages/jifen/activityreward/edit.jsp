@@ -39,13 +39,13 @@
 			
 			 <reps:formfield label="图片" fullRow="true">
 				<img name="img" width="128px",height="128px" src="${imagePath}${activity.picture}"/> <br>
-				<input type="hidden" name="picture" value="${activity.picture }"/>
+				<input type="hidden" id="pic" name="picture" value="${activity.picture }"/>
 				<reps:upload id="pictureid" callBack="getPathName" value="上传图片"  flagAbsolute="true"  path="${imageUploadPath}/jifen/activity" cssClass="uploading-a" fileType="png,jpg" coverage="true" size="2"></reps:upload>
            </reps:formfield>
 		</reps:formcontent>
 		<br/>
 		<reps:formbar>
-			<reps:ajax  messageCode="add.button.save" formId="form" callBack="my" type="button" cssClass="btn_save" beforeCall="checkDate"></reps:ajax>
+			<reps:ajax  messageCode="add.button.save" formId="form" callBack="my" type="button" cssClass="btn_save" beforeCall="checkFieldParams"></reps:ajax>
 			<reps:button cssClass="btn_cancel_a" messageCode="add.button.cancel" onClick="back()"></reps:button>
 		</reps:formbar>
        </div>
@@ -68,13 +68,18 @@
 		$("img[name='img']").attr("src", "${imagePath}" + picture);
 	};
 	
-	function checkDate(){
+	function checkFieldParams(){
 		var showTime = $("#showTime").val();
 		var finishTime = $("#finishTime").val();
 		if(showTime > finishTime){
 			messager.info("上线日期应该小于等于截止日期");
 			return false;
 		}
+		var picture = $("#pic").val();
+		if(!picture){
+  			messager.info("请上传首页物品图片！");
+  			return false;
+  		}
 		return true;
 	}
 

@@ -5,6 +5,7 @@ import static com.reps.jifen.util.PageUtil.cps;
 import static com.reps.jifen.util.PageUtil.getStartIndex;
 import static com.reps.jifen.util.RewardUtil.setReward;
 import static com.reps.jifen.util.RewardUtil.setRewardType;
+import static com.reps.jifen.util.RewardUtil.setPictureUrls;
 
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class ActivityRewardORest extends RestBaseController {
 			}
 			// 设置页大小
 			result.setPageSize(pageSize);
-			setPictureUrls(result.getList());
+			setPictureUrls(result.getList(), this.getFileHttpPath());
 			return wrap(RestResponseStatus.OK, "查询成功", result);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,7 +80,7 @@ public class ActivityRewardORest extends RestBaseController {
 			}
 			List<PointReward> result = resultList.getList();
 			//设置图片地址
-			setPictureUrls(result);
+			setPictureUrls(result, this.getFileHttpPath());
 			return wrap(RestResponseStatus.OK, "查询成功", result);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -108,12 +109,6 @@ public class ActivityRewardORest extends RestBaseController {
 			e.printStackTrace();
 			logger.error("查询异常", e);
 			return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-		}
-	}
-	
-	private void setPictureUrls(List<PointReward> list) throws RepsException{
-		for (PointReward jfReward : list) {
-			jfReward.setPicture(this.getFileFullUrl(jfReward.getPicture(), null));
 		}
 	}
 	

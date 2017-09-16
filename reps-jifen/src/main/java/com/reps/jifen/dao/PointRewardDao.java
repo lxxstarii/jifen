@@ -84,6 +84,10 @@ public class PointRewardDao {
 			if (null != pointsEnd) {
 				dc.add(Restrictions.le("points", pointsEnd));
 			}
+			Integer points = jfReward.getPoints();
+			if(null != points) {
+				dc.add(Restrictions.le("points", points));
+			}
 			String sortField = jfReward.getSortField();
 			sortField = StringUtil.isBlank(sortField) ? "points" : sortField;
 			order = "asc".equalsIgnoreCase(jfReward.getSortOrder()) ? Order.asc(sortField) : Order.desc(sortField);
@@ -102,13 +106,13 @@ public class PointRewardDao {
 	}
 
 	public void batchDelete(String ids) {
-		StringBuilder sb = new StringBuilder("delete JfReward bean");
+		StringBuilder sb = new StringBuilder("delete PointReward bean");
 		sb.append(" where bean.id in (" + formatSql(ids) + ")");
 		this.dao.execute(sb.toString());
 	}
 
 	public void batchUpdate(String ids, Short isShown) {
-		StringBuffer sb = new StringBuffer("update JfReward bean");
+		StringBuffer sb = new StringBuffer("update PointReward bean");
 		sb.append(" set bean.isShown=" + isShown);
 		sb.append(" where bean.id in (" + formatSql(ids) + ")");
 		this.dao.execute(sb.toString());
