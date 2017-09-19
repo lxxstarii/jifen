@@ -10,36 +10,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.reps.core.orm.IGenericDao;
-import com.reps.jifen.entity.ConsigneeAddress;
+import com.reps.jifen.entity.DeliveryAddress;
 
 @Repository
-public class ConsigneeAddressDao {
+public class DeliveryAddressDao {
 
 	@Autowired
-	IGenericDao<ConsigneeAddress> dao;
+	IGenericDao<DeliveryAddress> dao;
 	
-	public void save(ConsigneeAddress data) {
+	public void save(DeliveryAddress data) {
 		dao.save(data);
 	}
 	
-	public void update(ConsigneeAddress data) {
+	public void update(DeliveryAddress data) {
 		dao.update(data);
 	}
 	
-	public ConsigneeAddress get(String id) {
-		ConsigneeAddress data = dao.get(ConsigneeAddress.class, id);
+	public DeliveryAddress get(String id) {
+		DeliveryAddress data = dao.get(DeliveryAddress.class, id);
 		return data;
 	}
 	
 	public void delete(String id) {
-		ConsigneeAddress data = get(id);
+		DeliveryAddress data = get(id);
 		if (data != null) {
 			dao.delete(data);
 		}
 	}
 	
-	public List<ConsigneeAddress> find(ConsigneeAddress query) {
-		DetachedCriteria dc = DetachedCriteria.forClass(ConsigneeAddress.class);
+	public List<DeliveryAddress> find(DeliveryAddress query) {
+		DetachedCriteria dc = DetachedCriteria.forClass(DeliveryAddress.class);
 		if (query != null) {
 			if (StringUtils.isBlank(query.getPersonId())) {
 				dc.add(Restrictions.eq("personId", query.getPersonId()));

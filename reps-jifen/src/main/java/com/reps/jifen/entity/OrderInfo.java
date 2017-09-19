@@ -2,14 +2,16 @@ package com.reps.jifen.entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.reps.core.orm.IdEntity;
 
 @Entity
-@Table(name = "reps_jf_goods_exchange")
-public class GoodsExchange extends IdEntity {
+@Table(name = "reps_jf_order_info")
+public class OrderInfo extends IdEntity {
 
 	private static final long serialVersionUID = 8912407883547937837L;
 	
@@ -22,50 +24,62 @@ public class GoodsExchange extends IdEntity {
 	public static final Integer FINISH = 3; //完成
 
 	/**订单号*/
-	private String orderNum;
+	@Column(name = "order_no")
+	private String orderNo;
 	
 	/***/
+	@Column(name = "person_id")
 	private String personId;
 	
 	/**收货人*/
+	@Column(name = "consignee_name")
 	private String consigneeName;
 	
 	/**收货地址*/
+	@Column(name = "address")
 	private String address;
 	
 	/**联系电话*/
+	@Column(name = "phone")
 	private String phone;
 	
 	/**物品id*/
+	@Column(name = "reward_id")
 	private String rewardId;
 	
 	/**物品名称*/
+	@Column(name = "reward_name")
 	private String rewardName;
 	
 	/**兑换数量*/
+	@Column(name = "nums")
 	private Integer nums;
 	
 	/**所需积分*/
+	@Column(name = "used_points")
 	private Integer usedPoints;
 	
 	/**订单状态*/
-	private Integer state;
+	@Column(name = "status")
+	private Integer status;
 	
+	@Column(name = "create_time")
 	private Date createTime;
 	
 	/**快递公司*/
+	@Column(name = "express_company")
 	private String expressCompany;
 	
 	/**运单号 */
-	private String wayBillNum;
+	@Column(name = "shipment_no")
+	private String shipmentNo;
+	
+	@Transient
+	private String schoolId;
+	
+	@Transient
+	private String schoolName;
 
-	public String getOrderNum() {
-		return orderNum;
-	}
-
-	public void setOrderNum(String orderNum) {
-		this.orderNum = orderNum;
-	}
 
 	public String getConsigneeName() {
 		return consigneeName;
@@ -115,13 +129,6 @@ public class GoodsExchange extends IdEntity {
 		this.usedPoints = usedPoints;
 	}
 
-	public Integer getState() {
-		return state;
-	}
-
-	public void setState(Integer state) {
-		this.state = state;
-	}
 
 	public String getPersonId() {
 		return personId;
@@ -147,19 +154,51 @@ public class GoodsExchange extends IdEntity {
 		this.expressCompany = expressCompany;
 	}
 
-	public String getWayBillNum() {
-		return wayBillNum;
-	}
-
-	public void setWayBillNum(String wayBillNum) {
-		this.wayBillNum = wayBillNum;
-	}
-
 	public String getRewardName() {
 		return rewardName;
 	}
 
 	public void setRewardName(String rewardName) {
 		this.rewardName = rewardName;
+	}
+
+	public String getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public String getShipmentNo() {
+		return shipmentNo;
+	}
+
+	public void setShipmentNo(String shipmentNo) {
+		this.shipmentNo = shipmentNo;
+	}
+
+	public String getSchoolId() {
+		return schoolId;
+	}
+
+	public void setSchoolId(String schoolId) {
+		this.schoolId = schoolId;
+	}
+
+	public String getSchoolName() {
+		return schoolName;
+	}
+
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
 	}
 }

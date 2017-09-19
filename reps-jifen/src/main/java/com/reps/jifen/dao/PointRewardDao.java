@@ -106,15 +106,22 @@ public class PointRewardDao {
 	}
 
 	public void batchDelete(String ids) {
-		StringBuilder sb = new StringBuilder("delete PointReward bean");
+		StringBuilder sb = new StringBuilder("delete " + PointReward.class.getName() + " bean");
 		sb.append(" where bean.id in (" + formatSql(ids) + ")");
 		this.dao.execute(sb.toString());
 	}
 
 	public void batchUpdate(String ids, Short isShown) {
-		StringBuffer sb = new StringBuffer("update PointReward bean");
+		StringBuffer sb = new StringBuffer("update " + PointReward.class.getName() + " bean");
 		sb.append(" set bean.isShown=" + isShown);
 		sb.append(" where bean.id in (" + formatSql(ids) + ")");
+		this.dao.execute(sb.toString());
+	}
+	
+	public void updateFinishTime(String id, String finishTime) {
+		StringBuffer sb = new StringBuffer("update " + PointReward.class.getName() + " bean");
+		sb.append(" set bean.finishTime='" + finishTime + "'");
+		sb.append(" where bean.id='" + id + "'");
 		this.dao.execute(sb.toString());
 	}
 	

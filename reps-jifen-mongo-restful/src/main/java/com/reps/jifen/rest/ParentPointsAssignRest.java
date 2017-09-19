@@ -29,6 +29,7 @@ import com.reps.jifen.service.IParentPointsAssignService;
 import com.reps.jifen.service.IPointsAggregateService;
 import com.reps.jifen.service.IPointsCollectService;
 import com.reps.jifen.util.HttpRequstUtil;
+import com.reps.jifen.vo.UrlConstant;
 
 @RestController
 @RequestMapping(value = "/uapi/parentpointsassign")
@@ -49,7 +50,7 @@ public class ParentPointsAssignRest extends RestBaseController {
 	@Autowired
 	IPointsCollectService collectService;
 	
-	@Value("${http.jflevel.url}")
+	@Value("${http.jifen.url}")
 	private String levelUrl;
 
 	@RequestMapping(value = "/list", method = { RequestMethod.GET })
@@ -106,7 +107,7 @@ public class ParentPointsAssignRest extends RestBaseController {
 			aggregate.setTotalPointsUsable(aggregate.getTotalPointsUsable() + info.getPoints());
 			//获取个人积分级别 修改个人积分累计级别
 			JSONObject jsonObject = HttpRequstUtil.getGetUrlResponse(levelUrl 
-					+ "/uapi/pointlevel/getlevel?access_token=" + request.getParameter("access_token") + "&points=" + aggregate.getTotalPointsUsable());
+					+ UrlConstant.GET_LEVEL + "?access_token=" + request.getParameter("access_token") + "&points=" + aggregate.getTotalPointsUsable());
 			if (jsonObject != null) {
 				if (jsonObject.getInt("status") == 200) {
 					aggregate.setLevel((short) jsonObject.getInt("result"));

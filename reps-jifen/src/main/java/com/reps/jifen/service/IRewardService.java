@@ -72,7 +72,7 @@ public interface IRewardService {
 	 * @param ids
 	 * @param status
 	 */
-	public void batchPublish(String ids, Short status);
+	public void batchPublish(String ids, Short status) throws RepsException;
 	
 	/**
 	 * 根据分类类别查询物品

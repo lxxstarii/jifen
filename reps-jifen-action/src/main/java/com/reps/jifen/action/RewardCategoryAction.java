@@ -73,6 +73,7 @@ public class RewardCategoryAction extends BaseAction {
 		//分页数据
 		mav.addObject("list", listResult.getList());
 		//分页参数
+		pager.setTotalRecord(listResult.getCount().longValue());
 		mav.addObject("pager", pager);
 				
 		return mav;

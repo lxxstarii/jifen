@@ -38,7 +38,7 @@
 				   ${reward.rewardUrlOne}
 				   </c:when>
 				   <c:otherwise>
-				   <font color="red">只能上传(png、jpg)格式,2M以内</font></span>
+				   <font color="red">只能上传(png、jpg)格式,建议尺寸（200x240）2M以内</font></span>
 				   </c:otherwise>
 				</c:choose>
            </reps:formfield>

@@ -1,20 +1,25 @@
 package com.reps.jifen.service.impl;
 
-import static com.reps.jifen.entity.enums.CategoryType.*;
-import static com.reps.jifen.entity.enums.RewardStatus.*;
+import static com.reps.core.util.DateUtil.format;
+import static com.reps.core.util.DateUtil.getDateFromStr;
+import static com.reps.jifen.entity.enums.CategoryType.ACTIVITY;
+import static com.reps.jifen.entity.enums.RewardStatus.PUBLISHED;
+import static com.reps.jifen.entity.enums.RewardStatus.SOLD_OUT;
+import static com.reps.jifen.entity.enums.RewardStatus.UN_PUBLISH;
 
 import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.reps.core.exception.RepsException;
 import com.reps.core.orm.ListResult;
-import com.reps.core.util.DateUtil;
 import com.reps.core.util.StringUtil;
 import com.reps.jifen.dao.PointRewardDao;
 import com.reps.jifen.entity.PointReward;
@@ -29,6 +34,8 @@ import com.reps.jifen.service.IActivityRewardService;
 @Service
 @Transactional
 public class ActivityRewardServiceImpl implements IActivityRewardService {
+	
+	protected final Logger logger = LoggerFactory.getLogger(ActivityRewardServiceImpl.class);
 
 	@Autowired
 	PointRewardDao dao;
@@ -57,7 +64,7 @@ public class ActivityRewardServiceImpl implements IActivityRewardService {
 		}
 		Integer exchangedCount = jfReward.getExchangedCount();
 		if(null != exchangedCount && exchangedCount.intValue() > 0) {
-			throw new RepsException("删除异常:该活动有兑换记录不能删除");
+			throw new RepsException("删除异常:该活动有人参与过不能删除");
 		}
 		dao.delete(jfReward);
 	}
@@ -89,7 +96,7 @@ public class ActivityRewardServiceImpl implements IActivityRewardService {
 	private Date setFinishTimeDisp(PointReward jfReward) {
 		String finishTimeDisp = jfReward.getFinishTimeDisp();
 		if(StringUtil.isNotBlank(finishTimeDisp)) {
-			Date finishTime = DateUtil.getDateFromStr(finishTimeDisp, "yyyy-MM-dd");
+			Date finishTime = getDateFromStr(finishTimeDisp, "yyyy-MM-dd");
 			jfReward.setFinishTime(finishTime);
 			return finishTime;
 		}else {
@@ -100,7 +107,7 @@ public class ActivityRewardServiceImpl implements IActivityRewardService {
 	private Date setShowTimeDisp(PointReward jfReward) {
 		String showTimeDisp = jfReward.getShowTimeDisp();
 		if(StringUtil.isNotBlank(showTimeDisp)) {
-			Date showTime = DateUtil.getDateFromStr(showTimeDisp, "yyyy-MM-dd");
+			Date showTime = getDateFromStr(showTimeDisp, "yyyy-MM-dd");
 			jfReward.setShowTime(showTime);
 			return showTime;
 		}else {
@@ -119,33 +126,73 @@ public class ActivityRewardServiceImpl implements IActivityRewardService {
 	}
 	
 	@Override
-	public void batchPublish(String ids, Short status) {
+	public void batchPublish(String ids, Short status) throws RepsException{
+		if (StringUtil.isBlank(ids)) {
+			throw new RepsException("发布异常:活动ID不能为空");
+		}
+		if (null == status) {
+			throw new RepsException("发布异常:活动状态不能为空");
+		}
+		String[] idArray = ids.split(",");
+		for (String id : idArray) {
+			PointReward pointReward = this.get(id);
+			Date finishTime = pointReward.getFinishTime();
+			if(finishTime.getTime() < getDateFromStr(format(new Date(), "yyyy-MM-dd"), "yyyy-MM-dd").getTime()) {
+				throw new RepsException("发布异常:活动截止时间小于当前时间,请修改截止时间后再发布！");
+			}
+		}
 		dao.batchUpdate(ids, status);
 	}
 	
 	@Scheduled(cron = "0 0 2 * * ?")
 //	@Scheduled(cron = "*/20 * * * * ?")
 	public void activityExpired() {
-		PointReward jfReward = new PointReward();
-		RewardCategory category = new RewardCategory();
-		category.setType(ACTIVITY.getIndex());
-		jfReward.setIsShown(PUBLISHED.getIndex());
-		jfReward.setJfRewardCategory(category);
-		List<PointReward> activityList = getActivityRewardByCategoryType(jfReward);
-		//获取当前系统时间
-		long currentTime = System.currentTimeMillis();
-		for (PointReward activity : activityList) {
-			//获取活动过期时间
-			long expireTime = activity.getFinishTime().getTime();
-			if(expireTime - currentTime < 0) {
-				dao.batchUpdate(activity.getId(), SOLD_OUT.getIndex());
+		try {
+			PointReward jfReward = new PointReward();
+			RewardCategory category = new RewardCategory();
+			category.setType(ACTIVITY.getIndex());
+			jfReward.setIsShown(PUBLISHED.getIndex());
+			jfReward.setJfRewardCategory(category);
+			List<PointReward> activityList = getActivityRewardByCategoryType(jfReward);
+			//获取当前系统时间
+			long currentTime = getDateFromStr(format(new Date(), "yyyy-MM-dd"), "yyyy-MM-dd").getTime();
+			for (PointReward activity : activityList) {
+				//获取活动过期时间
+				long expireTime = activity.getFinishTime().getTime();
+				if(expireTime - currentTime < 0) {
+					try {
+						dao.batchUpdate(activity.getId(), SOLD_OUT.getIndex());
+					} catch (Exception e) {
+						logger.error("活动过期状态更新失败,该活动信息为:活动ID " + jfReward.getId() + ", 活动状态  " + jfReward.getIsShown() + ", 活动截止时间 " + jfReward.getFinishTime());
+					}
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("活动过期异常", e);
 		}
 	}
 
 	@Override
 	public List<PointReward> getActivityRewardByCategoryType(PointReward jfReward) {
 		return dao.getRewardByCategoryType(jfReward);
+	}
+	
+	@Override
+	public void delay(PointReward jfReward) throws RepsException {
+		if(null == jfReward) {
+			throw new RepsException("活动数据异常");
+		}
+		String id = jfReward.getId();
+		if(StringUtil.isBlank(id)) {
+			throw new RepsException("数据异常:活动ID不能为空");
+		}
+		String finishTime = jfReward.getFinishTimeDisp();
+		if(StringUtil.isBlank(finishTime)) {
+			throw new RepsException("数据异常:活动截止时间不能为空");
+		}
+		dao.updateFinishTime(id, finishTime);
+		batchPublish(id, PUBLISHED.getIndex());
 	}
 
 }

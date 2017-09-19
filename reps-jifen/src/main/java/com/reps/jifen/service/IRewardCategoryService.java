@@ -1,6 +1,7 @@
 package com.reps.jifen.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.reps.core.exception.RepsException;
 import com.reps.core.orm.ListResult;
@@ -60,5 +61,12 @@ public interface IRewardCategoryService {
 	 * @return List<JfRewardCategory>
 	 */
 	public List<RewardCategory> getRewardCategory(RewardCategory jfRewardCategory) throws RepsException;
+
+	/**
+	 * 递归构造子树
+	 * @param list
+	 * @return List<Map<String, Object>>
+	 */
+	public List<Map<String, Object>> buildTreeNode(List<RewardCategory> parentlist);
 	
 }

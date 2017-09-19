@@ -15,14 +15,15 @@ import com.reps.core.orm.IdEntity;
  *
  */
 @Entity
-@Table(name = "reps_jf_shipping_address")
-public class ConsigneeAddress extends IdEntity {
+@Table(name = "reps_jf_delivery_address")
+public class DeliveryAddress extends IdEntity {
 
 	private static final long serialVersionUID = 1028287676736172280L;
 
-	/**收货人id*/
+	/**收货地址创建人id*/
 	@Column(name = "person_id")
 	private String personId;
+	
 	/**收货人*/
 	@Column(name = "consignee_name")
 	private String consigneeName;
@@ -37,7 +38,7 @@ public class ConsigneeAddress extends IdEntity {
 	
 	/**邮政编码*/
 	@Column(name = "postal_code")
-	private Integer postalcode;
+	private String postalcode;
 	
 	/**联系电话*/
 	@Column(name = "phone")
@@ -77,11 +78,11 @@ public class ConsigneeAddress extends IdEntity {
 		this.detailAddress = detailAddress;
 	}
 
-	public Integer getPostalcode() {
+	public String getPostalcode() {
 		return postalcode;
 	}
 
-	public void setPostalcode(Integer postalcode) {
+	public void setPostalcode(String postalcode) {
 		this.postalcode = postalcode;
 	}
 

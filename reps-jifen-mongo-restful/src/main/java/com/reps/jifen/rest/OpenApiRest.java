@@ -20,8 +20,6 @@ import com.reps.jifen.service.IPointsAggregateService;
 import com.reps.jifen.service.IPointsCollectService;
 import com.reps.jifen.util.HttpRequstUtil;
 
-import net.sf.json.JSONObject;
-
 @RestController
 @RequestMapping(value = "/oapi/openapi")
 public class OpenApiRest extends RestBaseController {
@@ -34,7 +32,7 @@ public class OpenApiRest extends RestBaseController {
 	@Autowired
 	IPointsAggregateService aggreateService;
 	
-	@Value("${http.jflevel.url}")
+	@Value("${http.jifen.url}")
 	private String levelUrl;
 
 	@RequestMapping(value = "/savejfcollect")

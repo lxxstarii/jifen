@@ -34,6 +34,12 @@ public interface IActivityRewardService {
 	 * @param jfReward
 	 */
 	public void update(PointReward jfReward);
+	
+	/**
+	 * 活动延期
+	 * @param jfReward
+	 */
+	public void delay(PointReward jfReward) throws RepsException;
 
 	/**
 	 * 通过指定id获得对象
@@ -72,7 +78,7 @@ public interface IActivityRewardService {
 	 * @param ids
 	 * @param status
 	 */
-	public void batchPublish(String ids, Short status);
+	public void batchPublish(String ids, Short status) throws RepsException;
 	
 	/**
 	 * 根据分类类别查询活动

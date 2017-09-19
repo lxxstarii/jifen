@@ -57,7 +57,7 @@ public class ParentPjfzszServiceImpl implements IParentPjfzszService {
 			}
 			bean.setPointsScopeDisp(sb.deleteCharAt(sb.toString().indexOf(",")).toString());
 		}
-		return dao.query(start, pagesize, jfParentPjfzsz);
+		return parentPjfzszList;
 	}
 
 	@Override

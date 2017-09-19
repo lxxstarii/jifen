@@ -10,7 +10,8 @@ public enum Sources {
 	TEACHER_REWARD("TeacherReward", "教师奖励"),
 	TEACHER_DEDUCT("TeacherDeduct", "教师扣除"),
 	PARENT_REWARD("ParentReward", "家长奖励"),
-	PARENT_DEDUCT("ParentDeduct", "家长扣除");
+	PARENT_DEDUCT("ParentDeduct", "家长扣除"),
+	GOODS_EXCHANGE("GoodsExchange", "物品兑换");
 
 	private String name;
 	

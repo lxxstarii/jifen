@@ -40,6 +40,7 @@
 			<reps:formfield label="图片" labelStyle="width:15%" textStyle="width:30%;">
 				<img name="img" width="128px",height="128px"/> <br>
 				<reps:upload id="pictureid" callBack="getPathName" value="上传图片"  flagAbsolute="true"  path="${imageUploadPath}/jifen/activity" cssClass="uploading-a" fileType="png,jpg" coverage="true" size="2" reName="true"></reps:upload>
+				<span id="tips"><font color="red">只能上传(png、jpg)格式,建议尺寸（200x240）2M以内</font></span>
 				<input type="hidden" name="picture" id="pic"/>
            </reps:formfield>
 		</reps:formcontent>
@@ -66,6 +67,7 @@
 		var picture = path.replace("${imageUploadPath}","");
 		$("input[name='picture']").val(picture);
 		$("img[name='img']").attr("src", "${imagePath}" + picture);
+		$('#tips').html("");
 	};
 	
 	function checkFieldParams(){

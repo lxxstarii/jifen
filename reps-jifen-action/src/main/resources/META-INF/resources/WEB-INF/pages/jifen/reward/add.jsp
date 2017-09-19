@@ -34,7 +34,7 @@
 			<reps:formfield label="首页物品图片" fullRow="true">
 				<reps:upload id="file1" callBack="getPathNameOne" value="上传图片"  flagAbsolute="true"  path="${imageUploadPath}/jifen/reward" cssClass="uploading-a" fileType="png,jpg" coverage="true" size="2"></reps:upload>
 				<input type="hidden" name="rewardUrlOne" id="rewardUrlOne"/>
-				<span id="rewardPicOne"><font color="red">只能上传(png、jpg)格式,2M以内</font></span>
+				<span id="rewardPicOne"><font color="red">只能上传(png、jpg)格式,建议尺寸（200x240）2M以内</font></span>
            </reps:formfield>
            
            <reps:formfield label="物品图片2" fullRow="true">

@@ -27,6 +27,7 @@
 				<reps:upload id="picture" callBack="getPathName" value="上传图片"  flagAbsolute="true"  path="${imageUploadPath}/jifen/pjzb" reName="true" cssClass="uploading-a" fileType="png,jpg" ></reps:upload>
 				<img name="img" width="50px",height="40px"/> 
 				<input type="hidden" name="icon"/>
+				<span style="color:red;font-size:18px">*</span>
            </reps:formfield>
             <reps:formfield label="详细说明" fullRow="true">
 				<reps:input name="description"  multiLine="true" style="width:500px;height:80px;"></reps:input>

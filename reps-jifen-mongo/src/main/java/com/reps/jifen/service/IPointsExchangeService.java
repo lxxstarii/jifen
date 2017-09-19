@@ -15,4 +15,5 @@ public interface IPointsExchangeService {
 	 */
 	public ListResult<PointsExchange> findByPersonId(String personId, Integer pageIndex, Integer pageSize) throws RepsException;
 	
+	void save(PointsExchange data);
 }

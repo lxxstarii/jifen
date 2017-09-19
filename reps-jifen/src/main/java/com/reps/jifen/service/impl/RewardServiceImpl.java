@@ -1,11 +1,15 @@
 package com.reps.jifen.service.impl;
 
-import static com.reps.jifen.entity.enums.CategoryType.*;
-import static com.reps.jifen.entity.enums.RewardStatus.*;
+import static com.reps.jifen.entity.enums.CategoryType.REWARD;
+import static com.reps.jifen.entity.enums.RewardStatus.PUBLISHED;
+import static com.reps.jifen.entity.enums.RewardStatus.SOLD_OUT;
+import static com.reps.jifen.entity.enums.RewardStatus.UN_PUBLISH;
 
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -29,6 +33,8 @@ import com.reps.jifen.service.IRewardService;
 @Transactional
 public class RewardServiceImpl implements IRewardService {
 
+	protected final Logger logger = LoggerFactory.getLogger(RewardServiceImpl.class);
+	
 	@Autowired
 	PointRewardDao dao;
 
@@ -109,7 +115,21 @@ public class RewardServiceImpl implements IRewardService {
 	}
 
 	@Override
-	public void batchPublish(String ids, Short status) {
+	public void batchPublish(String ids, Short status) throws RepsException{
+		if (StringUtil.isBlank(ids)) {
+			throw new RepsException("发布异常:物品ID不能为空");
+		}
+		if (null == status) {
+			throw new RepsException("发布异常:物品状态不能为空");
+		}
+		String[] idArray = ids.split(",");
+		for (String id : idArray) {
+			PointReward pointReward = this.get(id);
+			Integer numbers = pointReward.getNumbers();
+			if(null == numbers || numbers.intValue() == 0) {
+				throw new RepsException("该物品库存为零，请增加该物品的库存");
+			}
+		}
 		dao.batchUpdate(ids, status);
 	}
 
@@ -122,16 +142,26 @@ public class RewardServiceImpl implements IRewardService {
 	@Scheduled(cron = "0 0 2 * * ?")
 	// @Scheduled(cron = "*/20 * * * * ?")
 	public void rewardSoldOut() {
-		PointReward reward = new PointReward();
-		RewardCategory category = new RewardCategory();
-		category.setType(REWARD.getIndex());
-		reward.setIsShown(PUBLISHED.getIndex());
-		reward.setJfRewardCategory(category);
-		List<PointReward> rewardList = getRewardByCategoryType(reward);
-		for (PointReward jfReward : rewardList) {
-			if (0 == jfReward.getNumbers().intValue()) {
-				dao.batchUpdate(jfReward.getId(), SOLD_OUT.getIndex());
+		try {
+			PointReward reward = new PointReward();
+			RewardCategory category = new RewardCategory();
+			category.setType(REWARD.getIndex());
+			reward.setIsShown(PUBLISHED.getIndex());
+			reward.setJfRewardCategory(category);
+			List<PointReward> rewardList = getRewardByCategoryType(reward);
+			for (PointReward jfReward : rewardList) {
+				Integer numbers = jfReward.getNumbers();
+				if (null == numbers || 0 == numbers.intValue()) {
+					try {
+						dao.batchUpdate(jfReward.getId(), SOLD_OUT.getIndex());
+					} catch (Exception e) {
+						logger.error("物品下架状态更新失败,该物品信息为:物品ID " + jfReward.getId() + ", 物品状态  " + jfReward.getIsShown() + ", 物品库存 " + jfReward.getNumbers());
+					}
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("物品自动下架异常", e);
 		}
 	}
 

@@ -46,4 +46,9 @@ public class PointsExchangeServiceImpl implements IPointsExchangeService {
 		return listResult;
 	}
 
+	@Override
+	public void save(PointsExchange data) {
+		repository.save(data);
+	}
+
 }

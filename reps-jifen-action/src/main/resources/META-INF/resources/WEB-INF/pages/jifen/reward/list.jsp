@@ -11,11 +11,14 @@
 	<reps:panel title="" id="top" dock="top" method="post" action="list.mvc" formId="queryForm">
 		<input type="hidden" name="ids" />
 		<reps:formcontent parentLayout="true" style="width:80%;">
-			<reps:formfield label="活动分类" labelStyle="width:23%;" textStyle="width:30%;">
-				<reps:select  dataSource="${rewardTypeMap }" name="categoryId"></reps:select>
+			<reps:formfield label="物品名称" labelStyle="width:20%;" textStyle="width:27%;">
+				<reps:input name="name" maxLength="30">${jfReward.name }</reps:input>
 			</reps:formfield>
-			<reps:formfield label="库存量" labelStyle="width:20%;" textStyle="width:27%;">
-				<reps:input name="numbers" maxLength="30"></reps:input>
+			<reps:formfield label="活动分类" labelStyle="width:23%;" textStyle="width:30%;">
+				<reps:select  dataSource="${rewardTypeMap }" name="categoryId">${jfReward.categoryId }</reps:select>
+			</reps:formfield>
+			<reps:formfield label="物品状态" labelStyle="width:23%;" textStyle="width:30%;">
+				<reps:select name="isShown" jsonData="{'':'全部','0':'未发布','1':'已发布','2':'已下架'}">${jfReward.isShown }</reps:select>
 			</reps:formfield>
 		</reps:formcontent>
 		<reps:querybuttons>

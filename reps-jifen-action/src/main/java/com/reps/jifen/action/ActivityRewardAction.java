@@ -24,6 +24,7 @@ import com.reps.core.web.AjaxStatus;
 import com.reps.core.web.BaseAction;
 import com.reps.jifen.entity.PointReward;
 import com.reps.jifen.entity.RewardCategory;
+import static com.reps.jifen.entity.enums.RewardStatus.*;
 import com.reps.jifen.service.IActivityRewardService;
 import com.reps.jifen.service.IRewardCategoryService;
 import com.reps.jifen.vo.ConfigurePath;
@@ -80,6 +81,7 @@ public class ActivityRewardAction extends BaseAction {
 			// 分页数据
 			mav.addObject("list", listResult.getList());
 			// 分页参数
+			pager.setTotalRecord(listResult.getCount().longValue());
 			mav.addObject("pager", pager);
 			return mav;
 		} catch (Exception e) {
@@ -192,6 +194,45 @@ public class ActivityRewardAction extends BaseAction {
 			return ajax(AjaxStatus.ERROR, e.getMessage());
 		}
 	}
+	
+	/**
+	 * 活动延期页面入口
+	 * 
+	 * @param id
+	 * @return Object
+	 */
+	@RequestMapping(value = "/todelay")
+	public Object delay(String id) {
+		try {
+			ModelAndView mav = getModelAndView("/jifen/activityreward/delay");
+			PointReward jfReward = jfActivityRewardService.get(id);
+			mav.addObject("activity", jfReward);
+			mav.addObject("minDate", DateUtil.getCurDateTime("yyyy-MM-dd"));
+			return mav;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("进入延期页面异常", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
+		}
+	}
+	
+	/**
+	 * 活动延期
+	 * @param jfReward
+	 * @return Object
+	 */
+	@RequestMapping(value = "/delay")
+	@ResponseBody
+	public Object delay(PointReward jfReward) {
+		try {
+			jfActivityRewardService.delay(jfReward);
+			return ajax(AjaxStatus.OK, "活动延期成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("修改失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
+		}
+	}
 
 	/**
 	 * 删除活动信息
@@ -234,7 +275,7 @@ public class ActivityRewardAction extends BaseAction {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("批量删除活动失败", e);
-			return ajax(AjaxStatus.ERROR, "删除失败");
+			return ajax(AjaxStatus.ERROR, e.getMessage());
 		}
 	}
 
@@ -249,15 +290,16 @@ public class ActivityRewardAction extends BaseAction {
 	@ResponseBody
 	public Object batchPublish(String ids, Short status) {
 		try {
-			if (StringUtil.isBlank(ids)) {
-				return ajax(AjaxStatus.ERROR, "操作失败");
-			}
 			jfActivityRewardService.batchPublish(ids, status);
-			return ajax(AjaxStatus.OK, "操作成功");
+			if(UN_PUBLISH.getIndex() == status) {
+				return ajax(AjaxStatus.OK, "取消发布成功");
+			}else {
+				return ajax(AjaxStatus.OK, "发布成功");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("发布失败", e);
-			return ajax(AjaxStatus.ERROR, "操作失败");
+			logger.error("操作失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
 		}
 	}
 
@@ -278,7 +320,7 @@ public class ActivityRewardAction extends BaseAction {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("获取详情失败", e);
-			return ajax(AjaxStatus.ERROR, "获取详情失败");
+			return ajax(AjaxStatus.ERROR, e.getMessage());
 		}
 	}
 

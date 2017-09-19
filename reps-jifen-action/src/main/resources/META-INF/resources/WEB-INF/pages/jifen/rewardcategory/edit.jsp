@@ -21,7 +21,19 @@
 				<reps:input name="name" maxLength="30" required="true">${category.name }</reps:input>
 			</reps:formfield>
 			<reps:formfield label="分类类别" labelStyle="width:15%" textStyle="width:30%">
-				<reps:select name="type" dataSource="${categoryTypeMap}" required="true">${category.type }</reps:select>
+				<c:choose>
+    				<c:when test="${empty category.name }">
+						<reps:select name="type" dataSource="${categoryTypeMap}" required="true">${not empty category.type ? category.type : ""}</reps:select>
+					</c:when>
+					<c:otherwise>
+    					<c:forEach items="${categoryTypeMap}" var="c">
+							<c:if test="${c.key == category.type}">
+							<input type="hidden" name="type" value="${category.type}" ></input>
+							${c.value}
+							</c:if>
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
 			</reps:formfield>
 			<reps:formfield label="分类描述" fullRow="true">
 				<reps:input name="description" maxLength="90" multiLine="true" style="width:516px;height:70px">${category.description }</reps:input>

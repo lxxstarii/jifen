@@ -18,23 +18,24 @@ import org.springframework.web.bind.annotation.RestController;
 import com.reps.core.restful.RestBaseController;
 import com.reps.core.restful.RestResponse;
 import com.reps.core.restful.RestResponseStatus;
-import com.reps.jifen.entity.ConsigneeAddress;
-import com.reps.jifen.service.IConsigneeAddressService;
+import com.reps.jifen.entity.DeliveryAddress;
+import com.reps.jifen.service.IDeliveryAddressService;
 
 @RestController
-@RequestMapping(value = "/uapi/consignee")
-public class ConsigneeAddressRest extends RestBaseController {
+@RequestMapping(value = "/uapi/delivery")
+public class DeliveryAddressRest extends RestBaseController {
 
-	private final Log logger = LogFactory.getLog(ConsigneeAddressRest.class);
+	private final Log logger = LogFactory.getLog(DeliveryAddressRest.class);
 	
-	//@Autowired
-	IConsigneeAddressService consigneeService;
+	@Autowired
+	IDeliveryAddressService deliverService;
 	
 	@RequestMapping(value = "/list")
-	public RestResponse<Map<String, Object>> list(ConsigneeAddress query) {
+	public RestResponse<Map<String, Object>> list(DeliveryAddress query) {
 		try {
 			Map<String, Object> map = new HashMap<>();
-			List<ConsigneeAddress> list = consigneeService.find(query);
+			query.setPersonId(getCurrentLoginInfo().getPersonId());
+			List<DeliveryAddress> list = deliverService.find(query);
 			List<Map<String, Object>> listMap = new ArrayList<>();
 			converListMap(list, listMap);
 			map.put("data", listMap);
@@ -45,26 +46,25 @@ public class ConsigneeAddressRest extends RestBaseController {
 		}
 	}
 	
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public RestResponse<String> save(ConsigneeAddress info) {
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	public RestResponse<String> add(DeliveryAddress info) {
 		try {
 			if (StringUtils.isBlank(info.getConsigneeName()) 
-					|| StringUtils.isBlank(info.getAddress())
 					|| StringUtils.isBlank(info.getDetailAddress())
 					|| StringUtils.isBlank(info.getPhone())
 					|| info.getIsDefault() == null) {
 				
 				return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "请求参数错误");
 			}
-			ConsigneeAddress query = new ConsigneeAddress();
-			BeanUtils.copyProperties(info, query);
+			DeliveryAddress query = new DeliveryAddress();
+			BeanUtils.copyProperties(query, info);
 			query.setPersonId(getCurrentLoginInfo().getPersonId());
 			query.setCreateTime(new Date());
 			//判断是否更改默认地址
 			if (info.getIsDefault() == 1) {
-				consigneeService.saveNewDefault(query);
+				deliverService.saveNewDefault(query);
 			} else {
-				consigneeService.save(query);
+				deliverService.save(query);
 			}
 			return wrap(RestResponseStatus.OK, "保存成功");
 		} catch (Exception e) {
@@ -74,32 +74,28 @@ public class ConsigneeAddressRest extends RestBaseController {
 	}
 	
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public RestResponse<String> update(ConsigneeAddress info) {
+	public RestResponse<String> update(DeliveryAddress info) {
 		try {
 			if (StringUtils.isBlank(info.getId())) {
 				return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "请求参数错误");
 			}
-			ConsigneeAddress old = consigneeService.get(info.getId());
+			DeliveryAddress old = deliverService.get(info.getId());
 			if (old == null) {
 				return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "收货地址不存在");
 			}
-			if (StringUtils.isBlank(info.getConsigneeName())) {
+			if (StringUtils.isNotBlank(info.getConsigneeName())) {
 				old.setConsigneeName(info.getConsigneeName());
 			}
-			if (StringUtils.isBlank(info.getAddress())) {
-				old.setAddress(info.getAddress());
-			}
-			if (StringUtils.isBlank(info.getDetailAddress())) {
+			if (StringUtils.isNotBlank(info.getDetailAddress())) {
 				old.setDetailAddress(info.getDetailAddress());
 			}
 			if (info.getIsDefault() != null) {
 				old.setIsDefault(info.getIsDefault());
 			}
-			old.setCreateTime(new Date());
 			if (old.getIsDefault() == 1) {
-				consigneeService.updateDefault(old);
+				deliverService.updateDefault(old);
 			} else {
-				consigneeService.update(old);	
+				deliverService.update(old);	
 			}
 			return wrap(RestResponseStatus.OK, "修改成功");
 		} catch (Exception e) {
@@ -109,14 +105,14 @@ public class ConsigneeAddressRest extends RestBaseController {
 	}
 	
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public RestResponse<String> delete(ConsigneeAddress info) {
+	public RestResponse<String> delete(DeliveryAddress info) {
 		try {
 			if (StringUtils.isBlank(info.getIds())) {
 				return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "请求参数错误");
 			}
 			String[] ids = info.getIds().split(",");
 			for (String id : ids) {
-				consigneeService.delete(id);
+				deliverService.delete(id);
 			}
 			return wrap(RestResponseStatus.OK, "删除成功");
 		} catch (Exception e) {
@@ -125,15 +121,13 @@ public class ConsigneeAddressRest extends RestBaseController {
 		}
 	}
 	
-	private void converListMap(List<ConsigneeAddress> list, List<Map<String, Object>> listMap) {
+	private void converListMap(List<DeliveryAddress> list, List<Map<String, Object>> listMap) {
 		if (list != null && !list.isEmpty() && listMap != null) {
-			for (ConsigneeAddress data: list) {
+			for (DeliveryAddress data: list) {
 				Map<String, Object> map = new HashMap<>();
 				map.put("id", data.getId());
 				map.put("consigneeName", data.getConsigneeName());
-				map.put("address", data.getAddress());
 				map.put("detailAddress", data.getDetailAddress());
-				map.put("convertAddress", data.getAddress() + data.getDetailAddress());
 				map.put("isDefault", data.getIsDefault());
 				map.put("postalcode", data.getPostalcode());
 				map.put("phone", data.getPhone());

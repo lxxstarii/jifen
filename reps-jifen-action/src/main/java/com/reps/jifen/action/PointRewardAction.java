@@ -1,6 +1,7 @@
 package com.reps.jifen.action;
 
 import static com.reps.jifen.entity.enums.CategoryType.REWARD;
+import static com.reps.jifen.entity.enums.RewardStatus.UN_PUBLISH;
 
 import java.util.HashMap;
 import java.util.List;
@@ -76,6 +77,7 @@ public class PointRewardAction extends BaseAction {
 			// 分页数据
 			mav.addObject("list", listResult.getList());
 			// 分页参数
+			pager.setTotalRecord(listResult.getCount().longValue());
 			mav.addObject("pager", pager);
 			return mav;
 		} catch (Exception e) {
@@ -241,15 +243,16 @@ public class PointRewardAction extends BaseAction {
 	@ResponseBody
 	public Object batchPublish(String ids, Short status) {
 		try {
-			if (StringUtil.isBlank(ids)) {
-				return ajax(AjaxStatus.ERROR, "操作失败");
-			}
 			jfRewardService.batchPublish(ids, status);
-			return ajax(AjaxStatus.OK, "操作成功");
+			if(UN_PUBLISH.getIndex() == status) {
+				return ajax(AjaxStatus.OK, "取消发布成功");
+			}else {
+				return ajax(AjaxStatus.OK, "发布成功");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("操作失败", e);
-			return ajax(AjaxStatus.ERROR, "操作失败");
+			return ajax(AjaxStatus.ERROR, e.getMessage());
 		}
 	}
 

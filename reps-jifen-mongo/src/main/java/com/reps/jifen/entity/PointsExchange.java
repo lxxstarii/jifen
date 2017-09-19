@@ -36,6 +36,9 @@ public class PointsExchange implements Serializable{
 	/** 兑换人姓名 */
 	private String name;
 	
+	/**学校id*/
+	private String schoolId;
+	
 	/** 学校名字 */
 	private String schoolName;
 
@@ -101,6 +104,14 @@ public class PointsExchange implements Serializable{
 
 	public void setSchoolName(String schoolName) {
 		this.schoolName = schoolName;
+	}
+
+	public String getSchoolId() {
+		return schoolId;
+	}
+
+	public void setSchoolId(String schoolId) {
+		this.schoolId = schoolId;
 	}
 
 	@Override

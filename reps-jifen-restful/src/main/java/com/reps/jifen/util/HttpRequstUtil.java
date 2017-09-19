@@ -23,6 +23,7 @@ public class HttpRequstUtil {
 		URL realUrl = new URL(path);
         // 打开和URL之间的连接
         URLConnection connection = realUrl.openConnection();
+        connection.setRequestProperty("Charset", "UTF-8");
          // 建立实际的连接
         connection.connect();
         // 定义 BufferedReader输入流来读取URL的响应
@@ -38,21 +39,21 @@ public class HttpRequstUtil {
 	}
 	
 	/**
-	 * post请求
-	 * @param path 接口地址
+	 * post提交
+	 * @param path 接口对应地址
 	 * @param param 参数
 	 * @return
 	 * @throws Exception
 	 */
 	public static JSONObject getPostUrlResponse(String path, String param) throws Exception {
 		String result = ""; 
-		DataOutputStream out = null;
+		DataOutputStream  out = null;
 	    BufferedReader in = null;
 		URL url = new URL(path);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("POST");
 		conn.addRequestProperty("Content-Type","application/x-www-form-urlencoded; charset=UTF-8");
-		 // 发送POST请求必须设置如下两行
+		// 发送POST请求必须设置如下两行
         conn.setDoOutput(true);
         conn.setDoInput(true);
         out = new DataOutputStream(conn.getOutputStream());
@@ -72,4 +73,9 @@ public class HttpRequstUtil {
         JSONObject jsonObject = (JSONObject) JSONObject.fromObject(result);
         return jsonObject;
 	}
+	
+	public static void main(String[] args) throws Exception {
+		System.out.println(getPostUrlResponse("http://localhost:8888/uapi/pointsexchange/save", "access_token=14096c1993ac5bfd90ef3779b16a6e78&personId=1"));
+	}
+
 }

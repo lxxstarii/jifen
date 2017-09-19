@@ -11,55 +11,62 @@ import org.springframework.stereotype.Repository;
 
 import com.reps.core.orm.IGenericDao;
 import com.reps.core.orm.ListResult;
-import com.reps.jifen.entity.GoodsExchange;
+import com.reps.jifen.entity.OrderInfo;
 
 @Repository
-public class GoodsExchangeDao {
+public class OrderInfoDao {
 
 	@Autowired
-	IGenericDao<GoodsExchange> dao;
+	IGenericDao<OrderInfo> dao;
 	
-	public void save(GoodsExchange data) {
+	public void save(OrderInfo data) {
 		dao.save(data);
 	}
 	
-	public void update(GoodsExchange data) {
+	public void update(OrderInfo data) {
 		dao.update(data);
 	}
 	
-	public GoodsExchange get(String id) {
-		return dao.get(GoodsExchange.class, id);
+	public OrderInfo get(String id) {
+		return dao.get(OrderInfo.class, id);
 	}
 	
 	public void delete(String id) {
-		GoodsExchange data = get(id);
+		OrderInfo data = get(id);
 		if (data != null) {
 			dao.delete(data);
 		}
 	}
 	
-	public List<GoodsExchange> find(GoodsExchange query) {
-		DetachedCriteria dc = DetachedCriteria.forClass(GoodsExchange.class);
+	public void delete(OrderInfo data) {
+		dao.delete(data);;
+	}
+	
+	public List<OrderInfo> find(OrderInfo query) {
+		DetachedCriteria dc = DetachedCriteria.forClass(OrderInfo.class);
 		if (query != null) {
 			if (StringUtils.isNotBlank(query.getPersonId())) {
 				dc.add(Restrictions.eq("personId", query.getPersonId()));
 			}
-			if (query.getState() != null) {
-				dc.add(Restrictions.eq("state", query.getState()));
+			if (query.getStatus() != null) {
+				dc.add(Restrictions.eq("status", query.getStatus()));
 			}
 		}
 		dc.addOrder(Order.desc("createTime"));
 		return dao.findByCriteria(dc);
 	}
 	
-	public ListResult<GoodsExchange> query(int start, int pageSize, GoodsExchange query) {
-		DetachedCriteria dc = DetachedCriteria.forClass(GoodsExchange.class);
+	public ListResult<OrderInfo> query(int start, int pageSize, OrderInfo query) {
+		DetachedCriteria dc = DetachedCriteria.forClass(OrderInfo.class);
 		if (query != null) {
 			if (StringUtils.isNotBlank(query.getPersonId())) {
 				dc.add(Restrictions.eq("personId", query.getPersonId()));
 			}
-			if (query.getState() != null) {
-				dc.add(Restrictions.eq("state", query.getState()));
+			if (StringUtils.isNotBlank(query.getOrderNo())) {
+				dc.add(Restrictions.eq("orderNo", query.getOrderNo()));
+			}
+			if (query.getStatus() != null) {
+				dc.add(Restrictions.eq("status", query.getStatus()));
 			}
 		}
 		return dao.query(dc, start, pageSize);

@@ -1,6 +1,9 @@
 package com.reps.jifen.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,6 +70,46 @@ public class RewardCategoryServiceImpl implements IRewardCategoryService {
 			throw new RepsException("查询异常:分类类别不能为空");
 		}
 		return dao.getRewardCategory(jfRewardCategory);
+	}
+	
+	@Override
+	public List<Map<String, Object>> buildTreeNode(List<RewardCategory> parentlist) {
+		List<Map<String, Object>> treeNodeList = new ArrayList<>();
+		for (RewardCategory rewardCategory : parentlist) {
+			Map<String, Object> buildNodeMap = buildNodeMap(rewardCategory);
+			List<Map<String, Object>> bindChildByParent = bindChildByParent(rewardCategory.getId());
+			buildNodeMap.put("children", bindChildByParent);
+			treeNodeList.add(buildNodeMap);
+		}
+		return treeNodeList;
+	}
+	
+	/**
+	 * 递归构造子树
+	 * @param pId
+	 * @return List<Map<String, Object>>
+	 */
+	private List<Map<String, Object>> bindChildByParent(String pId) {
+		List<Map<String, Object>> retList = new ArrayList<>();
+		List<RewardCategory> categorys = this.queryList(pId);
+		for (RewardCategory category : categorys) {
+			Map<String, Object> childNode = buildNodeMap(category);
+			String id = category.getId();
+			List<Map<String, Object>> childList = this.bindChildByParent(id);
+			if (null != childList && childList.size() > 0) {
+				childNode.put("children", childList);
+			}
+			retList.add(childNode);
+		}
+		return retList;
+	}
+
+	private Map<String, Object> buildNodeMap(RewardCategory category) {
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("id", category.getId());
+		data.put("name", category.getName());
+		data.put("parentId", category.getParentId());
+		return data;
 	}
 
 }
