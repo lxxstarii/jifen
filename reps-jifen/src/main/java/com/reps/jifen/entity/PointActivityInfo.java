@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.reps.core.orm.IdEntity;
+import com.reps.school.entity.Classes;
 import com.reps.school.entity.School;
 import com.reps.school.entity.Student;
 
@@ -20,8 +21,8 @@ import com.reps.school.entity.Student;
  * @date 2017年9月18日 下午4:44:53
  */
 @Entity
-@Table(name = "reps_jf_reward_stat")
-public class RewardStat extends IdEntity implements Serializable{
+@Table(name = "reps_jf_activity_info")
+public class PointActivityInfo extends IdEntity implements Serializable{
 
 	private static final long serialVersionUID = 7348847018860989630L;
 	
@@ -29,13 +30,18 @@ public class RewardStat extends IdEntity implements Serializable{
 	@Column(name = "reward_id")
 	private String rewardId;
 	
+	@JsonIgnore
+    @ManyToOne(cascade = {})
+	@JoinColumn(name = "reward_id", insertable = false, updatable = false)
+	private PointReward pointReward;
+		
 	/** 学生ID */
 	@Column(name = "student_id")
 	private String studentId;
 	
 	@JsonIgnore
     @ManyToOne(cascade = {})
-	@JoinColumn(name = "student_id")
+	@JoinColumn(name = "student_id", insertable = false, updatable = false)
 	private Student student;
 	
 	/** 学校ID */
@@ -44,7 +50,7 @@ public class RewardStat extends IdEntity implements Serializable{
 	
 	@JsonIgnore
     @ManyToOne(cascade = {})
-	@JoinColumn(name = "school_id")
+	@JoinColumn(name = "school_id", insertable = false, updatable = false)
 	private School school;
 	
 	/** 年级 */
@@ -55,6 +61,10 @@ public class RewardStat extends IdEntity implements Serializable{
 	@Column(name = "classes_id")
 	private String classesId;
 	
+	@ManyToOne(cascade={})
+	@JoinColumn(name="classes_id", insertable = false, updatable = false)
+	private Classes classes;
+	
 	/** 审核状态 1:通过 2:驳回*/
 	@Column(name = "audit_status")
 	private Short auditStatus;
@@ -64,7 +74,7 @@ public class RewardStat extends IdEntity implements Serializable{
 	private String auditOpinion;
 	
 	/** 是否参与 1:已参与 0:取消参与*/
-	@Column(name = "is_articipate")
+	@Column(name = "is_participate")
 	private Short isParticipate;
 	
 	/** 统计时间 */
@@ -157,6 +167,22 @@ public class RewardStat extends IdEntity implements Serializable{
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public PointReward getPointReward() {
+		return pointReward;
+	}
+
+	public void setPointReward(PointReward pointReward) {
+		this.pointReward = pointReward;
+	}
+
+	public Classes getClasses() {
+		return classes;
+	}
+
+	public void setClasses(Classes classes) {
+		this.classes = classes;
 	}
 	
 }

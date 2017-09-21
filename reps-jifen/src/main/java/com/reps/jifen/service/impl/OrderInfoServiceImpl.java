@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +36,12 @@ public class OrderInfoServiceImpl implements IOrderInfoService {
 	}
 
 	@Override
-	public OrderInfo get(String id) {
-		return orderInfoDao.get(id);
+	public OrderInfo get(String id, boolean eager) {
+		OrderInfo data = orderInfoDao.get(id);
+		if (data != null && eager) {
+			Hibernate.initialize(data.getReward());
+		}
+		return data;
 	}
 
 	@Override

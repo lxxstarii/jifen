@@ -1,5 +1,6 @@
 package com.reps.jifen.rest;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,13 +21,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.reps.core.commons.Pagination;
+import com.reps.core.orm.ListResult;
 import com.reps.core.restful.AuthInfo;
 import com.reps.core.restful.RestBaseController;
 import com.reps.core.restful.RestResponse;
 import com.reps.core.restful.RestResponseStatus;
 import com.reps.core.util.DateUtil;
 import com.reps.jifen.entity.OrderInfo;
+import com.reps.jifen.entity.PointReward;
 import com.reps.jifen.service.IOrderInfoService;
+import com.reps.jifen.service.IRewardService;
 import com.reps.jifen.util.ConvertUrlUtil;
 import com.reps.jifen.util.HttpRequstUtil;
 import com.reps.jifen.vo.UrlConstant;
@@ -40,24 +45,27 @@ public class OrderInfoRest extends RestBaseController {
 	@Autowired
 	IOrderInfoService orderInfoService;
 	
+	@Autowired
+	IRewardService rewardService;
+	
 	@Value("${http.jifenmongo.url}")
 	private String mongoUrl;
 	
 	@RequestMapping(value = "/list")
-	public RestResponse<Map<String, Object>> query(OrderInfo info) {
+	public RestResponse<Map<String, Object>> query(Pagination pager, OrderInfo info) {
 		try {
 			Map<String, Object> map = new HashMap<>();
-			if (info.getStatus() == null) {
-				return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "请求参数错误");
-			}
+			
 			AuthInfo token = getCurrentLoginInfo();
 			if (StringUtils.isBlank(info.getPersonId())) {
 				info.setPersonId(token.getPersonId());
 			}
-			List<OrderInfo> list = orderInfoService.find(info);
+			ListResult<OrderInfo> result = orderInfoService.query(pager.getStartRow(), pager.getPageSize(), info);
 			List<Map<String, Object>> listMap = new ArrayList<>();
-			converListMap(list, listMap);
+			converListMap(result.getList(), listMap);
+			pager.setTotalRecord(result.getCount());
 			map.put("data", listMap);
+			map.put("pager", pager);
 			return wrap(RestResponseStatus.OK, "获取订单列表成功", map);
 		} catch (Exception e) {
 			logger.error("获取订单列表异常", e);
@@ -70,16 +78,24 @@ public class OrderInfoRest extends RestBaseController {
 		try {
 			if (StringUtils.isBlank(info.getAddress()) || StringUtils.isBlank(info.getConsigneeName())
 					|| StringUtils.isBlank(info.getPhone()) || StringUtils.isBlank(info.getRewardId())
-					|| StringUtils.isBlank(info.getRewardName()) || info.getNums() == null 
-					|| info.getUsedPoints() == null || StringUtils.isBlank(info.getSchoolId())
-					|| StringUtils.isBlank(info.getSchoolName())) {
+					|| StringUtils.isBlank(info.getSchoolName()) || info.getNums() == null 
+					|| info.getUsedPoints() == null || StringUtils.isBlank(info.getSchoolId())) {
 				
 				return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "请求参数错误");
+			}
+			//判断库存是否足够
+			PointReward pointReward = rewardService.get(info.getRewardId());
+			if (pointReward == null) {
+				return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "兑换物品不存在");
+			}
+			if (info.getNums() > pointReward.getNumbers()) {
+				return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "物品库存不足");
 			}
 			OrderInfo data = new OrderInfo();
 			BeanUtils.copyProperties(info, data);
 			data.setStatus(OrderInfo.UN_HANDLE);
 			data.setPersonId(getCurrentLoginInfo().getPersonId());
+			data.setRewardName(pointReward.getName());
 			data.setCreateTime(new Date());
 			data.setOrderNo(DateUtil.format(new Date(), "yyyyMMddHHmm").substring(2));
 			//提交订单(1：先获取个人积分,判断是否满足提交订单条件 2：添加个人兑换记录)
@@ -92,6 +108,10 @@ public class OrderInfoRest extends RestBaseController {
 				} 
 			} 
 			orderInfoService.save(data);
+			//修改物品库存及兑换数量
+			pointReward.setExchangedCount(pointReward.getExchangedCount() == null ? info.getNums() : pointReward.getExchangedCount() + info.getNums());
+			pointReward.setNumbers(pointReward.getNumbers() - info.getNums());
+			rewardService.update(pointReward);
 			return wrap(RestResponseStatus.OK, "提交订单成功");
 		} catch (Exception e) {
 			logger.error("提交订单异常", e);
@@ -105,7 +125,7 @@ public class OrderInfoRest extends RestBaseController {
 			if (info.getStatus() == null || StringUtils.isBlank(info.getId())) {
 				return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "请求参数错误");
 			}
-			OrderInfo old = orderInfoService.get(info.getId());
+			OrderInfo old = orderInfoService.get(info.getId(), false);
 			if (old != null) {
 				info.setStatus(info.getStatus());
 				orderInfoService.update(old);
@@ -123,7 +143,7 @@ public class OrderInfoRest extends RestBaseController {
 			if (StringUtils.isBlank(id)) {
 				return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "请求参数错误");
 			}
-			OrderInfo old = orderInfoService.get(id);
+			OrderInfo old = orderInfoService.get(id, false);
 			if (old != null) {
 				if (old.getStatus() != OrderInfo.FINISH) {
 					return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "当前订单未完成,不可删除");
@@ -144,7 +164,7 @@ public class OrderInfoRest extends RestBaseController {
 			if (StringUtils.isBlank(id)) {
 				return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "请求参数错误");
 			}
-			OrderInfo data = orderInfoService.get(id);
+			OrderInfo data = orderInfoService.get(id, true);
 			convertMap(data, map);
 			return wrap(RestResponseStatus.OK, "获取订单详情成功", map);
 		} catch (Exception e) {
@@ -174,7 +194,13 @@ public class OrderInfoRest extends RestBaseController {
 		map.put("expressCompany", data.getExpressCompany());
 		map.put("wayBillNum", data.getShipmentNo());
 		map.put("rewardId", data.getRewardId());
-		map.put("rewardName", data.getRewardName());
+		map.put("status", data.getStatus());
+		map.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm").format(data.getCreateTime()));
+		if (data.getReward() != null) {
+			map.put("rewardName", data.getReward().getName());
+			if (StringUtils.isNotBlank(data.getReward().getPicture())) 
+				map.put("pictures", this.getFileFullUrl(data.getReward().getPicture(), null));
+		}
 	}
 	
 	private JSONObject saveExchange(OrderInfo info, AuthInfo authInfo, String accessToken) throws Exception{

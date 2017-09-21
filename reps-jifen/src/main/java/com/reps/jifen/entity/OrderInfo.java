@@ -4,9 +4,13 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.reps.core.orm.IdEntity;
 
 @Entity
@@ -47,9 +51,11 @@ public class OrderInfo extends IdEntity {
 	@Column(name = "reward_id")
 	private String rewardId;
 	
-	/**物品名称*/
-	@Column(name = "reward_name")
-	private String rewardName;
+	/** 物品信息 */
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "reward_id", insertable = false, updatable = false)
+    private PointReward reward;
 	
 	/**兑换数量*/
 	@Column(name = "nums")
@@ -79,7 +85,10 @@ public class OrderInfo extends IdEntity {
 	
 	@Transient
 	private String schoolName;
-
+	
+	/**物品名称*/
+	@Transient
+	private String rewardName;
 
 	public String getConsigneeName() {
 		return consigneeName;
@@ -200,5 +209,13 @@ public class OrderInfo extends IdEntity {
 
 	public void setSchoolName(String schoolName) {
 		this.schoolName = schoolName;
+	}
+
+	public PointReward getReward() {
+		return reward;
+	}
+
+	public void setReward(PointReward reward) {
+		this.reward = reward;
 	}
 }

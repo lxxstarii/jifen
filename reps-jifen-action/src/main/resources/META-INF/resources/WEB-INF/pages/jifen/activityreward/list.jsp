@@ -64,7 +64,7 @@
 					<c:if test="${activity.isShown != '1' }">
 						<reps:button cssClass="modify-table" messageCode="manage.action.update" action="toedit.mvc?id=${activity.id}" ></reps:button>
 						<reps:ajax cssClass="delete-table" messageCode="manage.action.delete" confirm="您确定要删除所选行吗？"
-							redirect="list.mvc" url="delete.mvc?id=${activity.id}">
+							redirect="list.mvc" url="delete.mvc?id=${activity.id}&validRecord=9">
 						</reps:ajax>
 					</c:if>
 				</reps:gridfield>

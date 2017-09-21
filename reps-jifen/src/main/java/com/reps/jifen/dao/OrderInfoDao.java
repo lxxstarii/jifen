@@ -44,20 +44,7 @@ public class OrderInfoDao {
 	
 	public List<OrderInfo> find(OrderInfo query) {
 		DetachedCriteria dc = DetachedCriteria.forClass(OrderInfo.class);
-		if (query != null) {
-			if (StringUtils.isNotBlank(query.getPersonId())) {
-				dc.add(Restrictions.eq("personId", query.getPersonId()));
-			}
-			if (query.getStatus() != null) {
-				dc.add(Restrictions.eq("status", query.getStatus()));
-			}
-		}
-		dc.addOrder(Order.desc("createTime"));
-		return dao.findByCriteria(dc);
-	}
-	
-	public ListResult<OrderInfo> query(int start, int pageSize, OrderInfo query) {
-		DetachedCriteria dc = DetachedCriteria.forClass(OrderInfo.class);
+		dc.createAlias("reward", "reward");
 		if (query != null) {
 			if (StringUtils.isNotBlank(query.getPersonId())) {
 				dc.add(Restrictions.eq("personId", query.getPersonId()));
@@ -69,6 +56,24 @@ public class OrderInfoDao {
 				dc.add(Restrictions.eq("status", query.getStatus()));
 			}
 		}
-		return dao.query(dc, start, pageSize);
+		dc.addOrder(Order.desc("createTime"));
+		return dao.findByCriteria(dc);
+	}
+	
+	public ListResult<OrderInfo> query(int start, int pageSize, OrderInfo query) {
+		DetachedCriteria dc = DetachedCriteria.forClass(OrderInfo.class);
+		dc.createAlias("reward", "reward");
+		if (query != null) {
+			if (StringUtils.isNotBlank(query.getPersonId())) {
+				dc.add(Restrictions.eq("personId", query.getPersonId()));
+			}
+			if (StringUtils.isNotBlank(query.getOrderNo())) {
+				dc.add(Restrictions.eq("orderNo", query.getOrderNo()));
+			}
+			if (query.getStatus() != null) {
+				dc.add(Restrictions.eq("status", query.getStatus()));
+			}
+		}
+		return dao.query(dc, start, pageSize, Order.desc("createTime"));
 	}
  }

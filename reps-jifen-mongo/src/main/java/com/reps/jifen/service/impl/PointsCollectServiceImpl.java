@@ -49,7 +49,7 @@ public class PointsCollectServiceImpl implements IPointsCollectService {
 		pageIndex = null == pageIndex ? 1 : pageIndex;
 		pageSize = null == pageSize ? 20 : pageSize;
 		// 构建分页对象
-		PageRequest pageRequest = new PageRequest(pageSize * (pageIndex - 1),
+		PageRequest pageRequest = new PageRequest(pageIndex - 1,
 				pageSize);
 		Page<PointsCollect> page = repository.findByPersonId(personId,
 				pageRequest);

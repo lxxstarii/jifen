@@ -32,8 +32,9 @@ public interface IRewardService {
 	 * 修改物品
 	 * 
 	 * @param jfReward
+	 * @throws RepsException 
 	 */
-	public void update(PointReward jfReward);
+	public void update(PointReward jfReward) throws RepsException;
 
 	/**
 	 * 通过指定id获得物品

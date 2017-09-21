@@ -13,7 +13,7 @@ public interface IOrderInfoService {
 	
 	void delete(String id);
 	
-	OrderInfo get(String id);
+	OrderInfo get(String id, boolean eager);
 	
 	void delete(OrderInfo data);
 	

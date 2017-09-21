@@ -1,6 +1,7 @@
 package com.reps.jifen.action;
 
 import static com.reps.jifen.entity.enums.CategoryType.ACTIVITY;
+import static com.reps.jifen.entity.enums.RewardStatus.UN_PUBLISH;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,10 +23,12 @@ import com.reps.core.util.DateUtil;
 import com.reps.core.util.StringUtil;
 import com.reps.core.web.AjaxStatus;
 import com.reps.core.web.BaseAction;
+import com.reps.jifen.entity.PointActivityInfo;
 import com.reps.jifen.entity.PointReward;
 import com.reps.jifen.entity.RewardCategory;
-import static com.reps.jifen.entity.enums.RewardStatus.*;
+import static com.reps.jifen.entity.enums.ParticipateStatus.*;
 import com.reps.jifen.service.IActivityRewardService;
+import com.reps.jifen.service.IPointActivityInfoService;
 import com.reps.jifen.service.IRewardCategoryService;
 import com.reps.jifen.vo.ConfigurePath;
 
@@ -46,6 +49,9 @@ public class ActivityRewardAction extends BaseAction {
 
 	@Autowired
 	IRewardCategoryService jfRewardCategoryService;
+	
+	@Autowired
+	IPointActivityInfoService activityInfoService;
 
 	/**
 	 * 活动管理列表
@@ -237,17 +243,14 @@ public class ActivityRewardAction extends BaseAction {
 	/**
 	 * 删除活动信息
 	 * 
-	 * @param id
+	 * @param jfReward
 	 * @return Object
 	 */
 	@RequestMapping(value = "/delete")
 	@ResponseBody
-	public Object delete(String id) {
+	public Object delete(PointReward jfReward) {
 		try {
-			PointReward jfReward = jfActivityRewardService.get(id);
-			if (jfReward != null) {
-				jfActivityRewardService.delete(jfReward);
-			}
+			jfActivityRewardService.update(jfReward);
 			return ajax(AjaxStatus.OK, "删除成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -320,6 +323,36 @@ public class ActivityRewardAction extends BaseAction {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("获取详情失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
+		}
+	}
+	
+	@RequestMapping(value = "/statistics")
+	public Object list(Pagination pager, PointActivityInfo activityInfo) {
+		ModelAndView mav = getModelAndView("/jifen/activityreward/statistics");
+		try {
+			//查询学生参与该活动列表
+			ListResult<PointActivityInfo> listResult = activityInfoService.query(pager.getStartRow(), pager.getPageSize(), activityInfo);
+			String rewardId = activityInfo.getRewardId();
+			//查询活动信息
+			PointReward jfReward = jfActivityRewardService.get(rewardId);
+			//统计参与人数
+			Long participatedCount = activityInfoService.count(rewardId, PARTICIPATED.getId());
+			//统计取消人数
+			Long cancelCount = activityInfoService.count(rewardId, CANCEL_PARTICIPATE.getId());
+			mav.addObject("activity", jfReward);
+			mav.addObject("info", activityInfo);
+			mav.addObject("participatedCount", participatedCount);
+			mav.addObject("cancelCount", cancelCount);
+			// 分页数据
+			mav.addObject("list", listResult.getList());
+			// 分页参数
+			pager.setTotalRecord(listResult.getCount().longValue());
+			mav.addObject("pager", pager);
+			return mav;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("查询参数失败", e);
 			return ajax(AjaxStatus.ERROR, e.getMessage());
 		}
 	}

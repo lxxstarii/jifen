@@ -12,7 +12,7 @@
 		<input type="hidden" name="id" value="${data.id}">
 		<reps:formcontent style="margin-top:30px">
            <reps:formfield label="物品名称 " labelStyle="width:20%;" textStyle="width:20%;">
-           		${data.rewardName}
+           		${data.reward.name}
            </reps:formfield>
             <reps:formfield label="订单号" labelStyle="width:20%;" textStyle="width:20%;">
             	${data.orderNo}

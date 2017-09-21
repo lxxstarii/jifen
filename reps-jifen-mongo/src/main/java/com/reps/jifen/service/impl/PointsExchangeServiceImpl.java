@@ -33,7 +33,7 @@ public class PointsExchangeServiceImpl implements IPointsExchangeService {
 		pageIndex = null == pageIndex ? 1 : pageIndex;
 		pageSize = null == pageSize ? 20 : pageSize;
 		// 构建分页对象
-		PageRequest pageRequest = new PageRequest(pageSize * (pageIndex - 1),
+		PageRequest pageRequest = new PageRequest(pageIndex - 1,
 				pageSize);
 		Page<PointsExchange> page = repository.findByPersonId(personId,
 				pageRequest);

@@ -59,20 +59,28 @@ public class PointReward extends IdEntity implements Serializable {
 	private Short isShown;
 	
 	/** 登记时间 */
-	@Column(name="create_time", updatable=false)
+	@Column(name = "create_time")
 	private Date createTime;
 	
 	/** 上架时间 */
-	@Column(name="show_time")
+	@Column(name = "show_time")
 	private Date showTime;
 	
 	/** 截止时间 */
-	@Column(name="finish_time")
+	@Column(name = "finish_time")
 	private Date finishTime;
 	
 	/** 兑换物品数量 */
-	@Column(name="exchanged_count", updatable=false)
+	@Column(name = "exchanged_count")
 	private Integer exchangedCount;
+	
+	/** 参与人数 */
+	@Column(name = "participated_count")
+	private Integer participatedCount;
+	
+	/** 删除标识 1：有效（默认值），9：删除 */
+	@Column(name = "valid_record")
+	private Short validRecord;
 	
 	@Transient
 	@JsonIgnore
@@ -305,6 +313,22 @@ public class PointReward extends IdEntity implements Serializable {
 
 	public void setExchangedCount(Integer exchangedCount) {
 		this.exchangedCount = exchangedCount;
+	}
+
+	public Integer getParticipatedCount() {
+		return participatedCount;
+	}
+
+	public void setParticipatedCount(Integer participatedCount) {
+		this.participatedCount = participatedCount;
+	}
+
+	public Short getValidRecord() {
+		return validRecord;
+	}
+
+	public void setValidRecord(Short validRecord) {
+		this.validRecord = validRecord;
 	}
 	
 }

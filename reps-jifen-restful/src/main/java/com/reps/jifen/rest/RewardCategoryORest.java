@@ -50,7 +50,7 @@ public class RewardCategoryORest extends RestBaseController{
 	 * @param jfRewardCategory
 	 * @return RestResponse<List<RewardCategory>>
 	 */
-	@RequestMapping(value = "/listById")
+	@RequestMapping(value = "/listbyid")
 	public RestResponse<List<RewardCategory>> listById(RewardCategory jfRewardCategory) {
 		try {
 			String parentId = jfRewardCategory.getParentId();

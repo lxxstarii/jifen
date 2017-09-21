@@ -176,9 +176,6 @@ public class PointRewardAction extends BaseAction {
 	@ResponseBody
 	public Object edit(PointReward jfReward){
 		try {
-			if (jfReward == null) {
-				throw new RepsException("数据不完整");
-			}
 			jfRewardService.update(jfReward);
 			return ajax(AjaxStatus.OK, "修改成功");
 		} catch (Exception e) {
@@ -191,17 +188,14 @@ public class PointRewardAction extends BaseAction {
 	/**
 	 * 删除物品
 	 * 
-	 * @param id
+	 * @param jfReward
 	 * @return Object
 	 */
 	@RequestMapping(value = "/delete")
 	@ResponseBody
-	public Object delete(String id) {
+	public Object delete(PointReward jfReward) {
 		try {
-			PointReward jfReward = jfRewardService.get(id);
-			if (jfReward != null) {
-				jfRewardService.delete(jfReward);
-			}
+			jfRewardService.update(jfReward);
 			return ajax(AjaxStatus.OK, "删除成功");
 		} catch (Exception e) {
 			e.printStackTrace();

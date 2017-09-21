@@ -32,8 +32,9 @@ public interface IActivityRewardService {
 	 * 修改活动
 	 * 
 	 * @param jfReward
+	 * @throws RepsException 
 	 */
-	public void update(PointReward jfReward);
+	public void update(PointReward jfReward) throws RepsException;
 	
 	/**
 	 * 活动延期

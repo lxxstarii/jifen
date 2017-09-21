@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import com.reps.core.orm.IGenericDao;
 import com.reps.core.orm.ListResult;
-import com.reps.jifen.entity.RewardCategory;
-import com.reps.jifen.entity.RewardStat;
+import com.reps.core.util.StringUtil;
+import com.reps.jifen.entity.PointActivityInfo;
 import com.reps.school.entity.School;
 import com.reps.school.entity.Student;
 import com.reps.system.entity.Organize;
@@ -23,18 +23,24 @@ import com.reps.system.entity.Person;
  * @date 2017年9月18日 下午5:11:38
  */
 @Repository
-public class RewardStatDao {
+public class ActivityInfoDao {
 	
 	@Autowired
-	IGenericDao<RewardStat> dao;
+	IGenericDao<PointActivityInfo> dao;
+	
+	public void save(PointActivityInfo activityInfo) {
+		dao.save(activityInfo);
+	}
 
-	public ListResult<RewardStat> query(int start, int pagesize, RewardStat rewardStat) {
-		DetachedCriteria dc = DetachedCriteria.forClass(RewardStat.class);
+	public ListResult<PointActivityInfo> query(int start, int pagesize, PointActivityInfo activityInfo) {
+		DetachedCriteria dc = DetachedCriteria.forClass(PointActivityInfo.class);
+		dc.createAlias("student", "student");
+		dc.createAlias("school", "school");
 		dc.createAlias("student.person", "person");
 		dc.createAlias("school.organize", "organize");
-		if (null != rewardStat) {
+		if (null != activityInfo) {
 			//查询学生
-			Student student = rewardStat.getStudent();
+			Student student = activityInfo.getStudent();
 			if(null != student) {
 				Person person = student.getPerson();
 				if(null != person) {
@@ -45,7 +51,7 @@ public class RewardStatDao {
 				}
 			}
 			//查询学校
-			School school = rewardStat.getSchool();
+			School school = activityInfo.getSchool();
 			if(null != school) {
 				Organize organize = school.getOrganize();
 				if(null != organize) {
@@ -55,8 +61,27 @@ public class RewardStatDao {
 					}
 				}
 			}
+			//查询活动
+			String rewardId = activityInfo.getRewardId();
+			if(StringUtil.isNotBlank(rewardId)) {
+				dc.add(Restrictions.eq("rewardId", rewardId));
+			}
+			
 		}
-		return dao.query(dc, start, pagesize, Order.asc("name"));
+		return dao.query(dc, start, pagesize, Order.asc("createTime"));
+	}
+	
+	/**
+	 * 统计活动参与取消人数
+	 * @param rewardId
+	 * @param isParticipate
+	 * @return Long
+	 */
+	public Long count(String rewardId, Short isParticipate) {
+	    DetachedCriteria dc = DetachedCriteria.forClass(PointActivityInfo.class);
+	    dc.add(Restrictions.eq("rewardId", rewardId));
+	    dc.add(Restrictions.eq("isParticipate", isParticipate));
+	    return this.dao.getRowCount(dc);
 	}
 	
 }

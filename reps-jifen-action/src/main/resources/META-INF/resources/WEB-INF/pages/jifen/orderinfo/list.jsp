@@ -31,7 +31,7 @@
 					<fmt:formatDate value="${data.createTime }" pattern="yyyy-MM-dd"/>
 				</reps:gridfield>
 				<reps:gridfield title="物品名称" width="10" align="center">
-					${data.rewardName}
+					${data.reward.name}
 				</reps:gridfield>
 				<reps:gridfield title="兑换数量" width="9" align="center">
 					${data.nums}

@@ -54,7 +54,7 @@
 					</c:if>
 					<reps:button cssClass="modify-table" messageCode="manage.action.update" action="toedit.mvc?id=${reward.id}"></reps:button>
 					<reps:ajax cssClass="delete-table" messageCode="manage.action.delete" confirm="您确定要删除所选行吗？"
-						redirect="list.mvc" url="delete.mvc?id=${reward.id}">
+						redirect="list.mvc" url="delete.mvc?id=${reward.id}&validRecord=9">
 					</reps:ajax>
 				</reps:gridfield>
 			</reps:gridrow>

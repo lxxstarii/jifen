@@ -28,7 +28,7 @@
            		<reps:select name="isEnable" jsonData="{1:'是',0:'否'}" headerValue="" style="width:180px;" required="true">${data.isEnable}</reps:select>
 		   </reps:formfield>
 		   <reps:formfield label="上传标签/勋章" fullRow="true" >
-				<reps:upload id="picture" callBack="getPathName" value="上传图片"  flagAbsolute="true"  path="${imageUploadPath}/res/images/upload/link" reName="true" cssClass="uploading-a" fileType="png,jpg" ></reps:upload>
+				<reps:upload id="picture" callBack="getPathName" value="上传图片"  flagAbsolute="true"  path="${imageUploadPath}/jifen/pjzb" reName="true" cssClass="uploading-a" fileType="png,jpg" ></reps:upload>
 				<img name="img" width="50px",height="40px" src="${imagePath}${data.icon}"></img>
 				<input type="hidden" name="icon" value = "${data.icon}"/>
 				<span style="color:red;font-size:18px">*</span>

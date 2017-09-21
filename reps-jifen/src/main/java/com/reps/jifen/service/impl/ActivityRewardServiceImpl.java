@@ -6,6 +6,7 @@ import static com.reps.jifen.entity.enums.CategoryType.ACTIVITY;
 import static com.reps.jifen.entity.enums.RewardStatus.PUBLISHED;
 import static com.reps.jifen.entity.enums.RewardStatus.SOLD_OUT;
 import static com.reps.jifen.entity.enums.RewardStatus.UN_PUBLISH;
+import static com.reps.jifen.entity.enums.ValidRecord.VALID;
 
 import java.util.Date;
 import java.util.List;
@@ -43,17 +44,23 @@ public class ActivityRewardServiceImpl implements IActivityRewardService {
 	@Override
 	public void save(PointReward jfReward) throws RepsException{
 		//设置上线时间
-		Date showTime = setShowTimeDisp(jfReward);
+		Date showTime = getShowTimeDisp(jfReward);
+		jfReward.setShowTime(showTime);
 		//设置截止时间
-		Date finishTime = setFinishTimeDisp(jfReward);
+		Date finishTime = getFinishTimeDisp(jfReward);
+		jfReward.setFinishTime(finishTime);
 		if(null != showTime && null != finishTime) {
 			if(finishTime.getTime() < showTime.getTime()) {
 				throw new RepsException("保存异常:截止日期小于上线日期");
 			}
+		}else {
+			throw new RepsException("上线时间或截止日期为空");
 		}
 		jfReward.setCreateTime(new Date());
 		//设置是否发布，默认未发布
 		jfReward.setIsShown(UN_PUBLISH.getIndex());
+		//有效，默认有效
+		jfReward.setValidRecord(VALID.getId());
 		dao.save(jfReward);
 	}
 
@@ -70,12 +77,50 @@ public class ActivityRewardServiceImpl implements IActivityRewardService {
 	}
 
 	@Override
-	public void update(PointReward jfReward) {
+	public void update(PointReward jfReward) throws RepsException{
+		if (jfReward == null) {
+			throw new RepsException("参数异常");
+		}
+		PointReward pointReward = this.get(jfReward.getId());
+		RewardCategory jfRewardCategory = jfReward.getJfRewardCategory();
+		if(null != jfRewardCategory) {
+			pointReward.setJfRewardCategory(jfRewardCategory);
+		}
+		String name = jfReward.getName();
+		if (StringUtil.isNotBlank(name)) {
+			pointReward.setName(name);
+		}
+		Integer points = jfReward.getPoints();
+		if (null != points) {
+			pointReward.setPoints(points);
+		}
+		String description = jfReward.getDescription();
+		if (StringUtil.isNotBlank(description)) {
+			pointReward.setDescription(description);
+		}
+		String pictureUrl = jfReward.getPicture();
+		if(StringUtil.isNotBlank(pictureUrl)) {
+			pointReward.setPicture(pictureUrl);
+		}
 		//设置上线时间
-		setShowTimeDisp(jfReward);
+		Date showTime = getShowTimeDisp(jfReward);
+		if(null != showTime) {
+			pointReward.setShowTime(showTime);
+		}
 		//设置截止时间
-		setFinishTimeDisp(jfReward);
-		dao.update(jfReward);
+		Date finishTime = getFinishTimeDisp(jfReward);
+		if(null != finishTime) {
+			pointReward.setFinishTime(finishTime);;
+		}
+		Integer participatedCount = jfReward.getParticipatedCount();
+		if(null != participatedCount) {
+			pointReward.setParticipatedCount(participatedCount);
+		}
+		Short validRecord = jfReward.getValidRecord();
+	    if(null != validRecord) {
+	    	pointReward.setValidRecord(validRecord);
+	    }
+		dao.update(pointReward);
 	}
 
 	@Override
@@ -83,32 +128,34 @@ public class ActivityRewardServiceImpl implements IActivityRewardService {
 		if(StringUtil.isBlank(id)) {
 			throw new RepsException("查询异常:活动ID不能为空");
 		}
-		return dao.get(id);
+		PointReward pointReward = dao.get(id);
+		if(null == pointReward) {
+			throw new RepsException("查询异常:该活动不存在");
+		}
+		return pointReward;
 	}
 
 	@Override
 	public ListResult<PointReward> query(int start, int pagesize, PointReward jfReward) {
 		//设置截止时间
-		setFinishTimeDisp(jfReward);
+		jfReward.setFinishTime(getFinishTimeDisp(jfReward));
 		return dao.query(start, pagesize, jfReward);
 	}
 
-	private Date setFinishTimeDisp(PointReward jfReward) {
+	private Date getFinishTimeDisp(PointReward jfReward) {
 		String finishTimeDisp = jfReward.getFinishTimeDisp();
 		if(StringUtil.isNotBlank(finishTimeDisp)) {
 			Date finishTime = getDateFromStr(finishTimeDisp, "yyyy-MM-dd");
-			jfReward.setFinishTime(finishTime);
 			return finishTime;
 		}else {
 			return null;
 		}
 	}
 
-	private Date setShowTimeDisp(PointReward jfReward) {
+	private Date getShowTimeDisp(PointReward jfReward) {
 		String showTimeDisp = jfReward.getShowTimeDisp();
 		if(StringUtil.isNotBlank(showTimeDisp)) {
 			Date showTime = getDateFromStr(showTimeDisp, "yyyy-MM-dd");
-			jfReward.setShowTime(showTime);
 			return showTime;
 		}else {
 			return null;
@@ -137,6 +184,9 @@ public class ActivityRewardServiceImpl implements IActivityRewardService {
 		for (String id : idArray) {
 			PointReward pointReward = this.get(id);
 			Date finishTime = pointReward.getFinishTime();
+			if(null == finishTime) {
+				throw new RepsException("发布异常:截止时间为空");
+			}
 			if(finishTime.getTime() < getDateFromStr(format(new Date(), "yyyy-MM-dd"), "yyyy-MM-dd").getTime()) {
 				throw new RepsException("发布异常:活动截止时间小于当前时间,请修改截止时间后再发布！");
 			}
@@ -187,11 +237,10 @@ public class ActivityRewardServiceImpl implements IActivityRewardService {
 		if(StringUtil.isBlank(id)) {
 			throw new RepsException("数据异常:活动ID不能为空");
 		}
-		String finishTime = jfReward.getFinishTimeDisp();
-		if(StringUtil.isBlank(finishTime)) {
+		if(null == jfReward.getFinishTimeDisp()) {
 			throw new RepsException("数据异常:活动截止时间不能为空");
 		}
-		dao.updateFinishTime(id, finishTime);
+		this.update(jfReward);
 		batchPublish(id, PUBLISHED.getIndex());
 	}
 

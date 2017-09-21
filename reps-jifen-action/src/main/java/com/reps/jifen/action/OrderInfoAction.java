@@ -46,7 +46,7 @@ public class OrderInfoAction extends BaseAction {
 		if (StringUtils.isBlank(id)) {
 			throw new RepsException("请求参数错误");
 		}
-		OrderInfo data = goodsService.get(id);
+		OrderInfo data = goodsService.get(id, true);
 		if (data == null) {
 			throw new RepsException("该订单不存在");
 		}
@@ -61,7 +61,7 @@ public class OrderInfoAction extends BaseAction {
 			if (StringUtils.isBlank(data.getId())) {
 				throw new RepsException("请求参数错误");
 			}
-			OrderInfo old = goodsService.get(data.getId());
+			OrderInfo old = goodsService.get(data.getId(), false);
 			if (old == null) {
 				throw new RepsException("该订单不存在");
 			}

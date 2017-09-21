@@ -21,6 +21,7 @@ import com.reps.core.util.StringUtil;
 import com.reps.jifen.dao.PointRewardDao;
 import com.reps.jifen.entity.PointReward;
 import com.reps.jifen.entity.RewardCategory;
+import static com.reps.jifen.entity.enums.ValidRecord.*;
 import com.reps.jifen.service.IRewardService;
 
 /**
@@ -44,18 +45,20 @@ public class RewardServiceImpl implements IRewardService {
 		// 设置是否发布，默认未发布
 		jfReward.setIsShown(UN_PUBLISH.getIndex());
 		// 设置图片信息
-		setPictureUrl(jfReward);
+		jfReward.setPicture(getPictureUrl(jfReward));
+		//有效，默认有效
+		jfReward.setValidRecord(VALID.getId());
 		dao.save(jfReward);
 	}
 
-	private void setPictureUrl(PointReward jfReward) {
+	private String getPictureUrl(PointReward jfReward) {
 		String rewardUrlOne = jfReward.getRewardUrlOne();
 		String rewardUrlTwo = jfReward.getRewardUrlTwo();
 		String rewardUrlThree = jfReward.getRewardUrlThree();
 		String rewardUrlFour = jfReward.getRewardUrlFour();
 		String rewardUrlFive = jfReward.getRewardUrlFive();
 		String pictureUrlStr = StringUtil.join(new String[] { rewardUrlOne, rewardUrlTwo, rewardUrlThree, rewardUrlFour, rewardUrlFive }, ",");
-		jfReward.setPicture(pictureUrlStr);
+		return pictureUrlStr;
 	}
 
 	@Override
@@ -72,9 +75,47 @@ public class RewardServiceImpl implements IRewardService {
 	}
 
 	@Override
-	public void update(PointReward jfReward) {
-		setPictureUrl(jfReward);
-		dao.update(jfReward);
+	public void update(PointReward jfReward) throws RepsException{
+		if (jfReward == null) {
+			throw new RepsException("参数异常");
+		}
+		PointReward pointReward = this.get(jfReward.getId());
+		if (pointReward == null) {
+			throw new RepsException("查询异常:物品不存在");
+		}
+		RewardCategory jfRewardCategory = jfReward.getJfRewardCategory();
+		if(null != jfRewardCategory) {
+			pointReward.setJfRewardCategory(jfRewardCategory);
+		}
+		String name = jfReward.getName();
+		if (StringUtil.isNotBlank(name)) {
+			pointReward.setName(name);
+		}
+		Integer numbers = jfReward.getNumbers();
+		if (null != numbers) {
+			pointReward.setNumbers(numbers);
+		}
+		Integer points = jfReward.getPoints();
+		if (null != points) {
+			pointReward.setPoints(points);
+		}
+		String description = jfReward.getDescription();
+		if (StringUtil.isNotBlank(description)) {
+			pointReward.setDescription(description);
+		}
+		String pictureUrl = getPictureUrl(jfReward);
+		if(StringUtil.isNotBlank(pictureUrl)) {
+			pointReward.setPicture(pictureUrl);
+		}
+		Integer exchangedCount = jfReward.getExchangedCount();
+		if(null != exchangedCount) {
+			pointReward.setExchangedCount(exchangedCount);
+		}
+	    Short validRecord = jfReward.getValidRecord();
+	    if(null != validRecord) {
+	    	pointReward.setValidRecord(validRecord);
+	    }
+		dao.update(pointReward);
 	}
 
 	@Override

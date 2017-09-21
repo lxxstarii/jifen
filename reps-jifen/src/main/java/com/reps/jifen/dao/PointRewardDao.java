@@ -17,6 +17,7 @@ import com.reps.core.orm.ListResult;
 import com.reps.core.util.StringUtil;
 import com.reps.jifen.entity.PointReward;
 import com.reps.jifen.entity.RewardCategory;
+import com.reps.jifen.entity.enums.ValidRecord;
 
 /**
  * 积分奖品dao
@@ -49,6 +50,7 @@ public class PointRewardDao {
 		DetachedCriteria dc = DetachedCriteria.forClass(PointReward.class);
 		dc.createAlias("jfRewardCategory", "t");
 		Order order = Order.desc("createTime");
+		dc.add(Restrictions.eq("validRecord", ValidRecord.VALID.getId()));
 		if (jfReward != null) {
 			String name = jfReward.getName();
 			if (StringUtil.isNotBlank(name)) {
@@ -115,13 +117,6 @@ public class PointRewardDao {
 		StringBuffer sb = new StringBuffer("update " + PointReward.class.getName() + " bean");
 		sb.append(" set bean.isShown=" + isShown);
 		sb.append(" where bean.id in (" + formatSql(ids) + ")");
-		this.dao.execute(sb.toString());
-	}
-	
-	public void updateFinishTime(String id, String finishTime) {
-		StringBuffer sb = new StringBuffer("update " + PointReward.class.getName() + " bean");
-		sb.append(" set bean.finishTime='" + finishTime + "'");
-		sb.append(" where bean.id='" + id + "'");
 		this.dao.execute(sb.toString());
 	}
 	
