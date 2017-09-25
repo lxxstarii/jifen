@@ -89,6 +89,9 @@ public class DeliveryAddressRest extends RestBaseController {
 			if (StringUtils.isNotBlank(info.getDetailAddress())) {
 				old.setDetailAddress(info.getDetailAddress());
 			}
+			if (StringUtils.isNotBlank(info.getPhone())) {
+				old.setPhone(info.getPhone());
+			}
 			if (info.getIsDefault() != null) {
 				old.setIsDefault(info.getIsDefault());
 			}

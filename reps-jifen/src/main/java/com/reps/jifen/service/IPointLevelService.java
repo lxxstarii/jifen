@@ -50,4 +50,6 @@ public interface IPointLevelService {
 	 */
 	public List<PointLevel> queryAll(PointLevel jfPointLevel) throws RepsException;
 	
+	
+	PointLevel findByLevel(int level);
 }

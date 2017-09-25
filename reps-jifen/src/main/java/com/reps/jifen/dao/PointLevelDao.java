@@ -56,4 +56,11 @@ public class PointLevelDao {
 		return dao.findByCriteria(dc);
 	}
 
+	public List<PointLevel> find(PointLevel jfPointLevel) {
+		DetachedCriteria dc = DetachedCriteria.forClass(PointLevel.class);
+		if (jfPointLevel.getLevel() != null) {
+			dc.add(Restrictions.eq("level", jfPointLevel.getLevel()));
+		}
+		return dao.findByCriteria(dc);
+	}
 }

@@ -11,7 +11,9 @@ public enum Sources {
 	TEACHER_DEDUCT("TeacherDeduct", "教师扣除"),
 	PARENT_REWARD("ParentReward", "家长奖励"),
 	PARENT_DEDUCT("ParentDeduct", "家长扣除"),
-	GOODS_EXCHANGE("GoodsExchange", "物品兑换");
+	GOODS_EXCHANGE("GoodsExchange", "物品兑换"),
+	ACTIVITY_PARTICIPATE("ActivityParticipation", "活动参与"),
+	ACTIVITY_CANCELLED("ActivityCancelled", "活动取消");
 
 	private String name;
 	

@@ -25,7 +25,7 @@ public class OrderInfo extends IdEntity {
 	
 	public static final Integer CANCLE = 2; //取消
 	
-	public static final Integer FINISH = 3; //完成
+	public static final Integer FINISH = 3; //确认收货
 
 	/**订单号*/
 	@Column(name = "order_no")

@@ -9,4 +9,6 @@ public class ConfigurePath {
 	
 	/**图片文件路径*/
 	public static final String IMG_FILE_PATH = RepsContext.getConst("jifen", "imagePath");
+	
+	public static final String MONGO_PATH = RepsContext.getConst("jifen", "mongoUrl");
 }

@@ -55,7 +55,7 @@ public class OpenApiRest extends RestBaseController {
 				aggregate.setTotalPointsUsable(info.getPoints());
 				//获取个人积分级别
 				JSONObject jsonObject = HttpRequstUtil.getGetUrlResponse(levelUrl 
-						+ "/oapi/jfopenapi/getlevel?points=" + aggregate.getTotalPointsUsable());
+						+ "/oapi/jfopenapi/getlevel?points=" + aggregate.getTotalPoints());
 				if (jsonObject != null) {
 					if (jsonObject.getInt("status") == 200) {
 						aggregate.setLevel((short) jsonObject.getInt("result"));

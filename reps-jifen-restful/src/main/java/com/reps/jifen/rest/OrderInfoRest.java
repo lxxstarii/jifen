@@ -28,19 +28,21 @@ import com.reps.core.restful.RestBaseController;
 import com.reps.core.restful.RestResponse;
 import com.reps.core.restful.RestResponseStatus;
 import com.reps.core.util.DateUtil;
+import com.reps.jifen.constant.UrlConstant;
 import com.reps.jifen.entity.OrderInfo;
 import com.reps.jifen.entity.PointReward;
 import com.reps.jifen.service.IOrderInfoService;
 import com.reps.jifen.service.IRewardService;
 import com.reps.jifen.util.ConvertUrlUtil;
 import com.reps.jifen.util.HttpRequstUtil;
-import com.reps.jifen.vo.UrlConstant;
 
 @RestController
 @RequestMapping(value = "/uapi/orderinfo")
 public class OrderInfoRest extends RestBaseController {
 
 	private final Log logger = LogFactory.getLog(OrderInfoRest.class);
+	
+	private final Integer ORDER_TYPE = 1;
 	
 	@Autowired
 	IOrderInfoService orderInfoService;
@@ -98,6 +100,15 @@ public class OrderInfoRest extends RestBaseController {
 			data.setRewardName(pointReward.getName());
 			data.setCreateTime(new Date());
 			data.setOrderNo(DateUtil.format(new Date(), "yyyyMMddHHmm").substring(2));
+			JSONObject isAllowObject = isAllowOption(data.getPersonId(), info.getNums() * info.getUsedPoints(), request.getParameter("access_token"));
+			if (isAllowObject != null) {
+				if (isAllowObject.getInt("status") == 403) {
+					return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, isAllowObject.getString("message"));
+				} else if (isAllowObject.getInt("status") == 500) {
+					return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, isAllowObject.getString("message"));
+				} 
+			} 
+			orderInfoService.save(data);
 			//提交订单(1：先获取个人积分,判断是否满足提交订单条件 2：添加个人兑换记录)
 			JSONObject jsonObject = saveExchange(data, getCurrentLoginInfo(), request.getParameter("access_token"));
 			if (jsonObject != null) {
@@ -107,7 +118,6 @@ public class OrderInfoRest extends RestBaseController {
 					return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, jsonObject.getString("message"));
 				} 
 			} 
-			orderInfoService.save(data);
 			//修改物品库存及兑换数量
 			pointReward.setExchangedCount(pointReward.getExchangedCount() == null ? info.getNums() : pointReward.getExchangedCount() + info.getNums());
 			pointReward.setNumbers(pointReward.getNumbers() - info.getNums());
@@ -120,14 +130,32 @@ public class OrderInfoRest extends RestBaseController {
 	}
 	
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public RestResponse<String> update(OrderInfo info) {
+	public RestResponse<String> update(OrderInfo info, HttpServletRequest request) {
 		try {
 			if (info.getStatus() == null || StringUtils.isBlank(info.getId())) {
 				return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "请求参数错误");
 			}
 			OrderInfo old = orderInfoService.get(info.getId(), false);
 			if (old != null) {
-				info.setStatus(info.getStatus());
+				if (info.getStatus() == OrderInfo.CANCLE) {
+					if (old.getStatus() != OrderInfo.UN_HANDLE) {
+						return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "只能取消未完成的订单");
+					}
+					//取消订单,返还学生积分
+					JSONObject jsonObject = cancelExchange(old, request.getParameter("access_token"));
+					if (jsonObject != null) {
+						if (jsonObject.getInt("status") == 403) {
+							return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, jsonObject.getString("message"));
+						} else if (jsonObject.getInt("status") == 500) {
+							return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, jsonObject.getString("message"));
+						} 
+					}
+				} else if (info.getStatus() == OrderInfo.FINISH) {
+					if (old.getStatus() != OrderInfo.HANDLE) {
+						return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "只能确认已完成的订单");
+					}
+				}
+				old.setStatus(info.getStatus());
 				orderInfoService.update(old);
 			}
 			return wrap(RestResponseStatus.OK, "修改成功");
@@ -145,10 +173,10 @@ public class OrderInfoRest extends RestBaseController {
 			}
 			OrderInfo old = orderInfoService.get(id, false);
 			if (old != null) {
-				if (old.getStatus() != OrderInfo.FINISH) {
-					return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "当前订单未完成,不可删除");
+				if (old.getStatus() != OrderInfo.CANCLE) {
+					return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "只能删除已取消的订单");
 				}
-				orderInfoService.delete(old);
+				orderInfoService.delete(id);
 			}
 			return wrap(RestResponseStatus.OK, "删除订单成功");
 		} catch (Exception e) {
@@ -165,6 +193,9 @@ public class OrderInfoRest extends RestBaseController {
 				return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "请求参数错误");
 			}
 			OrderInfo data = orderInfoService.get(id, true);
+			if (data == null) {
+				return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "订单不存在");
+			}
 			convertMap(data, map);
 			return wrap(RestResponseStatus.OK, "获取订单详情成功", map);
 		} catch (Exception e) {
@@ -212,7 +243,29 @@ public class OrderInfoRest extends RestBaseController {
 		paramMap.put("points", info.getNums() * info.getUsedPoints());
 		paramMap.put("schoolId", info.getSchoolId());
 		paramMap.put("schoolName", info.getSchoolName());
+		paramMap.put("orderId", info.getId());
+		paramMap.put("type", ORDER_TYPE);
 		String params = ConvertUrlUtil.convertByMap(paramMap);
 		return HttpRequstUtil.getPostUrlResponse(mongoUrl + UrlConstant.SAVE_EXCHANGE + "?access_token=" + accessToken, params);
+	}
+	
+	private JSONObject cancelExchange(OrderInfo info, String accessToken) throws Exception{
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("personId", info.getPersonId());
+		paramMap.put("rewardId", info.getRewardId());
+		paramMap.put("orderId", info.getId());
+		paramMap.put("type", ORDER_TYPE);
+		String params = ConvertUrlUtil.convertByMap(paramMap);
+		System.out.println(mongoUrl + UrlConstant.CANCEL_EXCHANGE + "?access_token=" + accessToken);
+		return HttpRequstUtil.getPostUrlResponse(mongoUrl + UrlConstant.CANCEL_EXCHANGE + "?access_token=" + accessToken, params);
+	}
+	
+	private JSONObject isAllowOption(String personId, Integer points, String accessToken) throws Exception{
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("personId", personId);
+		paramMap.put("points", points);
+		paramMap.put("access_token", accessToken);
+		String params = ConvertUrlUtil.convertByMap(paramMap);
+		return HttpRequstUtil.getGetUrlResponse(mongoUrl + UrlConstant.IS_ALLOW_OPTION + "?" + params);
 	}
 }

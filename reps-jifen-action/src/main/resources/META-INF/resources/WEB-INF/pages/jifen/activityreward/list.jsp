@@ -67,6 +67,7 @@
 							redirect="list.mvc" url="delete.mvc?id=${activity.id}&validRecord=9">
 						</reps:ajax>
 					</c:if>
+					<reps:button cssClass="look-summary-table"  value="统计管理" action="statistics.mvc?rewardId=${activity.id}" ></reps:button>
 				</reps:gridfield>
 			</reps:gridrow>
 		</reps:grid>

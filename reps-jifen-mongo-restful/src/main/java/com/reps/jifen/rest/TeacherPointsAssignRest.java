@@ -105,7 +105,7 @@ public class TeacherPointsAssignRest extends RestBaseController{
 			aggregate.setTotalPointsUsable(aggregate.getTotalPointsUsable() + jfCollect.getPoints());
 			//获取个人积分级别
 			JSONObject jsonObject = HttpRequstUtil.getGetUrlResponse(levelUrl 
-					+ UrlConstant.GET_LEVEL + "?access_token=" + request.getParameter("access_token") + "&points=" + aggregate.getTotalPointsUsable());
+					+ UrlConstant.GET_LEVEL + "?access_token=" + request.getParameter("access_token") + "&points=" + aggregate.getTotalPoints());
 			if (jsonObject != null) {
 				if (jsonObject.getInt("status") == 200) {
 					aggregate.setLevel((short) jsonObject.getInt("result"));

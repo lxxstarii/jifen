@@ -32,6 +32,7 @@ public class RewardUtil {
 		SORT_FIELD_MAP.put("record", "exchangedCount");
 		SORT_FIELD_MAP.put("point", "points");
 		SORT_FIELD_MAP.put("time", "createTime");
+		SORT_FIELD_MAP.put("participate", "participatedCount");
 	}
 
 	/**

@@ -116,6 +116,10 @@ public class ActivityRewardServiceImpl implements IActivityRewardService {
 		if(null != participatedCount) {
 			pointReward.setParticipatedCount(participatedCount);
 		}
+		Integer exchangedCount = jfReward.getExchangedCount();
+		if(null != exchangedCount) {
+			pointReward.setExchangedCount(exchangedCount);
+		}
 		Short validRecord = jfReward.getValidRecord();
 	    if(null != validRecord) {
 	    	pointReward.setValidRecord(validRecord);

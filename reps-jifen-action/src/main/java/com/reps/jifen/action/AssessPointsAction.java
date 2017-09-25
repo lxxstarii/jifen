@@ -42,7 +42,7 @@ public class AssessPointsAction extends BaseAction {
 		query.setCategory(AccessCategory.XXHD.getCode());
 		ListResult<StudyAssessPoints> result = assessPointsService.query(
 				pager.getStartRow(), pager.getPageSize(), query);
-
+		pager.setTotalRecord(result.getCount());
 		mav.addObject("list", result.getList());
 		mav.addObject("pager", pager);
 		mav.addObject("query", query);
@@ -58,7 +58,23 @@ public class AssessPointsAction extends BaseAction {
 		query.setCategory(AccessCategory.XYXW.getCode());
 		ListResult<StudyAssessPoints> result = assessPointsService.query(
 				pager.getStartRow(), pager.getPageSize(), query);
+		pager.setTotalRecord(result.getCount());
+		mav.addObject("list", result.getList());
+		mav.addObject("pager", pager);
+		mav.addObject("query", query);
+		mav.addObject("actionBasePath", RepsConstant.ACTION_BASE_PATH);
+		return mav;
+	}
+	
+	@RequestMapping(value = "/xyxzlist")
+	public ModelAndView xyxzlist(Pagination pager, StudyAssessPoints query) {
 
+		ModelAndView mav = getModelAndView("/jifen/pjfzsz/xyxzlist");
+		// 校园评价指标设置
+		query.setCategory(AccessCategory.XYXW.getCode());
+		ListResult<StudyAssessPoints> result = assessPointsService.query(
+				pager.getStartRow(), pager.getPageSize(), query);
+		pager.setTotalRecord(result.getCount());
 		mav.addObject("list", result.getList());
 		mav.addObject("pager", pager);
 		mav.addObject("query", query);

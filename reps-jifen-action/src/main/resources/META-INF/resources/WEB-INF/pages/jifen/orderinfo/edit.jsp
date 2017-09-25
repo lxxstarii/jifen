@@ -26,9 +26,6 @@
 		   <reps:formfield label="联系电话"  labelStyle="width:20%;" textStyle="width:20%;">
 				<reps:input name="phone"  maxLength="15" required="true" >${data.phone}</reps:input>
            </reps:formfield>
-            <reps:formfield label="订单状态" labelStyle="width:20%;" textStyle="width:20%;">
-				<reps:select name="status" jsonData="{'0':'未处理', '1':'已处理'}">${data.status}</reps:select>
-           </reps:formfield>
            <reps:formfield label="快递公司"  labelStyle="width:20%;" textStyle="width:20%;">
 				<reps:input name="expressCompany"  maxLength="15" >${data.expressCompany}</reps:input>
            </reps:formfield>

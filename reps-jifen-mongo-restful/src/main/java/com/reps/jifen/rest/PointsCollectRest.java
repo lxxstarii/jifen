@@ -22,17 +22,6 @@ public class PointsCollectRest extends RestBaseController{
 	
 	@Autowired
 	private IPointsCollectService jfPointsCollectService;
-
-	@RequestMapping(value = "/save", method = { RequestMethod.POST })
-	public RestResponse<PointsCollect> save(PointsCollect jfPointsCollect) {
-		try {
-			PointsCollect bean = jfPointsCollectService.save(jfPointsCollect);
-			return wrap(RestResponseStatus.OK, "保存成功", bean);
-		} catch (Exception e) {
-			logger.error("添加异常", e);
-			return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "添加异常：" + e.getMessage());
-		}
-	}
 	
 	@RequestMapping(value = "/list", method = { RequestMethod.GET })
 	public RestResponse<ListResult<PointsCollect>> list(String personId, Integer pageIndex, Integer pageSize) {

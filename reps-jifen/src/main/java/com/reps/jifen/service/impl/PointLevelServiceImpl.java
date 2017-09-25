@@ -49,4 +49,12 @@ public class PointLevelServiceImpl implements IPointLevelService {
 		return dao.queryAll(jfPointLevel);
 	}
 
+	@Override
+	public PointLevel findByLevel(int level) {
+		PointLevel query = new PointLevel();
+		query.setLevel(level);
+		List<PointLevel> list = dao.find(query);
+		return list == null || list.isEmpty() ? null : list.get(0);
+	}
+
 }

@@ -3,6 +3,8 @@ package com.reps.jifen.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Id;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -14,14 +16,29 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class PointsExchange implements Serializable{
 	
 	private static final long serialVersionUID = 5987311221200585450L;
+	
+	/**物品类型*/
+	public static final Short REWARD_TYPE = 1;
+	
+	/**活动类型*/
+	public static final Short ACTIVITY_TYPE = 2;
+	
+	/**添加状态*/
+	public static final Short ADD_STATUS = 1;
+	
+	/**取消状态*/
+	public static final Short CALCEL_STATUS = 2;
+	
+	@Id
+	private String id;
 
 	/** 人员ID */
 	private String personId;
 	
-	/** 奖品ID */
+	/** 奖品ID / 活动id*/
 	private String rewardId;
 	
-	/** 奖品名称 */
+	/** 奖品名称  / 活动名称*/
 	private String rewardName;
 	
 	/** 扣除积分 */
@@ -41,6 +58,12 @@ public class PointsExchange implements Serializable{
 	
 	/** 学校名字 */
 	private String schoolName;
+	
+	/**订单id*/
+	private String orderId;
+	
+	/**1:物品兑换  2:活动*/
+	private Short type;
 
 	public String getPersonId() {
 		return personId;
@@ -112,6 +135,30 @@ public class PointsExchange implements Serializable{
 
 	public void setSchoolId(String schoolId) {
 		this.schoolId = schoolId;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	public Short getType() {
+		return type;
+	}
+
+	public void setType(Short type) {
+		this.type = type;
+	}
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	@Override

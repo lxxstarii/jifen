@@ -42,6 +42,9 @@
 						<node code="jifen010206" name="活动延期" showOrder="6" newpage="false" type="Operate">
 							<action>/reps/jifen/activityreward/todelay.mvc;/reps/jifen/activityreward/delay.mvc</action>
 						</node>
+						<node code="jifen010207" name="活动统计管理" showOrder="7" newpage="false" type="Operate">
+							<action>/reps/jifen/activityreward/statistics.mvc</action>
+						</node>
 					</nodes>
 				</node>
 				<node code="jifen010300" name="物品管理" showOrder="3" newpage="false" type="Action" >
@@ -168,6 +171,12 @@
 						<node code="jifen090101" name="修改" showOrder="1" newpage="false" type="Operate">
 							<action>/reps/jifen/orderinfo/toedit.mvc;/reps/jifen/orderinfo/edit.mvc</action>
 						</node>
+						<node code="jifen090102" name="填写运单信息" showOrder="2" newpage="false" type="Operate">
+							<action>/reps/jifen/orderinfo/tofill.mvc;/reps/jifen/orderinfo/edit.mvc</action>
+						</node>
+						<node code="jifen090103" name="取消发货" showOrder="2" newpage="false" type="Operate">
+							<action>/reps/jifen/orderinfo/cancel.mvc;</action>
+						</node>
 					</nodes>
 				</node>
 			</nodes>
@@ -177,5 +186,6 @@
 		<!-- 学校商标路径、形象图路径  -->
 		<citem name="imageUploadPath" value="C:/apache-tomcat-7.0.69/webapps/wx-platform" />
 		<citem name="imagePath" value="http://localhost:8080/wx-platform" />
+		<citem name="mongoUrl" value="http://localhost:8888/"></citem>
 	</consts>
 </module>

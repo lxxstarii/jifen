@@ -3,6 +3,7 @@ package com.reps.jifen.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.reps.jifen.entity.PointsAggregate;
@@ -19,6 +20,11 @@ public class PointsAggregateServiceImpl implements IPointsAggregateService {
 	@Override
 	public List<PointsAggregate> findByPersonId(String personId) {
 		return repository.findByPersonId(personId);
+	}
+	
+	@Override
+	public List<PointsAggregate> findAll(Sort sort) {
+		return repository.findAll(sort);
 	}
 
 	@Override

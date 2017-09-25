@@ -3,9 +3,9 @@ package com.reps.jifen.rest;
 import static com.reps.jifen.entity.enums.CategoryType.ACTIVITY;
 import static com.reps.jifen.util.PageUtil.cps;
 import static com.reps.jifen.util.PageUtil.getStartIndex;
+import static com.reps.jifen.util.RewardUtil.setPictureUrls;
 import static com.reps.jifen.util.RewardUtil.setReward;
 import static com.reps.jifen.util.RewardUtil.setRewardType;
-import static com.reps.jifen.util.RewardUtil.setPictureUrls;
 
 import java.util.List;
 
@@ -21,6 +21,7 @@ import com.reps.core.restful.RestBaseController;
 import com.reps.core.restful.RestResponse;
 import com.reps.core.restful.RestResponseStatus;
 import com.reps.jifen.entity.PointReward;
+import com.reps.jifen.entity.RewardCategory;
 import com.reps.jifen.service.IActivityRewardService;
 
 @RestController
@@ -31,7 +32,7 @@ public class ActivityRewardORest extends RestBaseController {
 
 	@Autowired
 	private IActivityRewardService jfActivityRewardService;
-
+	
 	/**
 	 * 查询已经发布的活动列表
 	 * 
@@ -101,8 +102,14 @@ public class ActivityRewardORest extends RestBaseController {
 		try {
 			PointReward jfReward = jfActivityRewardService.get(id);
 			if(null == jfReward) {
-				throw new RepsException("查询活动异常");
+				throw new RepsException("查询活动异常:该活动不存在");
 			}
+			RewardCategory jfRewardCategory = jfReward.getJfRewardCategory();
+			if(null == jfRewardCategory) {
+				throw new RepsException("查询活动异常:该活动所在分类不存在");
+			}
+			//设置分类名称
+			jfReward.setCategoryName(jfRewardCategory.getName());
 			jfReward.setPicture(getFileFullUrl(jfReward.getPicture(), null));
 			return wrap(RestResponseStatus.OK, "查询成功", jfReward);
 		} catch (Exception e) {

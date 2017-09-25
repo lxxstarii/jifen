@@ -3,6 +3,7 @@ package com.reps.jifen.entity;
 import java.io.Serializable;
 
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -30,6 +31,14 @@ public class PointsAggregate implements Serializable{
 	
 	/** 积分累计级别 */
 	private Short level;
+	
+	/**排名占比*/
+	@Transient
+	private String ranking;
+	
+	/**距离下一级所需积分*/
+	@Transient
+	private Integer needPoints;
 
 	public String getPersonId() {
 		return personId;
@@ -69,6 +78,22 @@ public class PointsAggregate implements Serializable{
 
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public String getRanking() {
+		return ranking;
+	}
+
+	public void setRanking(String ranking) {
+		this.ranking = ranking;
+	}
+
+	public Integer getNeedPoints() {
+		return needPoints;
+	}
+
+	public void setNeedPoints(Integer needPoints) {
+		this.needPoints = needPoints;
 	}
 
 	@Override

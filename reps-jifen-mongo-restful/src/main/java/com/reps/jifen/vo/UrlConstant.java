@@ -10,6 +10,8 @@ public class UrlConstant {
 	/**
 	 * 获取积分对应等级
 	 */
-	public static final String GET_LEVEL = "/uapi/pointlevel/getlevel?";
+	public static final String GET_LEVEL = "/uapi/pointlevel/getlevel";
+	
+	public static final String GET_LV_POINTS = "/uapi/pointlevel/getlvpoints";
 
 }

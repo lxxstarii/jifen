@@ -66,6 +66,14 @@ public class PointReward extends IdEntity implements Serializable {
 	@Column(name = "show_time")
 	private Date showTime;
 	
+	/** 活动开始时间 */
+	@Column(name = "begin_time")
+	private Date beginTime;
+	
+	/** 结束时间 */
+	@Column(name = "end_time")
+	private Date endTime;
+	
 	/** 截止时间 */
 	@Column(name = "finish_time")
 	private Date finishTime;
@@ -125,6 +133,10 @@ public class PointReward extends IdEntity implements Serializable {
 	@Transient
 	@JsonIgnore
 	private String sortField;
+	
+	/** 分类名称 */
+	@Transient
+	private String categoryName;
 	
 	/** 排序顺序 asc（升序）、desc（降序）*/
 	@Transient
@@ -329,6 +341,30 @@ public class PointReward extends IdEntity implements Serializable {
 
 	public void setValidRecord(Short validRecord) {
 		this.validRecord = validRecord;
+	}
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+	public Date getBeginTime() {
+		return beginTime;
+	}
+
+	public void setBeginTime(Date beginTime) {
+		this.beginTime = beginTime;
+	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
 	}
 	
 }

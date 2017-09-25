@@ -11,4 +11,5 @@ public interface IPointsAggregateRepository extends MongoRepository<PointsAggreg
 	List<PointsAggregate> findByPersonId(String personId);
 	
 	PointsAggregate getByPersonId(String personId);
+	
 }

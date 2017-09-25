@@ -60,4 +60,29 @@ public class PointLevelRest  extends RestBaseController{
 		return result;
 	}
 	
+	/**
+	 * 获取升级所需积分数
+	 * @param points
+	 * @return
+	 */
+	@RequestMapping(value = "/getlvpoints")
+	public RestResponse<Integer> getlvpoints(Integer points, Integer level) {
+		RestResponse<Integer> result = new RestResponse<>();
+		try {
+			if (points == null || level == null) {
+				result.setStatus(RestResponseStatus.INTERNAL_SERVER_ERROR.code());
+				result.setMessage("请求参数错误");
+				return result;
+			}
+			PointLevel data = jfPointLevelService.findByLevel(level + 1);
+			if (data == null) {
+				return wrap(RestResponseStatus.OK, "查询成功", 0);
+			}
+			return wrap(RestResponseStatus.OK, "查询成功", data.getPoint() - points);
+		} catch (Exception e) {
+			logger.error("查询异常", e);
+			return wrap(RestResponseStatus.INTERNAL_SERVER_ERROR, "查询异常：" + e.getMessage());
+		}
+	}
+	
 }

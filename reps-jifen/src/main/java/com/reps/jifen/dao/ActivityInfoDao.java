@@ -1,5 +1,7 @@
 package com.reps.jifen.dao;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
@@ -30,6 +32,14 @@ public class ActivityInfoDao {
 	
 	public void save(PointActivityInfo activityInfo) {
 		dao.save(activityInfo);
+	}
+	
+	public void update(PointActivityInfo activityInfo) {
+		dao.update(activityInfo);
+	}
+	
+	public PointActivityInfo get(String id) {
+		return dao.get(PointActivityInfo.class, id);
 	}
 
 	public ListResult<PointActivityInfo> query(int start, int pagesize, PointActivityInfo activityInfo) {
@@ -66,7 +76,10 @@ public class ActivityInfoDao {
 			if(StringUtil.isNotBlank(rewardId)) {
 				dc.add(Restrictions.eq("rewardId", rewardId));
 			}
-			
+			Short isParticipate = activityInfo.getIsParticipate();
+			if(null == isParticipate) {
+				dc.add(Restrictions.eq("isParticipate", isParticipate));
+			}
 		}
 		return dao.query(dc, start, pagesize, Order.asc("createTime"));
 	}
@@ -82,6 +95,25 @@ public class ActivityInfoDao {
 	    dc.add(Restrictions.eq("rewardId", rewardId));
 	    dc.add(Restrictions.eq("isParticipate", isParticipate));
 	    return this.dao.getRowCount(dc);
+	}
+	
+	/**
+	 * @param activityInfo
+	 * @return List<PointActivityInfo>
+	 */
+	public List<PointActivityInfo> find(PointActivityInfo activityInfo) {
+		 DetachedCriteria dc = DetachedCriteria.forClass(PointActivityInfo.class);
+		 if(null != activityInfo) {
+			 String rewardId = activityInfo.getRewardId();
+			 if(StringUtil.isNotBlank(rewardId)) {
+				 dc.add(Restrictions.eq("rewardId", rewardId));
+			 }
+			 String studentId = activityInfo.getStudentId();
+			 if(StringUtil.isNotBlank(studentId)) {
+				 dc.add(Restrictions.eq("studentId", studentId));
+			 }
+		 }
+	     return dao.findByCriteria(dc);
 	}
 	
 }

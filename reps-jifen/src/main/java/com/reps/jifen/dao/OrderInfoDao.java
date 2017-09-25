@@ -39,6 +39,7 @@ public class OrderInfoDao {
 	}
 	
 	public void delete(OrderInfo data) {
+		dao.merge(data);
 		dao.delete(data);;
 	}
 	
@@ -74,6 +75,6 @@ public class OrderInfoDao {
 				dc.add(Restrictions.eq("status", query.getStatus()));
 			}
 		}
-		return dao.query(dc, start, pageSize, Order.desc("createTime"));
+		return dao.query(dc, start, pageSize, Order.asc("status"), Order.desc("createTime"));
 	}
  }

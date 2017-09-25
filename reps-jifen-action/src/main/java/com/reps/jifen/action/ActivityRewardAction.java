@@ -208,7 +208,7 @@ public class ActivityRewardAction extends BaseAction {
 	 * @return Object
 	 */
 	@RequestMapping(value = "/todelay")
-	public Object delay(String id) {
+	public Object toDelay(String id) {
 		try {
 			ModelAndView mav = getModelAndView("/jifen/activityreward/delay");
 			PointReward jfReward = jfActivityRewardService.get(id);
@@ -236,6 +236,70 @@ public class ActivityRewardAction extends BaseAction {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("修改失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
+		}
+	}
+	
+	/**
+	 * 活动审核页面入口
+	 * 
+	 * @param id
+	 * @return Object
+	 */
+	@RequestMapping(value = "/toaudit")
+	public Object toAudit(String id) {
+		try {
+			ModelAndView mav = getModelAndView("/jifen/activityreward/audit");
+			PointActivityInfo pointActivityInfo = activityInfoService.get(id);
+			mav.addObject("info", pointActivityInfo);
+			return mav;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("进入活动页面异常", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
+		}
+	}
+	
+	/**
+	 * 活动审核
+	 * @param jfReward
+	 * @return Object
+	 */
+	@RequestMapping(value = "/audit")
+	@ResponseBody
+	public Object audit(PointActivityInfo activityInfo) {
+		try {
+			activityInfoService.audit(activityInfo, ConfigurePath.MONGO_PATH);
+			return ajax(AjaxStatus.OK, "操作成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("操作失败", e);
+			return ajax(AjaxStatus.ERROR, e.getMessage());
+		}
+	}
+	
+	/**
+	 * 批量审核
+	 * @param ids
+	 * @param auditStatus
+	 * @return Object
+	 */
+	public Object batchAudit(String ids, Short auditStatus) {
+		try {
+			if(StringUtil.isBlank(ids)) {
+				throw new RepsException("参数异常");
+			}
+			String[] idArray = ids.split(",");
+			PointActivityInfo activityInfo = new PointActivityInfo();
+			activityInfo.setAuditStatus(auditStatus);
+			for (String id : idArray) {
+				activityInfo.setId(id);
+				activityInfoService.audit(activityInfo, ConfigurePath.MONGO_PATH);
+			}
+			return ajax(AjaxStatus.OK, "操作成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("操作失败", e);
 			return ajax(AjaxStatus.ERROR, e.getMessage());
 		}
 	}
