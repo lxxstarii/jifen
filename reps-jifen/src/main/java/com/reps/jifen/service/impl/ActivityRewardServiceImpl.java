@@ -43,18 +43,21 @@ public class ActivityRewardServiceImpl implements IActivityRewardService {
 	
 	@Override
 	public void save(PointReward jfReward) throws RepsException{
-		//设置上线时间
-		Date showTime = getShowTimeDisp(jfReward);
-		jfReward.setShowTime(showTime);
+		//设置活动开始时间
+		Date beginTime = getBeginTimeDisp(jfReward);
+		//设置活动结束时间
+		Date endTime = getEndTimeDisp(jfReward);
+		jfReward.setBeginTime(beginTime);
+		jfReward.setEndTime(endTime);
 		//设置截止时间
 		Date finishTime = getFinishTimeDisp(jfReward);
 		jfReward.setFinishTime(finishTime);
-		if(null != showTime && null != finishTime) {
-			if(finishTime.getTime() < showTime.getTime()) {
-				throw new RepsException("保存异常:截止日期小于上线日期");
+		if(null != beginTime && null != finishTime) {
+			if(finishTime.getTime() >= beginTime.getTime()) {
+				throw new RepsException("保存异常:报名截止日期大于活动开始时间");
 			}
 		}else {
-			throw new RepsException("上线时间或截止日期为空");
+			throw new RepsException("活动开始日期或报名截止日期为空");
 		}
 		jfReward.setCreateTime(new Date());
 		//设置是否发布，默认未发布
@@ -103,9 +106,14 @@ public class ActivityRewardServiceImpl implements IActivityRewardService {
 			pointReward.setPicture(pictureUrl);
 		}
 		//设置上线时间
-		Date showTime = getShowTimeDisp(jfReward);
-		if(null != showTime) {
-			pointReward.setShowTime(showTime);
+		Date beginTime = getBeginTimeDisp(jfReward);
+		if(null != beginTime) {
+			pointReward.setBeginTime(beginTime);
+		}
+		//设置上线时间
+		Date endTime = getEndTimeDisp(jfReward);
+		if(null != endTime) {
+			pointReward.setEndTime(endTime);
 		}
 		//设置截止时间
 		Date finishTime = getFinishTimeDisp(jfReward);
@@ -156,11 +164,21 @@ public class ActivityRewardServiceImpl implements IActivityRewardService {
 		}
 	}
 
-	private Date getShowTimeDisp(PointReward jfReward) {
-		String showTimeDisp = jfReward.getShowTimeDisp();
-		if(StringUtil.isNotBlank(showTimeDisp)) {
-			Date showTime = getDateFromStr(showTimeDisp, "yyyy-MM-dd");
-			return showTime;
+	private Date getBeginTimeDisp(PointReward jfReward) {
+		String beginTimeDisp = jfReward.getBeginTimeDisp();
+		if(StringUtil.isNotBlank(beginTimeDisp)) {
+			Date beginTime = getDateFromStr(beginTimeDisp, "yyyy-MM-dd");
+			return beginTime;
+		}else {
+			return null;
+		}
+	}
+	
+	private Date getEndTimeDisp(PointReward jfReward) {
+		String endTimeDisp = jfReward.getEndTimeDisp();
+		if(StringUtil.isNotBlank(endTimeDisp)) {
+			Date endTime = getDateFromStr(endTimeDisp, "yyyy-MM-dd");
+			return endTime;
 		}else {
 			return null;
 		}

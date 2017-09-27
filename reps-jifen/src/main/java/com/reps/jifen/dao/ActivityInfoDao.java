@@ -77,7 +77,7 @@ public class ActivityInfoDao {
 				dc.add(Restrictions.eq("rewardId", rewardId));
 			}
 			Short isParticipate = activityInfo.getIsParticipate();
-			if(null == isParticipate) {
+			if(null != isParticipate) {
 				dc.add(Restrictions.eq("isParticipate", isParticipate));
 			}
 		}

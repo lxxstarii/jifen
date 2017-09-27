@@ -62,10 +62,6 @@ public class PointReward extends IdEntity implements Serializable {
 	@Column(name = "create_time")
 	private Date createTime;
 	
-	/** 上架时间 */
-	@Column(name = "show_time")
-	private Date showTime;
-	
 	/** 活动开始时间 */
 	@Column(name = "begin_time")
 	private Date beginTime;
@@ -96,7 +92,11 @@ public class PointReward extends IdEntity implements Serializable {
 	
 	@Transient
 	@JsonIgnore
-	private String showTimeDisp;
+	private String beginTimeDisp;
+	
+	@Transient
+	@JsonIgnore
+	private String endTimeDisp;
 	
 	/** 积分开始 */
 	@Transient
@@ -215,14 +215,6 @@ public class PointReward extends IdEntity implements Serializable {
 		this.createTime = createTime;
 	}
 
-	public Date getShowTime() {
-		return showTime;
-	}
-
-	public void setShowTime(Date showTime) {
-		this.showTime = showTime;
-	}
-
 	public Date getFinishTime() {
 		return finishTime;
 	}
@@ -237,14 +229,6 @@ public class PointReward extends IdEntity implements Serializable {
 
 	public void setFinishTimeDisp(String finishTimeDisp) {
 		this.finishTimeDisp = finishTimeDisp;
-	}
-
-	public String getShowTimeDisp() {
-		return showTimeDisp;
-	}
-
-	public void setShowTimeDisp(String showTimeDisp) {
-		this.showTimeDisp = showTimeDisp;
 	}
 
 	public String getRewardUrlOne() {
@@ -365,6 +349,22 @@ public class PointReward extends IdEntity implements Serializable {
 
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
+	}
+
+	public String getBeginTimeDisp() {
+		return beginTimeDisp;
+	}
+
+	public void setBeginTimeDisp(String beginTimeDisp) {
+		this.beginTimeDisp = beginTimeDisp;
+	}
+
+	public String getEndTimeDisp() {
+		return endTimeDisp;
+	}
+
+	public void setEndTimeDisp(String endTimeDisp) {
+		this.endTimeDisp = endTimeDisp;
 	}
 	
 }
